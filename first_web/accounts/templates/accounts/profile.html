@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block title %}profile{% endblock %}
+{% block body %}
+<h1>profile</h1>
+<p>user name: {{profile.user.username}}</p>
+<p>first name: {{profile.user.first_name}}</p>
+<p>last name: {{profile.user.last_name}}</p>
+<p>phone: {{profile.phone}}</p>
+<p>address: {{profile.address}}</p>
+<a href="{% url 'accounts:update' %}">update </a>
+<a href="{% url 'accounts:change' %}">change password </a>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block title %}phone_login{% endblock %}
+{% block body %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit">send code</button>
+</form>
+{% endblock %}

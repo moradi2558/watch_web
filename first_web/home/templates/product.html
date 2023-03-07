@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% block title %}product{% endblock %}
+{% block body %}
+<body style = "background-color: white ;">    
+    <div style="font-family: sans-serif;
+        color: black;font-size: 2rem;display:flex;align-items: center;flex-direction: column;">         
+        <h1>product</h1>
+        {% for product in products %}
+            <a href="{% url 'home:detail' product.id %}" >
+            <h1 style="font-size: 1.5rem;" >{{product.name}}</h1>
+            <img style="width: 8rem;height: 8rem;" src="{{product.image.url}}" style="width =50px;height = 50px; ">
+            </a>
+            <br>
+            {% if product.discount %}
+                <h4 style="text-decoration:line-through">
+                {{product.unit_price}}</h4>
+                <h3>{{product.total_price}}</h3>
+            {% else %}
+                    <h3>{{product.total_price}}</h3>
+            {% endif %}
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

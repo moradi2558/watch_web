@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block title %}change password{% endblock %}
+{% block body %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit">submit</button>
+</form>
+{% endblock %}
