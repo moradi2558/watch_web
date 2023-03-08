@@ -14,7 +14,7 @@
     <h2 style="font-size: 5rem; color: black">welcome home</h2>
     {% for cat in category %}
     <h1>{{cat.name}}</h1>
-    <a href="{% url 'home:category' cat.id %}">
+    <a href="{{cat.get_absolute_url}}">
       <h1 style="font-size: 1.5rem">{{cat.name}}</h1>
       <img
         style="width: 8rem; height: 8rem"

@@ -6,7 +6,7 @@
         color: black;font-size: 2rem;display:flex;align-items: center;flex-direction: column;">         
         <h1>product</h1>
         {% for product in products %}
-            <a href="{% url 'home:detail' product.id %}" >
+        <a href="{{product.get_absolute_url}}">
             <h1 style="font-size: 1.5rem;" >{{product.name}}</h1>
             <img style="width: 8rem;height: 8rem;" src="{{product.image.url}}" style="width =50px;height = 50px; ">
             </a>
