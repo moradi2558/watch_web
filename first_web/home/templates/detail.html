@@ -1,10 +1,14 @@
 {% extends 'main.html' %} {% block title %}detail{% endblock %} {% block body %}
-<h1>{{product.name}}</h1>
+<h1>{{products.name}}</h1>
 <img
   style="width: 8rem; height: 8rem"
-  src="{{product.image.url}}"
+  src="{{products.image.url}}"
   alt=""
-><br>
-<p>{{product.information}}</p>
-
-{% endblock %}
+/><br />
+<p>{{products.information}}</p>
+{% if product.discount %}
+<h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
+<h3>{{product.total_price}}</h3>
+{% else %}
+<h3>{{product.total_price}}</h3>
+{% endif %} {% endblock %}
