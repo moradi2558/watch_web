@@ -2,7 +2,7 @@ body {
     background: rgb(2, 0, 36);
     background: linear-gradient(131deg, rgba(2, 0, 36, 1) 21%, rgba(6, 5, 85, 1) 41%, rgba(9, 9, 121, 1) 55%, rgba(7, 65, 158, 1) 74%, rgba(0, 212, 255, 1) 100%);
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
+    background-attachment: fixed !important; 
     font-family: sans-serif;
 
 }
