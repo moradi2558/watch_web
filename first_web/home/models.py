@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import User
 from django.urls import reverse
+from  ckeditor_uploader.fields import RichTextUploadingField
+from taggit.managers import TaggableManager 
 # Create your models here.
 
 
@@ -31,20 +33,28 @@ class Product(models.Model):
     unit_price = models.PositiveIntegerField()
     discount = models.PositiveIntegerField()
     total_price = models.PositiveIntegerField(blank=True, null=True)
-    information = models.TextField(blank=True, null=True)
+    information = RichTextUploadingField(blank=True, null=True)
     create = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+    tags = TaggableManager(blank=True)
     status = models.CharField(
         max_length=200, blank=True, null=True, choices=VARIANT)
     image = models.ImageField(upload_to='product')
     available = models.BooleanField(default=True)
-    slug = models.SlugField(allow_unicode = True,unique= True,null=True,blank = True)
-
+    like = models.ManyToManyField(User,blank = True,related_name = 'product_like')
+    total_like = models.IntegerField(default=0)
+    unlike = models.ManyToManyField(User,blank = True,related_name = 'product_unlike')
+    total_unlike = models.IntegerField(default=0)
+    
+    def total_like(self):
+        return self.like.count()
+    def total_unlike(self):
+        return self.unlike.count()
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('home:detail', args=[self.slug,self.id])
+        return reverse('home:detail', args=[self.id])
 
     @property
     def total_price(self):
@@ -64,8 +74,8 @@ class Color(models.Model):
 class Variant(models.Model):
     name = models.CharField(max_length=100,blank=True, null=True)
     product_variant = models.ForeignKey(Product,on_delete = models.CASCADE)
-    size_variant = models.ForeignKey(Size,on_delete = models.CASCADE)
-    color_variant = models.ForeignKey(Color,on_delete = models.CASCADE)
+    size_variant = models.ForeignKey(Size,on_delete = models.CASCADE,null = True,blank = True)
+    color_variant = models.ForeignKey(Color,on_delete = models.CASCADE,null = True,blank = True)
     amount = models.PositiveIntegerField()
     unit_price = models.PositiveIntegerField()
     discount = models.PositiveIntegerField()

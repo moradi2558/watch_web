@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
     'phone_field',
+    'ckeditor',
+    'ckeditor_uploader',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +127,12 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = 'media/'
+CKEDITOR_UPLOAD_PATH = 'ck/'
+CKEDITOR_CONFIGS = {
+                    'default':
+                            {'toolbar':'full',
+                             },
+                    }
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -131,3 +140,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_REDIRECT_URL = 'home:home'
+TAGGIT_CASE_INSENSITIVE  = True

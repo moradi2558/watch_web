@@ -5,10 +5,62 @@
   src="{{products.image.url}}"
   alt=""
 /><br />
-<p>{{products.information}}</p>
-{% if product.discount %}
+<p>{{products.information|safe}}</p>
+<small>like: {{products.total_like}}</small>
+{% if request.user.is_authenticated %} {% if is_like %}
+<a
+  href="{% url 'home:product_like'  products.id %}"
+  class="btn btn-info {% if is_unlike %}disabled{% endif %}"
+  >unlike</a
+>
+{% else %}
+<a
+  href="{% url 'home:product_like' products.id %}"
+  class="btn btn-info {% if is_unlike %}disabled{% endif %}"
+  >like</a
+><br />
+{% endif %} {% if is_unlike %}
+<a
+  href="{% url 'home:product_unlike' products.id %}"
+  class="btn btn-info {% if is_like %}disabled{% endif %}"
+  >dislike</a
+>
+{% else %}
+<a
+  href="{% url 'home:product_unlike' products.id  %}"
+  class="btn btn-info {% if is_like %}disabled{% endif %}"
+  >like</a
+><br />
+{% endif %} {% endif %} {% if products.discount %}
 <h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
 <h3>{{product.total_price}}</h3>
 {% else %}
 <h3>{{product.total_price}}</h3>
-{% endif %} {% endblock %}
+{% endif %}
+<hr />
+{% if products.status == 'Size' %}
+<form action="" method="post">
+  {% csrf_token %} {% for data in variant %}<input type="radio" value =
+  "{{data.id}}" {% if variants.id == data.id %} checked {% endif %} name =
+  'select' onchange = "this.form.submit();">
+  <a href=""><small>{{ data.size_variant }}</small> </a>
+  {% endfor %}
+</form>
+{% elif products.status == 'Color' %}
+<form action="" method="post">
+  {% csrf_token %} {% for data in variant %}<input type="radio" value =
+  "{{data.id}}" {% if variants.id == data.id %} checked {% endif %} name =
+  'select' onchange = "this.form.submit();">
+  <a href=""><small>{{ data.color_variant }}</small> </a>
+
+  {% endfor %} {% endif %}
+</form>
+
+<hr />
+<br />
+<h1>similar products</h1>
+{% for tag in similar %}
+<a href="{% url 'home:detail'  tag.id %}">
+  <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
+</a>
+{% endfor %}{% endblock %}

@@ -20,7 +20,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable=('amount',)
     raw_id_fields = ('Category',)
     
-    
+class VariantAdmin(admin.ModelAdmin):
+    list_display=['name','id']
+
+  
+class SizeAdmin(admin.ModelAdmin):
+    list_display=['name','id']
     
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Product,ProductAdmin)
