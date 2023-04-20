@@ -21,6 +21,8 @@ def all_product(request, slug=None, id=None):
 
 def product_detail(request,id):
     products = get_object_or_404(Product,id=id)
+    comment_form = CommentForm()
+    comment = Comment.objects.filter(product_id = id,is_reply = False)
     similar = products.tags.similar_objects()[:2]
     is_like=False
     if products.like.filter(id=request.user.id).exists():
@@ -37,10 +39,10 @@ def product_detail(request,id):
             variant = Variant.objects.filter(product_variant_id=id)
             variants = Variant.objects.get(id=variant[0].id)
         context = {'products': products, 'variant': variant,
-                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike}
+                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form}
         return render(request,'detail.html',context)
     else:
-        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'is_unlike':is_unlike})
+        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
@@ -70,3 +72,15 @@ def product_unlike(request,id):
         product.unlike.add(request.user)
         messages.success(request,"added","success")
     return redirect(url)
+
+
+def product_comment(request,id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            data = comment_form.cleaned_data
+            Comment.objects.create(comment=data['comment'],rate=data['rate'],user_id=request.user.id,product_id=id)
+            messages.success(request,"success","success")
+        return redirect(url)
+        

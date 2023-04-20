@@ -27,8 +27,14 @@ class VariantAdmin(admin.ModelAdmin):
 class SizeAdmin(admin.ModelAdmin):
     list_display=['name','id']
     
+    
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['user' , 'create' , 'rate' , 'product']
+    
+    
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Variant)
 admin.site.register(Size)
 admin.site.register(Color)
+admin.site.register(Comment,CommentAdmin)

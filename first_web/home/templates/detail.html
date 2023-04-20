@@ -7,6 +7,7 @@
 /><br />
 <p>{{products.information|safe}}</p>
 <small>like: {{products.total_like}}</small>
+<small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}
 <a
   href="{% url 'home:product_like'  products.id %}"
@@ -63,4 +64,17 @@
 <a href="{% url 'home:detail'  tag.id %}">
   <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
 </a>
-{% endfor %}{% endblock %}
+{% endfor %}
+<form method = "post" action = "{% url 'home:product_comment' products.id %}">
+  {%csrf_token%}
+  {{comment_form.as_p}}
+  <button type = "submit">send comment</button>
+</form>
+  <hr>
+  <br>
+  <hr>
+{%for com in comment %}
+  <p> {{com.comment}}</p>
+  <small>{{com.rate}}</small>
+{%endfor%}
+{% endblock %}

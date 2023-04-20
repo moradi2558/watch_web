@@ -3,6 +3,7 @@ from accounts.models import User
 from django.urls import reverse
 from  ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager 
+from django.forms import ModelForm
 # Create your models here.
 
 
@@ -91,3 +92,22 @@ class Variant(models.Model):
             total = (self.discount*self.unit_price)/100
             return int(self.unit_price - total)
         return self.total_price
+    
+    
+class Comment(models.Model):
+    user = models.ForeignKey(User,on_delete = models.CASCADE)
+    product = models.ForeignKey(Product,on_delete = models.CASCADE)
+    comment = models.TextField()
+    rate = models.PositiveIntegerField(default = 1)
+    create = models.DateTimeField(auto_now_add = True)
+    reply = models.ForeignKey('self' , on_delete = models.CASCADE,blank = True,null = True ,related_name = 'comment_reply')
+    is_reply = models.BooleanField(default = False)
+    
+    def __str__(self):
+        return self.product.name
+    
+    
+class CommentForm(ModelForm):
+    class Meta : 
+        model = Comment
+        fields = ['comment' , 'rate']    
