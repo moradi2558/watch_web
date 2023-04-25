@@ -25,6 +25,7 @@ def product_detail(request,id):
     comment = Comment.objects.filter(product_id = id,is_reply = False)
     similar = products.tags.similar_objects()[:2]
     is_like=False
+    reply_form = ReplyForm()
     if products.like.filter(id=request.user.id).exists():
         is_like=True
     is_unlike=False
@@ -39,10 +40,12 @@ def product_detail(request,id):
             variant = Variant.objects.filter(product_variant_id=id)
             variants = Variant.objects.get(id=variant[0].id)
         context = {'products': products, 'variant': variant,
-                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form}
+                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
+                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form}
         return render(request,'detail.html',context)
     else:
-        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form})
+        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'reply_form':reply_form,
+                                             'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
@@ -83,4 +86,25 @@ def product_comment(request,id):
             Comment.objects.create(comment=data['comment'],rate=data['rate'],user_id=request.user.id,product_id=id)
             messages.success(request,"success","success")
         return redirect(url)
+ 
+ 
+def product_reply(request,id,comment_id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        reply_form = ReplyForm(request.POST)
+        if reply_form.is_valid():
+            data = reply_form.cleaned_data
+            Comment.objects.create(comment = data['comment'], product_id = id,user_id = request.user.id , reply_id = comment_id,is_reply = True)
+            messages.success(request,"success","success")
+            return redirect(url)
+           
+def comment_like(request,id):
+    url = request.META.get('HTTP_REFERER')
+    comment.Comment.objects.get(id=id)
+    if comment.comment_like.filter(id=request.user.exist()):
+        comment.comment_like.remove(request.user)
+    else:
+        comment.comment_like.add(request.user)
+        messages.success(request,"success","success")
+    return redirect(url)
         

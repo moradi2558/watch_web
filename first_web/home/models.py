@@ -102,7 +102,12 @@ class Comment(models.Model):
     create = models.DateTimeField(auto_now_add = True)
     reply = models.ForeignKey('self' , on_delete = models.CASCADE,blank = True,null = True ,related_name = 'comment_reply')
     is_reply = models.BooleanField(default = False)
+    comment_like = models.ManyToManyField(User,blank = True,related_name = 'com_like')
+    total_comment_like = models.PositiveIntegerField(default = 0)
     
+    def total_like_comment(self):
+        return self.comment_like.count()
+        
     def __str__(self):
         return self.product.name
     
@@ -110,4 +115,11 @@ class Comment(models.Model):
 class CommentForm(ModelForm):
     class Meta : 
         model = Comment
-        fields = ['comment' , 'rate']    
+        fields = ['comment' , 'rate'] 
+        
+        
+        
+class ReplyForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['comment']           
