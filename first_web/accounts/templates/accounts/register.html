@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 {% block title %}register{% endblock %}
-{% block body%} 
+{% block body %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'signin.css' %}" />
 <body>
@@ -16,6 +16,11 @@
         "
       > 
       
+<link rel= "stylesheet" href = "{% static 'signin.css' %}">
+  <body>
+    <div style="display: flex;justify-content: center;align-items: center;height: 150vh;">
+      <div class="contain">
+      <h1 style="border-bottom: 1px solid gray; padding-bottom: 1rem; width: 18.125rem;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: rgb(40, 153, 198); ">
         Sign In
       </h1>
       <form action="" method="post">
@@ -32,11 +37,8 @@
         />
         <input type="submit" value="Sign In" />
       </form>
-      <p>
-        have an account ?
-        <a class="login-link" href="{% url 'accounts:login' %}">Login</a>
-      </p>
+      <p>have an account ? <a class="login-link" href="{% url 'accounts:login' %}">Login</a></p>
     </div>
-  </div>
-</body>
+    </div>
+  </body>
 {% endblock %}
