@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404,redirect
 from .models import *
 from django.http import HttpResponse
 from django.contrib import messages
+from.forms import *
+from django.db.models import Q
 # Create your views here.
 
 
@@ -13,10 +15,17 @@ def home(request):
 def all_product(request, slug=None, id=None):
     products = Product.objects.all()
     category = Category.objects.filter(sub_cat=False)
+    form = SearchForm()
+    if 'search' in request.GET:
+         form = SearchForm(request.GET)
+         if form.is_valid():
+            data = form.cleaned_data['search']
+            if data is not None:
+                product = products.filter(Q(name__contain = data))
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
         products = products.filter(Category=data)
-    return render(request, 'product.html', {'products': products, 'category': category})
+    return render(request, 'product.html', {'products': products, 'category': category,'form':form})
 
 
 def product_detail(request,id):
@@ -109,3 +118,15 @@ def comment_like(request,id):
         messages.success(request,"success","success")
     return redirect(url)
         
+        
+def product_search(request):
+    products = Product.objects.all()
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data['search']
+            if data.isdigit():
+                products = products.filter(Q(discount__exact = data)|Q(unit_price__exact = data))
+            else:
+                products = products.filter(Q(name__icontains = data))
+            return render (request,'product.html',{'products':products,'form':form})

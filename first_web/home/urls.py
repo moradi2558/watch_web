@@ -14,4 +14,5 @@ urlpatterns = [
     path('comment/<int:id>/',views.product_comment,name = 'product_comment'),
     path('reply/<int:id>/<int:comment_id>',views.product_reply,name="product_reply"),
     path('like_comment/<int:id>',views.comment_like,name ='comment_like'),
+    path('search/',views.product_search,name='product_search'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
