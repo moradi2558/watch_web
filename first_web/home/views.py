@@ -24,6 +24,7 @@ def product_detail(request,id):
     comment_form = CommentForm()
     comment = Comment.objects.filter(product_id = id,is_reply = False)
     similar = products.tags.similar_objects()[:2]
+    image =Images.objects.filter(product_id = id)
     is_like=False
     reply_form = ReplyForm()
     if products.like.filter(id=request.user.id).exists():
@@ -41,11 +42,11 @@ def product_detail(request,id):
             variants = Variant.objects.get(id=variant[0].id)
         context = {'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
-                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form}
+                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image}
         return render(request,'detail.html',context)
     else:
         return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'reply_form':reply_form,
-                                             'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form})
+                                             'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form,'image':image})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)

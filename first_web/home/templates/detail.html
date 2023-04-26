@@ -6,6 +6,10 @@
   alt=""
 /><br />
 <p>{{products.information|safe}}</p>
+<div class="row">
+  {% for img in image %}
+  <img src="{{img.image.url}}" alt="" style="height: 200px;  width: 200px;">{%endfor%}
+</div>
 <small>like: {{products.total_like}}</small>
 <small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}
@@ -39,6 +43,8 @@
 <h3>{{product.total_price}}</h3>
 {% endif %}
 <hr />
+
+
 {% if products.status == 'Size' %}
 <form action="" method="post">
   {% csrf_token %} {% for data in variant %}<input type="radio" value =
@@ -72,23 +78,38 @@
 {%for com in comment %}
 <div class="p-2 m-2">
   {% if user.is_authenticated %}
-  <a href="{% url 'home:comment_like' com.id %} " class ="like m-2 cursor">
-    <i class="fa fa-thumbs-o-up"><span>like</span>&nbsp &nbsp{{com.total_like_commet}}</i></a>
-    {% endif %}
-<form method="post" action="{%url 'home:product_reply' products.id com.id %}">
-  {%csrf_token%}
-  <textarea name = "comment"id = "comment" class ="form_control" rows = "4" placeholder="reply ..."
-            required oninvalid="setCustomValidty(لطفا فیلد را پر کنید)"></textarea>
-  <div class="mt_2"><button type="submit" class="btn btn_info"> send reply</button></div>
-{%for data in com.comment_reply.all %}
-<p> {{data.comment}}</p>{%endfor%}
-<p>{{com.comment}}</p>
-<small>{{com.rate}}</small></form>
-{%endfor%} {% endblock %}
+  <a href="{% url 'home:comment_like' com.id %} " class="like m-2 cursor">
+    <i class="fa fa-thumbs-o-up"
+      ><span>like</span>&nbsp &nbsp{{com.total_like_commet}}</i
+    ></a
+  >
+  {% endif %}
+  <form method="post" action="{%url 'home:product_reply' products.id com.id %}">
+    {%csrf_token%}
+    <textarea
+      name="comment"
+      id="comment"
+      class="form_control"
+      rows="4"
+      placeholder="reply ..."
+      required
+      oninvalid="setCustomValidty(لطفا فیلد را پر کنید)"
+    ></textarea>
+    <div class="mt_2">
+      <button type="submit" class="btn btn_info">send reply</button>
+    </div>
+    {%for data in com.comment_reply.all %}
+    <p>{{data.comment}}</p>
+    {%endfor%}
+    <p>{{com.comment}}</p>
+    <small>{{com.rate}}</small>
+  </form>
+  {%endfor%} {% endblock %}
 
-<h1>similar products</h1>
-{% for tag in similar %}
-<a href="{% url 'home:detail'  tag.id %}">
-  <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
-</a>
-{% endfor %}
+  <h1>similar products</h1>
+  {% for tag in similar %}
+  <a href="{% url 'home:detail'  tag.id %}">
+    <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
+  </a>
+  {% endfor %}
+</div>
