@@ -7,6 +7,40 @@
   src="{{products.image.url}}"
   alt=""
 /><br />
+{% if user.is_authenticated%}
+#فرم سفارش دادن محصول
+<div class="card">
+  {% if product.status != 'None' %}
+  <form method="post" action="{% url 'cart:add_cart' products.id %}">
+    {%csrf_token%}
+    <input
+      type="text"
+      name="select"
+      value="{{variants.id}}"
+    />
+    <input
+      type="hidden"
+      name="quantity"
+      min="1"
+      value="1"
+      max="{{variants.amount}}"
+    />
+    <button type="submit">add</button>
+  </form>
+  {% else %}
+  <form method="post" action="{% url 'cart:add_cart' products.id %}">
+    {%csrf_token%}
+    <input
+      type="number"
+      name="quantity"
+      min="1"
+      value="1"
+      max="{{product.amount}}"
+    />
+    <button type="submit">add</button>
+  </form>
+</div>
+{%endif%}{%endif%}
 <p>{{products.information|safe}}</p>
 <div class="row">
   {% for img in image %}
@@ -16,6 +50,7 @@
     style="height: 200px; width: 200px"
   />{%endfor%}
 </div>
+<div class="card bg-info m-2">your choice price:{{variants.total_price}}</div>
 <small>like: {{products.total_like}}</small>
 <small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}
@@ -109,7 +144,7 @@
     <p>{{com.comment}}</p>
     <small>{{com.rate}}</small>
   </form>
-  {%endfor%} {% endblock %}
+  {%endfor%}
 
   <h1>similar products</h1>
   {% for tag in similar %}
@@ -118,3 +153,4 @@
   </a>
   {% endfor %}
 </div>
+{% endblock %}

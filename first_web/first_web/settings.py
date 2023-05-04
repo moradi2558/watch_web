@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
+    'cart.apps.CartConfig',
     'phone_field',
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

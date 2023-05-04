@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from.forms import *
 from django.db.models import Q
+from cart.models import*
 # Create your views here.
 
 
@@ -33,6 +34,7 @@ def product_detail(request,id):
     comment_form = CommentForm()
     comment = Comment.objects.filter(product_id = id,is_reply = False)
     similar = products.tags.similar_objects()[:2]
+    cart_form = CartForm()
     image =Images.objects.filter(product_id = id)
     is_like=False
     reply_form = ReplyForm()
@@ -51,11 +53,13 @@ def product_detail(request,id):
             variants = Variant.objects.get(id=variant[0].id)
         context = {'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
-                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image}
+                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
+                   'cart_form':cart_form}
         return render(request,'detail.html',context)
     else:
-        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,'reply_form':reply_form,
-                                             'is_unlike':is_unlike,'comment':comment,'comment_form':comment_form,'image':image})
+        return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,
+                                             'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
+                                             'comment':comment,'comment_form':comment_form,'image':image})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
