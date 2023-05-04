@@ -44,13 +44,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
-<<<<<<< HEAD
-    'mathfilters',
-=======
     'bootstrap5',
->>>>>>> b0005524ce17b1bf7e512738ae5e5b3742ea2490
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
