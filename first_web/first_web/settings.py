@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -45,7 +44,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'taggit',
+<<<<<<< HEAD
     'mathfilters',
+=======
+    'bootstrap5',
+>>>>>>> b0005524ce17b1bf7e512738ae5e5b3742ea2490
 ]
 
 MIDDLEWARE = [

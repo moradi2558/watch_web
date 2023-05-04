@@ -114,8 +114,8 @@ def product_reply(request,id,comment_id):
            
 def comment_like(request,id):
     url = request.META.get('HTTP_REFERER')
-    comment.Comment.objects.get(id=id)
-    if comment.comment_like.filter(id=request.user.exist()):
+    comment=Comment.objects.get(id=id)
+    if comment.comment_like.filter(id=request.user.id).exists():
         comment.comment_like.remove(request.user)
     else:
         comment.comment_like.add(request.user)

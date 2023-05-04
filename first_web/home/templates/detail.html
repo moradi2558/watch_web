@@ -1,4 +1,12 @@
-{% extends 'main.html' %} {% block title %}detail{% endblock %} {% block body %}
+{% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock %} {% block body %}
+<head>
+  {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  <link rel="stylesheet" href="{% static 'detail.css' %}">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css" integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">  
+  <!-- <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+   <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>  -->
+</head>
 <h1>{{products.name}}</h1>
 <h4>rate:{{products.average}}</h4>
 <br />
@@ -6,6 +14,7 @@
   style="width: 8rem; height: 8rem"
   src="{{products.image.url}}"
   alt=""
+<<<<<<< HEAD
 /><br />
 {% if user.is_authenticated%}
 #فرم سفارش دادن محصول
@@ -45,6 +54,13 @@
 <div class="row">
   {% for img in image %}
   <img
+=======
+  /><br />
+  <p>{{products.information|safe}}</p>
+  <div class="row">
+    {% for img in image %}
+    <img
+>>>>>>> b0005524ce17b1bf7e512738ae5e5b3742ea2490
     src="{{img.image.url}}"
     alt=""
     style="height: 200px; width: 200px"
@@ -55,11 +71,11 @@
 <small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}
 <a
-  href="{% url 'home:product_like'  products.id %}"
+href="{% url 'home:product_like'  products.id %}"
   class="btn btn-info {% if is_unlike %}disabled{% endif %}"
   >unlike</a
->
-{% else %}
+  >
+{% else %} 
 <a
   href="{% url 'home:product_like' products.id %}"
   class="btn btn-info {% if is_unlike %}disabled{% endif %}"
@@ -67,19 +83,19 @@
 ><br />
 {% endif %} {% if is_unlike %}
 <a
-  href="{% url 'home:product_unlike' products.id %}"
-  class="btn btn-info {% if is_like %}disabled{% endif %}"
+href="{% url 'home:product_unlike' products.id %}"
+class="btn btn-info {% if is_like %}disabled{% endif %}"
   >dislike</a
->
-{% else %}
-<a
+  >
+  {% else %}
+  <a
   href="{% url 'home:product_unlike' products.id  %}"
   class="btn btn-info {% if is_like %}disabled{% endif %}"
   >like</a
-><br />
-{% endif %} {% endif %} {% if products.discount %}
-<h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
-<h3>{{product.total_price}}</h3>
+  ><br />
+  {% endif %} {% endif %} {% if products.discount %}
+  <h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
+  <h3>{{product.total_price}}</h3>
 {% else %}
 <h3>{{product.total_price}}</h3>
 {% endif %}
@@ -106,44 +122,62 @@
 <hr />
 <br />
 
-{% if user.is_authenticated%}
-<form method="post" action="{% url 'home:product_comment' products.id %}">
-  {%csrf_token%} {{comment_form.as_p}}
-  <button type="submit">send comment</button>
-</form>
-{%endif%}
 <hr />
 <br />
 <hr />
-{%for com in comment %}
-<div class="p-2 m-2">
-  {% if user.is_authenticated %}
-  <a href="{% url 'home:comment_like' com.id %} " class="like m-2 cursor">
-    <i class="fa fa-thumbs-o-up"
-      ><span>like</span>&nbsp &nbsp{{com.total_like_commet}}</i
-    ></a
-  >
-  {% endif %}
+
+<h2 class="fw-bolder fs-2 m-4 ms-5">Comment User</h2>
+ {%for com in comment %}
+ <div class="p-2 container d-flex flex-column align-items-start">
+   <div class="d-flex p-3 rounded-3 col-8 justify-content-start flex-wrap" style="background-color: black;width: 50vw;">
+    <div class="col-2 align-self-center">
+      <img src="../../media/Category/22.jpg" alt="" style="width: 5rem; height: 5rem;border: 1px solid black;" class="rounded-circle img-fluid"/>
+    </div>
+    <div class="col-8 d-flex flex-column justify-content-between">
+      <p class="text-white fs-4 fw-bold m-0">{{com.user.username}}</p>
+      <p class="text-white mt-1 mb-2">{{com.comment}}</p>
+      <div class="comment-rating">
+        <i class="fa fa-star {% if com.rate < 1 %}text-secondary{% else %} text-warning {% endif %}"></i> 
+        <i class="fa fa-star {% if com.rate < 2 %}text-secondary{% else %} text-warning {% endif %}"></i> 
+        <i class="fa fa-star {% if com.rate < 3 %}text-secondary{% else %} text-warning {% endif %}"></i> 
+        <i class="fa fa-star {% if com.rate < 4 %}text-secondary{% else %} text-warning {% endif %}"></i> 
+        <i class="fa fa-star {% if com.rate < 5 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      </div>
+    </div>
+{% if user.is_authenticated %}
+<div class="col-2 d-flex align-items-center justify-content-around">
+    <i class="fa fa-reply fs-3 text-white btn-reply"></i>
+  <a href="{% url 'home:comment_like' com.id %}" style="text-decoration: none;"><i class="fa fa-heart fs-3 white ms-3 heart"></i>
+  </a>
+  <span style="color: white;" class="fw-2 fs-4 mx-1">{{com.total_like_comment}}</span> 
+</div>
+{% endif %}
+<div class="mt-5 mb-3 col-12 d-flex replys">
+  <div class="col-10">
+    {%for data in com.comment_reply.all %}
+    <p class="text-light bg-secondary p-3 ps-4 rounded-4 reps" style="display: none;">{{data.comment}}</p>
+    {% endfor %} 
+  </div>
+  <i class="fas fa-plus text-light mt-3 offset-1 show-more" style="cursor: pointer;"></i>
+</div>
+<div class="col-12 reply" style="display: none;">
   <form method="post" action="{%url 'home:product_reply' products.id com.id %}">
     {%csrf_token%}
     <textarea
-      name="comment"
-      id="comment"
-      class="form_control"
+    style="background-color: rgb(44, 48, 48);color: white;border: 0;outline: 0;"
+    spellcheck="false"
+    name="comment"
+    id="comment"
+      class="form_control col-12 pt-2 ps-2 rounded-3 mt-3"
       rows="4"
       placeholder="reply ..."
       required
-      oninvalid="setCustomValidty(لطفا فیلد را پر کنید)"
-    ></textarea>
-    <div class="mt_2">
-      <button type="submit" class="btn btn_info">send reply</button>
+      ></textarea>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-outline-light">send reply</button>
     </div>
-    {%for data in com.comment_reply.all %}
-    <p>{{data.comment}}</p>
-    {%endfor%}
-    <p>{{com.comment}}</p>
-    <small>{{com.rate}}</small>
   </form>
+<<<<<<< HEAD
   {%endfor%}
 
   <h1>similar products</h1>
@@ -154,3 +188,33 @@
   {% endfor %}
 </div>
 {% endblock %}
+=======
+</div>
+</div>
+</div>
+{%endfor%}
+<h2 class="fw-bolder fs-2 m-4 ms-5">Add Comment</h2>
+{% if user.is_authenticated%}
+   <div class="mb-5">
+     <form method="post" action="{% url 'home:product_comment' products.id %}">
+      {%csrf_token%}
+      <div class="container d-flex flex-column align-items-center">
+        <div class="star-wrapper rate mb-2">
+          <input type="radio" name="rate" value="1" id="1"><label for="1"><i href="#" class="fas fa-star s1"></i></label>  
+          <input type="radio" name="rate" value="2" id="2"><label for="2"><i href="#" class="fas fa-star s2"></i></label>  
+          <input type="radio" name="rate" value="3" id="3"><label for="3"><i href="#" class="fas fa-star s3"></i></label>  
+          <input type="radio" name="rate" value="4" id="4"><label for="4"><i href="#" class="fas fa-star s4"></i></label>  
+          <input type="radio" name="rate" value="5" id="5"><label for="5"><i href="#" class="fas fa-star s5"></i></label>  
+      </div>
+        <div class="mt-2">
+          <textarea name="comment" class="comment p-3 border-1" spellcheck="false" placeholder="Add comment..." cols="40" rows="5"></textarea>
+        </div>      
+      <button class="btne third" type="submit">send comment</button>
+    </div>
+      </form>
+    </div>
+    {%endif%}    
+    <script src="{% static 'script.js' %}"></script>
+{% endblock %}
+
+>>>>>>> b0005524ce17b1bf7e512738ae5e5b3742ea2490
