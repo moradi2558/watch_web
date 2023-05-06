@@ -77,8 +77,12 @@ class Product(models.Model):
 
 class Size(models.Model):
     name = models.CharField(max_length=100,blank=True, null=True)
+    def __str__(self):
+        return self.name
 class Color(models.Model):
     name = models.CharField(max_length=100,blank=True, null=True)
+    def __str__(self):
+        return self.name
 class Variant(models.Model):
     name = models.CharField(max_length=100,blank=True, null=True)
     product_variant = models.ForeignKey(Product,on_delete = models.CASCADE)

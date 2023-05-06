@@ -1,40 +1,80 @@
 {% extends 'main.html' %} {% block title %}cart{% endblock %} {% block body %}
 <h1>cart</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">name</th>
-      <th scope="col">image</th>
-      <th scope="col">size</th>
-      <th scope="col">color</th>
-      <th scope="col">quantity</th>
-      <th scope="col">price</th>
-      <th scope="col">total price</th>
-      <th scope="col">remove</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for c in cart %}
-    <tr>
-      <th scope="row">{{forloop.counter}}</th>
-      <td>{{c.product.name}}</td>
-      <td><img src="{{c.product.image.url}}" style="height:30px ; width: 30px;" alt="" /></td>
-      <td>{{c.variants.size_variant.name}}</td>
-      <td>{{c.variants.color_varian.name}}</td>
-      <td>{{c.quantity}}</td>
-      <td>
-        {% if c.product.status != 'None' %} {{c.variants.total_price}}{%else%}
-        {{c.product.total_price}}{%endif%}
-      </td>
-      <td>
-        {% if c.product.status != 'None' %} {% widthratio c.variants.total_price 1 c.quantity %}
-        {%else%}{% widthratio c.product.total_price 1 c.quantity %}{%endif%}
-      </td>
-      <td><a href="{% url 'cart:remove_cart' c.id %}">remove</td>
-    </tr>
-  </tbody>
-  {% endfor %}
-</table>
-total:{{total}}
+<div class="container">
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">name</th>
+          <th scope="col">image</th>
+          <th scope="col">size</th>
+          <th scope="col">color</th>
+          <th scope="col">quantity</th>
+          <th scope="col">price</th>
+          <th scope="col">total price</th>
+          <th scope="col">remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in cart %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{c.product.name}}</td>
+          <td>
+            <img
+              src="{{c.product.image.url}}"
+              style="height: 30px; width: 30px"
+              alt=""
+            />
+          </td>
+          <td>{{c.variants.size_variant.name}}</td>
+          <td>{{c.variants.color_varian.name}}</td>
+          <td>{{c.quantity}}</td>
+          <td>
+            {% if c.product.status != 'None' %}
+            {{c.variants.total_price}}{%else%}
+            {{c.product.total_price}}{%endif%}
+          </td>
+          <td>
+            {% if c.product.status != 'None' %} {% widthratio
+            c.variants.total_price 1 c.quantity %} {%else%}{% widthratio
+            c.product.total_price 1 c.quantity %}{%endif%}
+          </td>
+          <td><a href="{% url 'cart:remove_cart' c.id %}">remove</a></td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+    total:{{total}}
+  </div>
+  <div class="row">
+    <form method="post" action="{% url 'order:order_create' %}">
+      {% csrf_token %}
+      <div class="card" style="padding: 10px; background-color: grown">
+        <label for=""
+          >name:
+          <input type="text" name="f_name" value="{{user.first_name}}" required
+        /></label>
+        <label for=""
+          >last name:
+          <input type="text" name="l_name" value="{{user.last_name}}" required
+        /></label>
+        <label for=""
+          >address:
+          <input
+            type="text"
+            name="address"
+            value="{{user.profile.address}}"
+            required
+        /></label>
+        <label for=""
+          >email:
+          <input type="text" name="email" value="{{user.email}}" required
+        /></label>
+      </div>
+      <button type="submit" class="btn btn-outline-danger">order</button>
+    </form>
+  </div>
+</div>
 {% endblock %}
