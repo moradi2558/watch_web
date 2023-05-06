@@ -4,13 +4,20 @@ from . models import*
 class ItemInline(admin.TabularInline):
     '''Tabular Inlinew for '''
     model = ItemOrder
-    readoly_fields = ['user','product','variant','quantity','size']
+    readoly_fields = ['user','product','variant','quantity','size','price']
     
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        'user','email','f_name','l_name','address','create','paid'
+        'user','email','f_name','l_name','address','create','paid','get_price'
     ]
     inlines = [ItemInline]
     
+class CouponAdmin(admin.ModelAdmin):
+    list_display = [
+        'code','start','end','discount','active'
+    ]
+
+
 admin.site.register(Order,OrderAdmin)
 admin.site.register(ItemOrder)
+admin.site.register(Coupon,CouponAdmin)
