@@ -8,4 +8,5 @@
     <button type="submit" class="btn btn-info">coupon</button>
   </form>
 </div>
+<a href="{% url 'order:request'  order.id order.get_price %}">the payment</a>
 {% endblock %}
