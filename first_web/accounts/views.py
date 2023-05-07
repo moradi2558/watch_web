@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from.forms import UserRegisterform,UserLoginForm
 from django.contrib.auth.models import User
 from .forms import*
@@ -9,6 +9,12 @@ from random import randint
 from django.contrib.auth.forms import PasswordChangeForm      
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from django.views import View
+from django.utils.encoding import force_str,force_bytes
+from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode 
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.sites.shortcuts import get_current_site
 # Create your views here.
 def user_register(request):
     if request.method == 'POST':
@@ -20,12 +26,40 @@ def user_register(request):
                                             first_name = data['first_name'],
                                             last_name = data['last_name'],
                                             password = data['password_2'])
+            uer.is_acive = False 
             user.save()
+            domain = get_current_site(request).domain
+            uidb64 = urlsafe_base64_encode(force_bytes(user.id))
+            url = reverse('accounts:active',kwargs = {'uidb64':uidb64,'token':email_generator.make_token(user)})
+            link = 'http://' + domain + url 
+            email = EmailMessage (
+                'active user', link ,'test', [data['email']]
+                )
+            email.send(fail_silently = False )
+            messages.error(request,'for verify click the link in your email')
             return redirect('home:home')
     else:
         form = UserRegisterform()
     context = {'form':form}
     return render(request,'accounts/register.html',context)
+
+class EmailToken(PasswordResetTokenGenerator):
+    def _make_hash_value(self,user,timestamp):
+        return (text_type(user.is_active) + text_type(user.id) + text_type(timestamp))
+
+email_generator = EmailToken()
+
+class RegisterEmail(View):
+    def get(self,request,uidb64,token):
+        id = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(id = id) 
+        if user and email_generator.check_token(user, token):
+            user.is_active = True 
+            user.save()
+            return redirect ('account:login')
+
+
+
 def user_login(request):
     if request.method == 'POST':
         form = UserLoginForm(request.POST)

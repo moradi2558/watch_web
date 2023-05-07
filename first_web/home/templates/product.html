@@ -1,5 +1,9 @@
 {% extends 'main.html' %} {% block title %}product{% endblock %} {% block body%}
 <body style="background-color: white">
+  <form method="post" action="{% url 'home:product_search' %}">
+    {% csrf_token %} {{form}}
+    <button type="submit">search</button>
+  </form>
   {% for data in category %}
   <a href="{{data.get_absolute_url}}">{{data.name}}</a>
   <div class="btn-group">
