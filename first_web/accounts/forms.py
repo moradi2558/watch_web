@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.models import*
 
 
-class UserRegisterform(forms.Form):
+class UserRegisterForm(forms.Form):
     user_name = forms.CharField(max_length= 50,widget = forms.TextInput(attrs={'placeholder':'user name'}))
     email = forms.EmailField(max_length= 50,widget = forms.EmailInput(attrs={'placeholder':'email'}))
     first_name = forms.CharField(max_length=50,widget = forms.TextInput(attrs={'placeholder':'last name'}))
