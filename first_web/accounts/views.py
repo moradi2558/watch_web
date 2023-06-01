@@ -16,6 +16,8 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
 from six import text_type
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 # Create your views here.
 class EmailToken(PasswordResetTokenGenerator):
     def _make_hash_value(self,user,timestamp):
@@ -156,3 +158,18 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)       
     return render(request,'accounts/change.html',{'form':form})     
+
+
+class ResetPassword(auth_views.PasswordResetView):
+    template_name = 'accounts/reset.html'
+    success_url = reverse_lazy('accounts:reset_done')
+    email_template_name = 'accounts/link.html'
+    
+class DonePassword(auth_views.PasswordResetDoneView):
+    template_name='accounts/done.html'
+class ConfirmPassword(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/confirm.html'
+    success_url = reverse_lazy('accounts:complete')
+class Complete(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/complete.html'
+    
