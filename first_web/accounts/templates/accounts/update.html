@@ -2,7 +2,7 @@
 {% block title %}update{% endblock %}
 {% block body %}
 <h1>update profile</h1>
-<form action="" method="post">
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p}}
     {{ profile_form.as_p}}

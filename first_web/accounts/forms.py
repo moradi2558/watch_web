@@ -46,7 +46,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['phone','address']
+        fields = ['phone','address','profile_image']
 
 class PhoneForm(forms.Form):
     phone = forms.IntegerField()
