@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% block title %}phone_login{% endblock %}
+{% block body %}
+{% for i in data %}
+<h2>{{i.product.name}}</h2>
+<img src="{{i.product.image.url}}" >
+<h3> {{i.order.address}} </h3>
+{% if i.order.paid == True %}
+<p> paid </p>
+{% else %}
+<p> not paid </p>
+{% endif %}
+{% endfor %}
+{% endblock %}

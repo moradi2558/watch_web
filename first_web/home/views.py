@@ -37,6 +37,9 @@ def product_detail(request,id):
     cart_form = CartForm()
     image =Images.objects.filter(product_id = id)
     is_like=False
+    is_favourite = False 
+    if products.favourite.filter(id=request.user.id).exists():
+        is_favourite = True  
     reply_form = ReplyForm()
     if products.like.filter(id=request.user.id).exists():
         is_like=True
@@ -54,12 +57,13 @@ def product_detail(request,id):
         context = {'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
                    'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form}
+                   'cart_form':cart_form,'is_favourite':is_favourite}
         return render(request,'detail.html',context)
     else:
         return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,
                                              'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
-                                             'comment':comment,'comment_form':comment_form,'image':image})
+                                             'comment':comment,'comment_form':comment_form,'image':image
+                                             ,'is_favourite':is_favourite})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
@@ -134,3 +138,14 @@ def product_search(request):
             else:
                 products = products.filter(Q(name__icontains = data))
             return render (request,'product.html',{'products':products,'form':form})
+        
+def favourie_product(request,id):
+    product = Product.objects.get(id=id)
+    url = request.META.get('HTTP_REFERER') 
+    is_favourite=False 
+    if product.favourite.filter(id=request.user.id).exists():
+        product.favourite.remove(request.user)
+        is_favourite = False 
+    else:
+        product.favourite.add(request.user)
+    return redirect (url)

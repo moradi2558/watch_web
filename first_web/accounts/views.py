@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect,reverse
 from.forms import UserRegisterForm,UserLoginForm
 from django.contrib.auth.models import User
 from .forms import*
-from .models import Profile
+from .models import*
+from order.models import*
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from random import randint
@@ -172,4 +173,13 @@ class ConfirmPassword(auth_views.PasswordResetConfirmView):
     success_url = reverse_lazy('accounts:complete')
 class Complete(auth_views.PasswordResetCompleteView):
     template_name = 'accounts/complete.html'
+    
+def favourite(request):
+    product = request.user.fa_user.all()
+    return render(request,'accounts/favourite.html',{'product':product})
+
+
+def history(request):
+    data = ItemOrder.objects.filter(user_id = request.user.id)
+    return render (request,'accounts/history.html',{'data':data}) 
     

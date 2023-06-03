@@ -1,4 +1,4 @@
-{% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock %} {% block body %}
+{% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%} {% block body %}
 <head>
   {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'detail.css' %}" />
@@ -64,7 +64,16 @@
     style="height: 200px; width: 200px"
   />{%endfor%}
 </div>
-<div  class="col-2  bg-info m-2">your choice price:{{variants.total_price}}</div>
+{% if is_favourite %}
+<a href="{% url 'home:favourite' products.id %}">
+  <i class="fa fa-heart" style="color : red; font-size: 20px;"></i
+></a>
+{% else %}
+<a href="{% url 'home:favourite' products.id %}">
+  <i class="far fa-heart" style="color : red; font-size: 20px;"></i
+></a>
+{% endif %}
+<div class="col-2 bg-info m-2">your choice price:{{variants.total_price}}</div>
 <small>like: {{products.total_like}}</small>
 <small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}

@@ -10,4 +10,8 @@
 <p>address: {{profile.address}}</p>
 <a href="{% url 'accounts:update' %}">update </a>
 <a href="{% url 'accounts:change' %}">change password </a>
+<hr>
+<a href="{% url 'accounts:history' %}"> history </a>
+<hr>
+<a href="{% url 'accounts:favourite' %}"> favourite </a>
 {% endblock %}

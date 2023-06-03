@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+{% block title %}phone_login{% endblock %}
+{% block body %}
+{% for i in product %}
+<a href="{% url 'home:detail' i.id %}">
+<img src="{{i.image.url}}" style="height: 50px; width: 50px;">
+<h2>{{i.name}}</h2>
+</a>
+{% endfor %}
+{% endblock %}
