@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,reverse
-from.forms import UserRegisterform,UserLoginForm
+from.forms import UserRegisterForm,UserLoginForm
 from django.contrib.auth.models import User
 from .forms import*
 from .models import Profile
@@ -15,10 +15,19 @@ from django.utils.encoding import force_str,force_bytes
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.contrib.sites.shortcuts import get_current_site
+from six import text_type
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 # Create your views here.
+class EmailToken(PasswordResetTokenGenerator):
+    def _make_hash_value(self,user,timestamp):
+        return (text_type(user.is_active) + text_type(user.id) + text_type(timestamp))
+
+email_generator = EmailToken()
+
 def user_register(request):
     if request.method == 'POST':
-        form = UserRegisterform(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             user = User.objects.create_user(username = data['user_name'],
@@ -26,7 +35,7 @@ def user_register(request):
                                             first_name = data['first_name'],
                                             last_name = data['last_name'],
                                             password = data['password_2'])
-            uer.is_acive = False 
+            user.is_acive = False 
             user.save()
             domain = get_current_site(request).domain
             uidb64 = urlsafe_base64_encode(force_bytes(user.id))
@@ -39,15 +48,11 @@ def user_register(request):
             messages.error(request,'for verify click the link in your email')
             return redirect('home:home')
     else:
-        form = UserRegisterform()
+        form = UserRegisterForm()
     context = {'form':form}
     return render(request,'accounts/register.html',context)
 
-class EmailToken(PasswordResetTokenGenerator):
-    def _make_hash_value(self,user,timestamp):
-        return (text_type(user.is_active) + text_type(user.id) + text_type(timestamp))
 
-email_generator = EmailToken()
 
 class RegisterEmail(View):
     def get(self,request,uidb64,token):
@@ -96,7 +101,7 @@ def user_profile(request):
 def user_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST,instance = request.user)
-        profile_form = ProfileUpdateForm(request.POST,instance = request.user.profile)
+        profile_form = ProfileUpdateForm(request.POST,request.FILES,instance = request.user.profile)
         if user_form and profile_form .is_valid():
             user_form.save()
             profile_form.save()
@@ -153,3 +158,18 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)       
     return render(request,'accounts/change.html',{'form':form})     
+
+
+class ResetPassword(auth_views.PasswordResetView):
+    template_name = 'accounts/reset.html'
+    success_url = reverse_lazy('accounts:reset_done')
+    email_template_name = 'accounts/link.html'
+    
+class DonePassword(auth_views.PasswordResetDoneView):
+    template_name='accounts/done.html'
+class ConfirmPassword(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/confirm.html'
+    success_url = reverse_lazy('accounts:complete')
+class Complete(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/complete.html'
+    
