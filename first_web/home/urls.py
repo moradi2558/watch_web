@@ -16,4 +16,5 @@ urlpatterns = [
     path('like_comment/<int:id>',views.comment_like,name ='comment_like'),
     path('search/',views.product_search,name='product_search'),
     path('favourie/<int:id>/',views.favourie_product,name='favourite'),
+    path('contact/',views.contact,name='contact'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

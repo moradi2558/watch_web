@@ -5,6 +5,7 @@ from django.contrib import messages
 from.forms import *
 from django.db.models import Q
 from cart.models import*
+from django.core.mail import EmailMessage 
 # Create your views here.
 
 
@@ -149,3 +150,18 @@ def favourie_product(request,id):
     else:
         product.favourite.add(request.user)
     return redirect (url)
+
+def contact(request):
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        email = request.POST['email']
+        msg = request.POST['message']
+        body = subject + '\n' + email + '\n' + msg 
+        form = EmailMessage(
+            'contact us',
+            body,
+            'test',
+            ('25mohamad25582@gmail.com',)
+        )
+        form.send(fail_silently = False)
+    return render(request,'contact.html')
