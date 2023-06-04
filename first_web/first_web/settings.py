@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'taggit',
     'django_forms_bootstrap',
     'bootstrap5',
+    'django_jalali',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -2,12 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 from home.models import *
 from django.forms import ModelForm
+from django_jalali.db import models as jmodels
 # Create your models here.
 
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     discount = models.PositiveIntegerField(null = True,blank = True)
-    create = models.DateField(auto_now_add =True)
+    create = jmodels.jDateTimeField(auto_now_add =True)
     paid = models.BooleanField(default = False)
     email = models.EmailField()
     f_name = models.CharField(max_length=300) 
@@ -52,6 +53,6 @@ class OrderForm(ModelForm):
 class Coupon(models.Model):
     code = models.CharField(max_length=100, unique = True)
     active = models.BooleanField(default = False)
-    start = models.DateTimeField()
-    end = models.DateTimeField()
+    start = jmodels.jDateTimeField()
+    end = jmodels.jDateTimeField()
     discount = models.IntegerField()

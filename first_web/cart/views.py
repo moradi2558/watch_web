@@ -24,7 +24,7 @@ def add_cart(request,id):
     url = request.META.get('HTTP_REFERER')
     var_id = request.POST.get('select')
     if product.status != 'None':
-        data = Cart.objects.filter(user_id = request.user.id,product_id = id,variants_id = var_id)
+        data = Cart.objects.filter(user_id = request.user.id,product_id=id,variants_id = var_id)
         if data :
             check = "yes"
         else:

@@ -7,9 +7,10 @@ from django.utils import timezone
 from django.contrib import messages
 from suds import Client
 from django.http import HttpResponse
+import jdatetime
 # Create your views here.
 def order_detail(request,order_id):
-    order = Order.objects.get(id = order_id)
+    order = Order.objects.get(id=order_id)
     form_order = CouponForm()
     context = {'order':order,'form_order':form_order }
     return render(request,'order/order.html',context)
@@ -32,7 +33,7 @@ def coupon_order(request,order_id):
     form = CouponForm(request.POST)
     if form.is_valid():
         code = form.cleaned_data['code']
-        time = timezone.now()
+        time = jdatetime.datetime.now()
         try:
            coupon = Coupon.objects.get(code__iexact = code,start__lte = time,end__gte = time,active = True) 
         except Coupon.DoesNotExist:
