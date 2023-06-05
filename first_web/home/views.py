@@ -6,6 +6,7 @@ from.forms import *
 from django.db.models import Q
 from cart.models import*
 from django.core.mail import EmailMessage 
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -17,6 +18,9 @@ def home(request):
 def all_product(request, slug=None, id=None):
     products = Product.objects.all()
     category = Category.objects.filter(sub_cat=False)
+    paginator = Paginator(products,3)
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
     form = SearchForm()
     if 'search' in request.GET:
          form = SearchForm(request.GET)
@@ -26,8 +30,11 @@ def all_product(request, slug=None, id=None):
                 product = products.filter(Q(name__contain = data))
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
-        products = products.filter(Category=data)
-    return render(request, 'product.html', {'products': products, 'category': category,'form':form})
+        page_obj = products.filter(Category=data)
+        paginator = Paginator(page_obj,3)
+        page_num = request.GET.get('page')
+        page_obj = paginator.get_page(page_num)
+    return render(request, 'product.html', {'products': page_obj,'page_num':page_num, 'category': category,'form':form})
 
 
 def product_detail(request,id):
