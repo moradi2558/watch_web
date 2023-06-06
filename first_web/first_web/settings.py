@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'bootstrap5',
     'django_jalali',
+    'django_filters',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

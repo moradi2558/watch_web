@@ -8,7 +8,7 @@ from django_jalali.db import models as jmodels
 class Order(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     discount = models.PositiveIntegerField(null = True,blank = True)
-    create = jmodels.jDateTimeField(auto_now_add =True)
+    create = models.DateTimeField(auto_now_add =True)
     paid = models.BooleanField(default = False)
     email = models.EmailField()
     f_name = models.CharField(max_length=300) 

@@ -1,0 +1,10 @@
+{% extends 'main.html' %} {% block title %}contact us{% endblock %} {% block body%}
+<form method = 'post' action ="{% url 'home:contact' %}">
+    {% csrf_token %}
+    <h1>contact us</h1>
+    <input type ="text" name = "subject" placeholder = "subject">
+    <input type ="email" name = "email" placeholder = "email">
+    <textarea name="message" placeholder = "message"></textarea>
+    <button type ="submit" >send email</button>
+</form>
+{% endblock %}

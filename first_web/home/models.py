@@ -42,6 +42,9 @@ class Product(models.Model):
     status = models.CharField(
         max_length=200, blank=True, null=True, choices=VARIANT)
     image = models.ImageField(upload_to='product')
+    brand = models.ForeignKey('Brand',on_delete = models.CASCADE,blank = True,null = True)
+    color = models.ManyToManyField('Color',blank = True,null = True)
+    size = models.ManyToManyField('Size',blank = True,null = True)
     available = models.BooleanField(default=True)
     like = models.ManyToManyField(User,blank = True,related_name = 'product_like')
     total_like = models.IntegerField(default=0)
@@ -141,3 +144,12 @@ class Images(models.Model):
     name = models.CharField(max_length = 100,blank = True)
     image = models.ImageField(upload_to = 'image/',blank = True)
         
+        
+        
+        
+class Brand(models.Model):
+    name = models.CharField(max_length = 100)
+    
+    def __str__(self):
+        return self.name 
+    
