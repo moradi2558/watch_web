@@ -27,11 +27,11 @@
   alt=""
 /><br />
 {% if user.is_authenticated%} فرم سفارش دادن محصول
-<div class="card">
+<div>
   {% if product.status != 'None' %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
-    <input type="text" name="select" value="{{variants.id}}" />
+    <input type="text" name="select" value="{{variants.id}}"/>
     <input
       type="hidden"
       name="quantity"
