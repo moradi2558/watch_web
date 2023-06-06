@@ -3,10 +3,12 @@ from .models import *
 from django.http import HttpResponse
 from django.contrib import messages
 from.forms import *
-from django.db.models import Q
+from django.db.models import Q,Max,Min 
 from cart.models import*
 from django.core.mail import EmailMessage 
 from django.core.paginator import Paginator
+from.filters import*
+
 # Create your views here.
 
 
@@ -17,8 +19,14 @@ def home(request):
 
 def all_product(request, slug=None, id=None):
     products = Product.objects.all()
+    min = Product.objects.aggregate(unit_price = Min('unit_price'))
+    min_price = int(min['unit_price'])
+    max = Product.objects.aggregate(unit_price = Max('unit_price'))
+    max_price = int(max['unit_price'])
     category = Category.objects.filter(sub_cat=False)
-    paginator = Paginator(products,3)
+    filter = ProductFilter(request.GET,queryset=products)
+    products = filter.qs 
+    paginator = Paginator(products,8)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     form = SearchForm()
@@ -31,10 +39,12 @@ def all_product(request, slug=None, id=None):
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
         page_obj = products.filter(Category=data)
-        paginator = Paginator(page_obj,3)
+        paginator = Paginator(page_obj,8)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
-    return render(request, 'product.html', {'products': page_obj,'page_num':page_num, 'category': category,'form':form})
+    return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
+                                            'category': category,'form':form,'filter':filter,
+                                            'max_price':max_price,'min_price':min_price,})
 
 
 def product_detail(request,id):
