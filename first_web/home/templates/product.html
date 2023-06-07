@@ -2,7 +2,106 @@
 {% block body%}
 <link rel="stylesheet" href="{% static 'product.css' %}" />
 <body style="background-color: white">
-  <form method="post" action="{% url 'home:product_search' %}">
+  <div class="d-flex flex-wrap mt-2">
+    <div class="col-3 mt-5 d-flex flex-column">
+      <div class="d-flex flex-column align-items-center">
+      <!-- search-box -->
+      <form method="post" action="{% url 'home:product_search' %}">
+        {% csrf_token %} {{form}}
+        <button type="submit">search</button>
+      </form>
+      <!-- category -->
+      <div class="d-flex justify-content-between mt-3" style="width: 18rem;">
+        {% for data in category %}
+        <div>
+        <a href="{{data.get_absolute_url}}">{{data.name}}</a>
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-danger dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ></button>
+
+            <div class="dropdown-menu">
+            {% for info in data.sub.all %}<a href="{{info.get_absolute_url}}"
+            >{{info.name}}</a
+            >
+            {%endfor%}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+      <!-- double range slider -->
+      <form action="">
+      <div
+        class="wrapper d-flex flex-column justify-content-center align-items-center"
+      >
+        <div class="values">
+          <span id="range1"> {{min_price}} </span>
+          <span> &dash; </span>
+          <span id="range2"> {{max_price}} </span>
+        </div>
+        <div class="containere">
+          <div class="slider-track"></div>
+          <input
+            name="price_1"
+            type="range"
+            min="{{min_price}}"
+            max="{{max_price}}"
+            value="{{min_price}}"
+            id="slider-1"
+            oninput="slideOne()"
+          />
+          <input
+            name="price_2"
+            type="range"
+            min="{{min_price}}"
+            max="{{max_price}}"
+            value="{{max_price}}"
+            id="slider-2"
+            oninput="slideTwo()"
+          />
+        </div>
+      </div>
+    </div>
+      <div class="ms-3">
+        <h4 class="mt-2">brand:</h4>
+        {{ filter.form.brand }}
+        <h4 class="mt-2">color:</h4>
+        {{ filter.form.color }}
+        <h4 class="mt-2">size:</h4>
+        {{ filter.form.size}}
+      </div>
+      <div>
+        <button type="submit" class="btn btn-dark">submit</button>
+      </div>
+    </form>
+    </div>
+    <div class="col-9 row d-flex flex-wrap mt-2 p-3">
+      {% for product in products %}
+      <div
+        class="col-3 offset-1 border-end border-start p-2 mt-2 d-flex flex-column align-items-center"
+        style="height: 40vh;"
+      >
+        <a href="{{product.get_absolute_url}}" class="text-center text-decoration-none">
+          <img style="width: 8rem; height: 8rem" class="text-center img-fluid" src="{{product.image.url}}" />
+          <h1 style="font-size: 1.5rem;color: black" class="my-2">{{product.name}}</h1>
+        </a>
+        {% if product.discount %}
+        <h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
+        <h3>{{product.total_price}}</h3>
+        {% else %}
+        <h3>{{product.total_price}}</h3>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- <form method="post" action="{% url 'home:product_search' %}">
     {% csrf_token %} {{form}}
     <button type="submit">search</button>
   </form>
@@ -28,7 +127,7 @@
   <div class="row mt-4">
     <div class="col-3">
       <div class="toolbox">
-        <form action="">
+         <form action="">
           <div class="toolbox">
             <section class="range-slider container">
               <span class="output outputOne"></span>
@@ -53,17 +152,16 @@
               />
             </section>
           </form>
-            <div style="">
+        </div>
+            <div>
               <label for="">brand: {{ filter.form.brand }} </label>
               <label for="">color: {{ filter.form.color }} </label>
               <label for="">size: {{ filter.form.size}} </label>
             </div>
-          </div>
-          <!-- End .toolbox-right -->
-        
-      </div>
-    </div>
-  </div> 
+           End .toolbox-right -->
+
+  <!-- </div>
+    </div> 
   <div class="col-9">
     <div class="row">
       {% for product in products %}
@@ -73,7 +171,7 @@
           <img
             style="width: 8rem; height: 8rem"
             src="{{product.image.url}}"
-            style="width =50px;height = 50px; "
+            style="width :50px;height : 50px; "
           />
         </a>
         <br />
@@ -123,7 +221,7 @@
       <li class="page-item disabled"><a class="page-link" href="">next</a></li>
       {% endif %}
     </ul>
-  </nav>
+  </nav> -->
   <script src="{% static 'product.js' %}"></script>
 </body>
 {% endblock %}

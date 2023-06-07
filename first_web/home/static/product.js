@@ -1,31 +1,33 @@
-var rangeOne = document.querySelector('input[name="rangeOne"]'),
-		rangeTwo = document.querySelector('input[name="rangeTwo"]'),
-		outputOne = document.querySelector('.outputOne'),
-		outputTwo = document.querySelector('.outputTwo'),
-		inclRange = document.querySelector('.incl-range'),
-		updateView = function () {
-			if (this.getAttribute('name') === 'rangeOne') {
-				outputOne.innerHTML = this.value;
-				outputOne.style.left = this.value / this.getAttribute('max') * 100 + '%';
-			} else {
-				outputTwo.style.left = this.value / this.getAttribute('max') * 100 + '%';
-				outputTwo.innerHTML = this.value
-			}
-			if (parseInt(rangeOne.value) > parseInt(rangeTwo.value)) {
-				inclRange.style.width = (rangeOne.value - rangeTwo.value) / this.getAttribute('max') * 100 + '%';
-				inclRange.style.left = rangeTwo.value / this.getAttribute('max') * 100 + '%';
-			} else {
-				inclRange.style.width = (rangeTwo.value - rangeOne.value) / this.getAttribute('max') * 100 + '%';
-				inclRange.style.left = rangeOne.value / this.getAttribute('max') * 100 + '%';
-			}
-		};
+window.onload = function(){
+    slideOne();
+    slideTwo();
+}
 
-	document.addEventListener('DOMContentLoaded', function () {
-		updateView.call(rangeOne);
-		updateView.call(rangeTwo);
-		$('input[type="range"]').on('mouseup', function() {
-			this.blur();
-		}).on('mousedown input', function () {
-			updateView.call(this);
-		});
-	});
+let sliderOne = document.getElementById("slider-1");
+let sliderTwo = document.getElementById("slider-2");
+let displayValOne = document.getElementById("range1");
+let displayValTwo = document.getElementById("range2");
+let minGap = 0;
+let sliderTrack = document.querySelector(".slider-track");
+let sliderMaxValue = document.getElementById("slider-1").max;
+
+function slideOne(){
+    if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap){
+        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+    }
+    displayValOne.textContent = sliderOne.value;
+    fillColor();
+}
+function slideTwo(){
+    if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap){
+        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+    }
+    displayValTwo.textContent = sliderTwo.value;
+    fillColor();
+}
+function fillColor(){
+    percent1 = (sliderOne.value / sliderMaxValue) * 100;
+    percent2 = (sliderTwo.value / sliderMaxValue) * 100;
+    console.log(percent1,percent2);
+     sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #3264fe ${percent1}% , #3264fe ${percent2}%, #dadae5 ${percent2}%)`;
+}
