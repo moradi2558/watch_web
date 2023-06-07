@@ -7,8 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}home{% endblock %}</title>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+  <body
+    style="
+      background-repeat: no-repeat !important;
+      background-attachment: fixed !important;
+      background: #141e30;
+      background: -webkit-linear-gradient(to right, #243b55, #141e30);
+      background: linear-gradient(to right, #243b55, #141e30);
+      font-family: sans-serif;
+    "
+  >
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
       <div class="container-fluid">
         <button
           class="navbar-toggler"
@@ -24,28 +33,28 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a
-              class="nav-link active"
+              class="nav-link active text-light"
               aria-current="page"
               href="{% url 'home:home' %}"
               >Home</a
             >
             <a
-              class="nav-link active"
+              class="nav-link active text-light"
               aria-current="page"
               href="{% url 'home:product' %}"
               >product</a
             >
             {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'accounts:logout' %}">logout</a>
+            <a class="nav-link text-light" href="{% url 'accounts:logout' %}">logout</a>
             {% else %}
-            <a class="nav-link" href="{% url 'accounts:login' %}">login</a>
-            <a class="nav-link" href="{% url 'accounts:user_register' %}"
+            <a class="nav-link text-light" href="{% url 'accounts:login' %}">login</a>
+            <a class="nav-link text-light" href="{% url 'accounts:user_register' %}"
               >sign in</a
             >
             {% endif %}
-            <a class="nav-link" href="{% url 'accounts:profile' %}">profile</a>
-            <a class="nav-link" href="{% url 'cart:cart_detail' %}">cart</a>
-            <a class="nav-link" href="{% url 'home:contact' %}">contact us</a>
+            <a class="nav-link text-light" href="{% url 'accounts:profile' %}">profile</a>
+            <a class="nav-link text-light" href="{% url 'cart:cart_detail' %}">cart</a>
+            <a class="nav-link text-light" href="{% url 'home:contact' %}">contact us</a>
           </div>
         </div>
       </div>
