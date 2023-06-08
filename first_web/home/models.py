@@ -51,6 +51,9 @@ class Product(models.Model):
     unlike = models.ManyToManyField(User,blank = True,related_name = 'product_unlike')
     total_unlike = models.IntegerField(default=0)
     favourite = models.ManyToManyField(User,blank = True,related_name='fa_user')
+    total_favourite = models.IntegerField(default = 0)
+    sell = models.IntegerField(default = 0)
+    
     
     def average(self):
         data = Comment.objects.filter(is_reply = False,product = self).aggregate(avg = Avg('rate'))

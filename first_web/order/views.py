@@ -72,6 +72,7 @@ def send_request(request,order_id,price):
                 else: 
                     variant = Variant.objects.get(id = c.variant.id)
                     variant.amount -= c.quantity
+                    variant.sell += c.quantity
                     variant.save()
             return HttpResponse('Error code: ' + str(result.Status))
 

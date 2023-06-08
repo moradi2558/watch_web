@@ -8,6 +8,7 @@ from cart.models import*
 from django.core.mail import EmailMessage 
 from django.core.paginator import Paginator
 from.filters import*
+from urllib.parse import urlencode 
 
 # Create your views here.
 
@@ -30,6 +31,9 @@ def all_product(request, slug=None, id=None):
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     form = SearchForm()
+    data = request.GET.copy()
+    if 'page' in data:
+        del data ['page']
     if 'search' in request.GET:
          form = SearchForm(request.GET)
          if form.is_valid():
@@ -44,7 +48,8 @@ def all_product(request, slug=None, id=None):
         page_obj = paginator.get_page(page_num)
     return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
                                             'category': category,'form':form,'filter':filter,
-                                            'max_price':max_price,'min_price':min_price,})
+                                            'max_price':max_price,'min_price':min_price,
+                                            'data':urlencode(data),})
 
 
 def product_detail(request,id):
@@ -163,9 +168,11 @@ def favourie_product(request,id):
     is_favourite=False 
     if product.favourite.filter(id=request.user.id).exists():
         product.favourite.remove(request.user)
+        product.total_favourite -=1
         is_favourite = False 
     else:
         product.favourite.add(request.user)
+        product.total_favourite +=1
     return redirect (url)
 
 def contact(request):

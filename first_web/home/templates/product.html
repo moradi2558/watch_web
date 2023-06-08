@@ -34,11 +34,31 @@
       </div>
       {% endfor %}
     </div>
+    <hr>
+    <br>
+    <div class="toolbox">
+      <form action="">
+          <div class="toolbox-right">
+            <input type = "submit" name = "price" value="expensive">
+            <input type = "submit" name = "price" value="cheap">
+            <input type = "submit" name = "create" value="old">
+            <input type = "submit" name = "discount" value="most_discout">
+            <input type = "submit" name = "favourite" value="most_popular">
+            <input type = "submit" name = "sell" value="most_sell">
+              <div style="display: none">
+                  {{ filter.form.brand }}
+                  {{ filter.form.color }}
+                  {{ filter.form.size }}
+              </div>
+          </div><!-- End .toolbox-right -->
+      </form>
+    </div><!-- End .toolbox -->
+  <hr>
+    <br>
       <!-- double range slider -->
       <form action="">
       <div
-        class="wrapper d-flex flex-column justify-content-center align-items-center"
-      >
+        class="wrapper d-flex flex-column justify-content-center align-items-center">
         <div class="values">
           <span id="range1"> {{min_price}} </span>
           <span> &dash; </span>
@@ -75,6 +95,13 @@
         <h4 class="mt-2">size:</h4>
         {{ filter.form.size}}
       </div>
+      <div style="display: none">
+        {{ filter.form.price }}
+        {{ filter.form.favourite }}
+        {{ filter.form.discount }}
+        {{ filter.form.create }}
+      </div>
+
       <div>
         <button type="submit" class="btn btn-dark">submit</button>
       </div>
@@ -99,6 +126,43 @@
       </div>
       {% endfor %}
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if products.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+            >Previous</a
+          >
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+            >{{products.previous_page_number}}</a
+          >
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="">Previous</a>
+        </li>
+        {% endif %}
+        <li class="page-item {% if page_num == page_num %} active {% endif %}">
+          <a class="page-link" href="?page={{products.number}}&{{data}}"
+            >{{products.number}}</a
+          >
+        </li>
+        {% if products.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{products.next_page_number}}&{{data}}"
+            >{{products.next_page_number}}</a
+          >
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{products.next_page_number}}&{{data}}">next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="">next</a></li>
+        {% endif %}
+      </ul>
+    </nav> 
   </div>
 
   <!-- <form method="post" action="{% url 'home:product_search' %}">
