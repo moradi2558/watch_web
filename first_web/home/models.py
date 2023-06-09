@@ -5,6 +5,8 @@ from  ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager 
 from django.forms import ModelForm
 from django.db.models import Avg
+from django.db.models.signals import post_save
+from django_jalali.db import models as jmodels 
 # Create your models here.
 
 
@@ -37,14 +39,14 @@ class Product(models.Model):
     total_price = models.PositiveIntegerField(blank=True, null=True)
     information = RichTextUploadingField(blank=True, null=True)
     create = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    update = jmodels.jDateTimeField(auto_now=True)
     tags = TaggableManager(blank=True)
     status = models.CharField(
         max_length=200, blank=True, null=True, choices=VARIANT)
     image = models.ImageField(upload_to='product')
     brand = models.ForeignKey('Brand',on_delete = models.CASCADE,blank = True,null = True)
-    color = models.ManyToManyField('Color',blank = True,null = True)
-    size = models.ManyToManyField('Size',blank = True,null = True)
+    color = models.ManyToManyField('Color',blank = True)
+    size = models.ManyToManyField('Size',blank = True)
     available = models.BooleanField(default=True)
     like = models.ManyToManyField(User,blank = True,related_name = 'product_like')
     total_like = models.IntegerField(default=0)
@@ -53,6 +55,7 @@ class Product(models.Model):
     favourite = models.ManyToManyField(User,blank = True,related_name='fa_user')
     total_favourite = models.IntegerField(default = 0)
     sell = models.IntegerField(default = 0)
+    change = models.BooleanField(default = True)
     
     
     def average(self):
@@ -95,10 +98,12 @@ class Variant(models.Model):
     product_variant = models.ForeignKey(Product,on_delete = models.CASCADE)
     size_variant = models.ForeignKey(Size,on_delete = models.CASCADE,null = True,blank = True)
     color_variant = models.ForeignKey(Color,on_delete = models.CASCADE,null = True,blank = True)
+    update = jmodels.jDateTimeField(auto_now=True)
     amount = models.PositiveIntegerField()
     unit_price = models.PositiveIntegerField()
     discount = models.PositiveIntegerField()
     total_price = models.PositiveIntegerField(blank=True, null=True)
+    change = models.BooleanField(default = True)
     def __str__(self):
         return self.name
 
@@ -155,4 +160,30 @@ class Brand(models.Model):
     
     def __str__(self):
         return self.name 
+ 
+ 
+class Chart(models.Model):
+    name = models.CharField(max_length=50,null=True,blank = True)
+    unit_price = models.IntegerField(default = 0) 
+    update=jmodels.jDateTimeField(auto_now=True)  
+    color = models.CharField(max_length=50,null=True,blank = True)
+    size = models.CharField(max_length=50,null=True,blank = True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='pr_update',null=True,blank=True)
+    variant = models.ForeignKey(Variant,on_delete=models.CASCADE,related_name='v_update',null=True,blank=True)
     
+    def __str__(self):
+        return self.name 
+       
+def product_post_saved(sender,instance,created,*args,**kwargs):
+    data = instance 
+    if data.change == False:
+        Chart.objects.create(product = data,unit_price=data.unit_price,update=data.update,name=data.name)
+
+post_save.connect(product_post_saved,sender=Product)
+
+def variant_post_saved(sender,instance,created,*args,**kwargs):
+    data = instance 
+    if data.change == False:
+        Chart.objects.create(variant = data,unit_price=data.unit_price,update=data.update,name=data.name,size=data.size_variant,color=data.color_variant)
+
+post_save.connect(variant_post_saved,sender=Variant)

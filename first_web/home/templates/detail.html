@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%} {% block body %}
 <head>
-  {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  {% load bootstrap5 %} {% load jformat %} {% bootstrap_css %} {% bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'detail.css' %}" />
   <link
     rel="stylesheet"
@@ -73,7 +73,6 @@
   <i class="far fa-heart" style="color : red; font-size: 20px;"></i
 ></a>
 {% endif %}
-<div class="col-2 bg-info m-2">your choice price:{{variants.total_price}}</div>
 <small>like: {{products.total_like}}</small>
 <small>unlike: {{products.total_unlike}}</small>
 {% if request.user.is_authenticated %} {% if is_like %}
@@ -100,12 +99,17 @@
   class="btn btn-info{% if is_like %}disabled{% endif %}"
   >dislike</a
 ><br />
-{% endif %} {% endif %} {% if products.discount %}
-<h4 style="text-decoration: line-through">{{product.unit_price}}</h4>
-<h3>{{product.total_price}}</h3>
+{% endif %} {% endif %} 
+{%if products.status == "None"%}
+{% if products.discount %}
+<h4 class="col-2 bg-info m-2"  style="text-decoration: line-through">your choice price:{{products.unit_price}}</h4>
+<h3 class="col-2 bg-info m-2">your choice price:{{products.total_price}}</h3>
 {% else %}
-<h3>{{product.total_price}}</h3>
+<h3 class="col-2 bg-info m-2">your choice price:{{products.total_price}}</h3>
 {% endif %}
+{%else%}
+<div class="col-2 bg-info m-2">your choice price:{{variants.total_price}}</div>
+{%endif%}
 <hr />
 
 {% if products.status == 'Size' %}
@@ -132,6 +136,61 @@
 <hr />
 <br />
 <hr />
+
+{% block scripts %}
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% if product.status != 'None' %}
+<script>
+  let ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for i in change %}{% if variants.id == i.variant_id %}'{{i.update|jformat:"%A %d %B %Y"}}'{% endif %},{% endfor %}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{% for i in change %}{% if variants.id == i.variant_id %}{{i.unit_price}}{% endif %},{% endfor %}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% else %}
+<script>
+  let ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+{% endif %}
+{%endblock%}
 
 <h2 class="fw-bolder fs-2 m-4 ms-5">Comment User</h2>
 {%for com in comment %}
@@ -273,5 +332,6 @@
   <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
 </a>
 {% endfor %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'script.js' %}"></script>
 {% endblock %}

@@ -27,7 +27,7 @@ def all_product(request, slug=None, id=None):
     category = Category.objects.filter(sub_cat=False)
     filter = ProductFilter(request.GET,queryset=products)
     products = filter.qs 
-    paginator = Paginator(products,8)
+    paginator = Paginator(products,9)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     form = SearchForm()
@@ -43,7 +43,7 @@ def all_product(request, slug=None, id=None):
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
         page_obj = products.filter(Category=data)
-        paginator = Paginator(page_obj,8)
+        paginator = Paginator(page_obj,9)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
     return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
@@ -56,11 +56,13 @@ def product_detail(request,id):
     products = get_object_or_404(Product,id=id)
     comment_form = CommentForm()
     comment = Comment.objects.filter(product_id = id,is_reply = False)
-    similar = products.tags.similar_objects()[:2]
+    similar = products.tags.similar_objects()[:9]
     cart_form = CartForm()
-    image =Images.objects.filter(product_id = id)
+    image =Images.objects.filter(product_id=id)
     is_like=False
     is_favourite = False 
+    update = Chart.objects.filter(product_id=id)
+    change = Chart.objects.all()
     if products.favourite.filter(id=request.user.id).exists():
         is_favourite = True  
     reply_form = ReplyForm()
@@ -80,13 +82,13 @@ def product_detail(request,id):
         context = {'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
                    'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form,'is_favourite':is_favourite}
+                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,}
         return render(request,'detail.html',context)
     else:
         return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,
                                              'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
                                              'comment':comment,'comment_form':comment_form,'image':image
-                                             ,'is_favourite':is_favourite})
+                                             ,'is_favourite':is_favourite,'update':update,})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
