@@ -139,22 +139,23 @@
 
 {% block scripts %}
 <div>
-  <canvas id="myChart"></canvas>
+  <canvas id="myChart" class="bg-secondary-subtle"></canvas>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% if product.status != 'None' %}
+{% if products.status == 'None' %}
 <script>
-  let ctx = document.getElementById('myChart');
+var ctx3 = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'bar',
+  new Chart(ctx3, {
+    type: 'line',
     data: {
-      labels: [{% for i in change %}{% if variants.id == i.variant_id %}'{{i.update|jformat:"%A %d %B %Y"}}'{% endif %},{% endfor %}],
+      labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
       datasets: [{
         label: '# of Votes',
-        data: [{% for i in change %}{% if variants.id == i.variant_id %}{{i.unit_price}}{% endif %},{% endfor %}],
-        borderWidth: 1
+        data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
+        borderWidth: 4,
+        backgroundColor: '#1F618D',
+        borderColor:'#1F618D',
       }]
     },
     options: {
@@ -162,22 +163,26 @@
         y: {
           beginAtZero: true
         }
-      }
-    }
-  });
+      },
+  }
+});
 </script>
 {% else %}
+<!-- {% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %} -->
+<!-- {% for i in update %}{{i.unit_price}},{% endfor %} -->
 <script>
-  let ctx = document.getElementById('myChart');
+  var ctx2 = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'bar',
+  new Chart(ctx2, {
+    type: 'line',
     data: {
-      labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
+      labels: [{% for i in change %}{% if variants.id == i.variant_id %}'{{i.update|jformat:"%A %d %B %Y"}}'{% endif%},{% endfor %}],
       datasets: [{
         label: '# of Votes',
-        data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
-        borderWidth: 1
+        data: [{% for i in change %}{% if variants.id == i.variant_id %}{{i.unit_price}}{% endif %},{% endfor %}],
+        borderWidth: 4,
+        backgroundColor: '#1F618D',
+        borderColor:'#1F618D'
       }]
     },
     options: {
