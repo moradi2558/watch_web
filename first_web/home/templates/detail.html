@@ -28,12 +28,12 @@
 /><br />
 {% if user.is_authenticated%} فرم سفارش دادن محصول
 <div class="card">
-  {% if product.status != 'None' %}
+  {% if products.status != 'None' %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
-    <input type="text" name="select" value="{{variants.id}}" />
+    <input type="hidden" name="select" value="{{variants.id}}" />
     <input
-      type="hidden"
+      type="number"
       name="quantity"
       min="1"
       value="1"
@@ -100,15 +100,16 @@
   >dislike</a
 ><br />
 {% endif %} {% endif %} 
+<h3 class="col-2 bg-info m-2">your choice price:</h3>
 {%if products.status == "None"%}
 {% if products.discount %}
-<h4 class="col-2 bg-info m-2"  style="text-decoration: line-through">your choice price:{{products.unit_price}}</h4>
-<h3 class="col-2 bg-info m-2">your choice price:{{products.total_price}}</h3>
+<h4 class="col-2 bg-info m-2"  style="text-decoration: line-through">{{products.unit_price}}</h4>
+<h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
 {% else %}
-<h3 class="col-2 bg-info m-2">your choice price:{{products.total_price}}</h3>
+<h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
 {% endif %}
 {%else%}
-<div class="col-2 bg-info m-2">your choice price:{{variants.total_price}}</div>
+<div class="col-2 bg-info m-2">{{variants.total_price}}</div>
 {%endif%}
 <hr />
 
@@ -117,7 +118,7 @@
   {% csrf_token %} {% for data in variant %}<input type="radio" value =
   "{{data.id}}" {% if variants.id == data.id %} checked {% endif %} name =
   'select' onchange = "this.form.submit();">
-  <a href=""><small>{{ data.size_variant }}</small> </a>
+  <a href=""><small>{{ data.Brand_color_variant }}</small> </a>
   {% endfor %}
 </form>
 {% elif products.status == 'Color' %}
@@ -206,7 +207,7 @@ var ctx3 = document.getElementById('myChart');
   >
     <div class="col-2 align-self-center">
       <img
-        src="../../media/Category/22.jpg"
+      src="{{profile.profile_image.url}}"
         alt=""
         style="width: 5rem; height: 5rem; border: 1px solid black"
         class="rounded-circle img-fluid"

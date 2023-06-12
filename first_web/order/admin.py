@@ -9,7 +9,7 @@ class ItemInline(admin.TabularInline):
     
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        'user','email','f_name','l_name','address','create','paid','get_price'
+        'user','email','f_name','l_name','address','create','paid','get_price','code'
     ]
     list_filter = (
         ('code',JDateFieldListFilter),

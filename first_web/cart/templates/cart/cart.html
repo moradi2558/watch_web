@@ -27,19 +27,29 @@
               style="height: 30px; width: 30px"
               alt=""
             />
-          </td>
+          </td>{% if c.product.status != 'None' %}
           <td>{{c.variants.size_variant.name}}</td>
-          <td>{{c.variants.color_varian.name}}</td>
-          <td>{{c.quantity}}</td>
+          <td>{{c.variants.color_variant.name}}</td>
+              {%else%}
+          <td>{{c.product.size.name}}</td>
+          <td>{{c.product.color.name}}</td>
+              {%endif%}
+
+          <td>
+            <a href = "{% url 'cart:add_single' c.id %}"><i class="fa fa-plus">a</i></a>
+            {{c.quantity}}
+            <a href = "{% url 'cart:remove_single' c.id %}"><i class="fa fa-minus">d</i></a>
+          </td>
           <td>
             {% if c.product.status != 'None' %}
             {{c.variants.total_price}}{%else%}
             {{c.product.total_price}}{%endif%}
           </td>
           <td>
-            {% if c.product.status != 'None' %} {% widthratio
-            c.variants.total_price 1 c.quantity %} {%else%}{% widthratio
-            c.product.total_price 1 c.quantity %}{%endif%}
+            {% if c.product.status != 'None' %} 
+            {% widthratio c.variants.total_price 1 c.quantity %} 
+            {%else%}
+            {% widthratio c.product.total_price 1 c.quantity %}{%endif%}
           </td>
           <td><a href="{% url 'cart:remove_cart' c.id %}">remove</a></td>
         </tr>

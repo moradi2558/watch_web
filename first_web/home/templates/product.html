@@ -48,7 +48,7 @@
               <div style="display: none">
                   {{ filter.form.brand }}
                   {{ filter.form.color }}
-                  {{ filter.form.size }}
+                  {% comment %} {{ filter.form.size }} {% endcomment %}
               </div>
           </div><!-- End .toolbox-right -->
       </form>
@@ -92,8 +92,8 @@
         {{ filter.form.brand }}
         <h4 class="mt-2">color:</h4>
         {{ filter.form.color }}
-        <h4 class="mt-2">size:</h4>
-        {{ filter.form.size}}
+        {% comment %} <h4 class="mt-2">size:</h4>
+        {{ filter.form.size}} {% endcomment %}
       </div>
       <div style="display: none">
         {{ filter.form.price }}

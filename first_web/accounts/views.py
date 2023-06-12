@@ -144,18 +144,19 @@ def verify(request):
                 return redirect('home:home')
             else:
                 messages.error(request,'wrong code')
-
+@login_required(login_url ='accounts:login')
 def change_password(request):
+    url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         form = PasswordChangeForm(request.user,request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request,form.user)
             messages.success(request,'password changed','success')
-            return redirect(request,'accounts:profile')
+            return redirect('accounts:profile')
         else:
             messages.error(request,'wrong','danger')
-            return redirect(request,'accounts:change')
+            return redirect(url)
     else:
         form = PasswordChangeForm(request.user)       
     return render(request,'accounts/change.html',{'form':form})     

@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from.filters import*
 from urllib.parse import urlencode 
+from accounts.models import Profile
 
 # Create your views here.
 
@@ -46,13 +47,14 @@ def all_product(request, slug=None, id=None):
         paginator = Paginator(page_obj,9)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
-    return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
+    return render(request, 'product.html',{'products': page_obj,'page_num':page_num,
                                             'category': category,'form':form,'filter':filter,
                                             'max_price':max_price,'min_price':min_price,
                                             'data':urlencode(data),})
 
 
 def product_detail(request,id):
+    profile = Profile.objects.get(user_id = request.user.id)
     products = get_object_or_404(Product,id=id)
     comment_form = CommentForm()
     comment = Comment.objects.filter(product_id = id,is_reply = False)
@@ -82,13 +84,13 @@ def product_detail(request,id):
         context = {'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
                    'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,}
+                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,'profile':profile,}
         return render(request,'detail.html',context)
     else:
         return render(request,'detail.html',{'products': products,'similar': similar,'is_like':is_like,
                                              'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
                                              'comment':comment,'comment_form':comment_form,'image':image
-                                             ,'is_favourite':is_favourite,'update':update,})
+                                             ,'is_favourite':is_favourite,'update':update,'profile':profile,})
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
