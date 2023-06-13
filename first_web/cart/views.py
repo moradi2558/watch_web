@@ -55,3 +55,26 @@ def remove_cart(request,id):
     Cart.objects.filter(id=id).delete()
     url = request.META.get('HTTP_REFERER')
     return redirect(url)
+
+def add_single(request,id):
+    url = request.META.get('HTTP_REFERER') 
+    cart = Cart.objects.get(id = id)
+    if cart.product.status == 'None':
+        if product.amount > cart.quantity :
+            cart.quantity += 1 
+    else:
+        variant = Variant.objects.get (id = cart.variants.id)
+        if variant.amount > cart.quantity :
+            cart.quantity += 1
+    cart.save()
+    return redirect(url)
+
+def remove_single(request,id):
+    url = request.META.get('HTTP_REFERER')
+    cart = Cart.objects.get(id=id)
+    if cart.quantity < 2 :
+        cart.delete()
+    else :
+        cart.quantity -= 1 
+        cart.save()
+    return redirect(url)

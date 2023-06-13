@@ -31,9 +31,9 @@
   {% if product.status != 'None' %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
-    <input type="text" name="select" value="{{variants.id}}" />
+    <input type="hidden" name="select" value="{{variants.id}}" />
     <input
-      type="hidden"
+      type="number"
       name="quantity"
       min="1"
       value="1"
@@ -206,7 +206,7 @@ var ctx3 = document.getElementById('myChart');
   >
     <div class="col-2 align-self-center">
       <img
-        src="../../media/Category/22.jpg"
+        src="{{profile.profile_image.url}}"
         alt=""
         style="width: 5rem; height: 5rem; border: 1px solid black"
         class="rounded-circle img-fluid"

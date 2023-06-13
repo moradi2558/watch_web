@@ -41,8 +41,7 @@ class Product(models.Model):
     create = models.DateTimeField(auto_now_add=True)
     update = jmodels.jDateTimeField(auto_now=True)
     tags = TaggableManager(blank=True)
-    status = models.CharField(
-        max_length=200, blank=True, null=True, choices=VARIANT)
+    status = models.CharField(max_length=200, blank=True, null=True, choices=VARIANT)
     image = models.ImageField(upload_to='product')
     brand = models.ForeignKey('Brand',on_delete = models.CASCADE,blank = True,null = True)
     color = models.ManyToManyField('Color',blank = True)
@@ -165,7 +164,7 @@ class Brand(models.Model):
 class Chart(models.Model):
     name = models.CharField(max_length=50,null=True,blank = True)
     unit_price = models.IntegerField(default = 0) 
-    update=jmodels.jDateTimeField(auto_now=True)  
+    update = jmodels.jDateTimeField(auto_now=True)  
     color = models.CharField(max_length=50,null=True,blank = True)
     size = models.CharField(max_length=50,null=True,blank = True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name='pr_update',null=True,blank=True)

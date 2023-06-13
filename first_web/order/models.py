@@ -10,6 +10,7 @@ class Order(models.Model):
     discount = models.PositiveIntegerField(null = True,blank = True)
     create = models.DateTimeField(auto_now_add =True)
     paid = models.BooleanField(default = False)
+    code = models.CharField(max_length = 200,null = True)
     email = models.EmailField()
     f_name = models.CharField(max_length=300) 
     l_name = models.CharField(max_length=300) 
