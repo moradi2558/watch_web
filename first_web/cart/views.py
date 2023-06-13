@@ -12,7 +12,7 @@ def cart_detail(request):
     user = request.user
     for p in cart:
         if p.product.status != 'None':
-            total += p.variants.total_price*p.quantity
+            total += p.variants.total_price * p.quantity
         else:
             total += p.product.total_price*p.quantity
     return render(request,'cart/cart.html',{'cart':cart,'total':total,'form':form,'user':user})
@@ -77,4 +77,10 @@ def remove_single(request,id):
     else :
         cart.quantity -= 1 
         cart.save()
+<<<<<<< HEAD
     return redirect(url)
+=======
+    return redirect(url)
+        
+    
+>>>>>>> 45e7e15deef7eec2913aa907a6e15b9beb1df6fa

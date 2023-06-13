@@ -9,6 +9,7 @@ class Order(models.Model):
     user = models.ForeignKey(User,on_delete = models.CASCADE)
     discount = models.PositiveIntegerField(null = True,blank = True)
     create = models.DateTimeField(auto_now_add =True)
+    code = models.CharField(max_length = 200,null = True)
     paid = models.BooleanField(default = False)
     code = models.CharField(max_length = 200,null = True)
     email = models.EmailField()
