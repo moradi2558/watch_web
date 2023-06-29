@@ -1,8 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from home.models import Product
 from.models import*
 from django.contrib.auth.decorators import login_required
 from order.models import*
+from django.contrib import messages
 # Create your views here.
 
 def cart_detail(request):
@@ -77,10 +78,34 @@ def remove_single(request,id):
     else :
         cart.quantity -= 1 
         cart.save()
-<<<<<<< HEAD
     return redirect(url)
-=======
+
+
+def compare(request,id):
+    url = request.META.get('HTTP_REFERER')
+    if request.user.is_authenticated :
+        item = fet_object_or_404(Product,id=id)
+        qs = compare.objects.filter(user_id=request.user.id,product_id=id) 
+        if qs.exist():
+            messages.success(request,'ok')
+        else:
+            compare.objects.create(user_id=request.user.id,product_id=id,session_key=None)
+    else:
+        item = fet_object_or_404(Product,id=id)
+        qs = compare.objects.filter(user_id=None,product_id=id) 
+        if qs.exist():
+            messages.success(request,'ok')
+        else:
+            if not request.session.session_key:
+                request.session.create()
+            compare.objects.create(user_id=None,product_id=id,session_key=request.session.session_key)
     return redirect(url)
+
+def show(request):
+    if request.user.is_authenticated:
+        data = Compare.objects.filter(user_id=request.user.id)
+        return render(request,'cart/show.html',{'data':data})
+    else:
+        data = Compare.objects.filter(session_key__exact = request.session.session_key,user_id=None)
         
     
->>>>>>> 45e7e15deef7eec2913aa907a6e15b9beb1df6fa

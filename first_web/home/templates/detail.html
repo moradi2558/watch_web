@@ -55,6 +55,10 @@
   </form>
 </div>
 {%endif%}{%endif%}
+<form action="{% url 'cart:compare' product.id %}">
+  <input type="text" name="product" value= "{{product.id}}">
+  <button type="submit">add for comparing </button>
+</form>
 <p>{{products.information|safe}}</p>
 <div class="row">
   {% for img in image %}
@@ -207,11 +211,7 @@ var ctx3 = document.getElementById('myChart');
   >
     <div class="col-2 align-self-center">
       <img
-<<<<<<< HEAD
         src="{{profile.profile_image.url}}"
-=======
-      src="{{profile.profile_image.url}}"
->>>>>>> 45e7e15deef7eec2913aa907a6e15b9beb1df6fa
         alt=""
         style="width: 5rem; height: 5rem; border: 1px solid black"
         class="rounded-circle img-fluid"

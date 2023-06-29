@@ -8,11 +8,7 @@ from django.contrib import messages
 from suds import Client
 from django.http import HttpResponse
 import jdatetime
-<<<<<<< HEAD
 from django.utils.crypto import get_random_string 
-=======
-from django.utils.crypto import get_random_string
->>>>>>> 45e7e15deef7eec2913aa907a6e15b9beb1df6fa
 # Create your views here.
 def order_detail(request,order_id):
     order = Order.objects.get(id=order_id)
@@ -25,15 +21,9 @@ def order_create(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-<<<<<<< HEAD
             code = get_random_string
             order = Order.objects.create(user_id=request.user.id,email=data['email'],f_name=data['f_name'],
                                          l_name=data['l_name'],address=data['address'],code = code )
-=======
-            code = get_random_string(length = 8)
-            order = Order.objects.create(user_id=request.user.id,email=data['email'],f_name=data['f_name'],
-                                         l_name=data['l_name'],address=data['address'],code = code)
->>>>>>> 45e7e15deef7eec2913aa907a6e15b9beb1df6fa
             cart = Cart.objects.filter(user_id = request.user.id)
             for c in cart:
                 ItemOrder.objects.create(order_id = order.id,user_id = request.user.id,
