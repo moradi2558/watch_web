@@ -34,6 +34,8 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=200)
     amount = models.PositiveIntegerField()
+    num_view = models.IntegerField(default = 0)
+    view = models.ManyToManyField(User,blank = True,related_name='product_view')
     unit_price = models.PositiveIntegerField()
     discount = models.PositiveIntegerField()
     total_price = models.PositiveIntegerField(blank=True, null=True)
@@ -186,3 +188,13 @@ def variant_post_saved(sender,instance,created,*args,**kwargs):
         Chart.objects.create(variant = data,unit_price=data.unit_price,update=data.update,name=data.name,size=data.size_variant,color=data.color_variant)
 
 post_save.connect(variant_post_saved,sender=Variant)
+
+class Views(models.Model):
+    ip = models.CharField(max_length = 200,null = True,blank=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE,null=True,blank=True)
+    create = models.DateTimeField(auto_now_add = True)
+    
+    def __str__(self):
+        return self.product.name
+    
+    

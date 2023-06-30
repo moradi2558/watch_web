@@ -48,6 +48,9 @@
               <div style="display: none">
                   {{ filter.form.brand }}
                   {{ filter.form.color }}
+                  {% if 'search' in request.GET %}
+                  {{form}}
+                  {%endif%}
                   {% comment %} {{ filter.form.size }} {% endcomment %}
               </div>
           </div><!-- End .toolbox-right -->
@@ -100,6 +103,9 @@
         {{ filter.form.favourite }}
         {{ filter.form.discount }}
         {{ filter.form.create }}
+        {% if 'search' in request.GET %}
+          {{form}}
+        {%endif%}
       </div>
 
       <div>

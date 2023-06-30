@@ -55,7 +55,7 @@
   </form>
 </div>
 {%endif%}{%endif%}
-<form action="{% url 'cart:compare' product.id %}">
+<form action="{% url 'cart:compare' products.id %}">
   <input type="text" name="product" value= "{{product.id}}">
   <button type="submit">add for comparing </button>
 </form>

@@ -1,0 +1,6 @@
+{% extends 'main.html' %}  {% block title %}last product view{% endblock%} {% block body %}
+<div class="container">
+    {%for i in product %}
+    <p>{{i.name}}</p>
+    {%endfor%}
+{% endblock %}

@@ -24,7 +24,7 @@ class Compare(models.Model):
     session_key = models.CharField(max_length = 300,blank=True,null=True)
     
     def __str__(self):
-        return self.name
+        return self.product.name
     
 class CompareForm(ModelForm):
     class Meta:

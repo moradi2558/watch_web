@@ -35,18 +35,29 @@ def all_product(request, slug=None, id=None):
     data = request.GET.copy()
     if 'page' in data:
         del data ['page']
-    if 'search' in request.GET:
-         form = SearchForm(request.GET)
-         if form.is_valid():
-            data = form.cleaned_data['search']
-            if data is not None:
-                product = products.filter(Q(name__contain = data))
+    page_obj = paginator.get_page(page_num)
+    category = Category.objects.filter(sub_cat=False)
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
         page_obj = products.filter(Category=data)
         paginator = Paginator(page_obj,9)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
+        data = request.GET.copy()
+        if 'page' in data:
+            del data ['page']
+        page_obj = paginator.get_page(page_num)
+    if 'search' in request.GET:
+         form = SearchForm(request.GET)
+         if form.is_valid():
+            info = form.cleaned_data['search']
+            page_obj = products.filter(Q(name__icontain=info))
+            paginator = Paginator(page_obj,9)
+            page_num = request.GET.get('page')
+            data = request.GET.copy()
+            if 'page' in data:
+                del data['page']
+            page_obj = paginator.get_page(page_num)
     return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
                                             'category': category,'form':form,'filter':filter,
                                             'max_price':max_price,'min_price':min_price,
@@ -60,6 +71,14 @@ def product_detail(request,id):
     similar = products.tags.similar_objects()[:9]
     cart_form = CartForm()
     image =Images.objects.filter(product_id=id)
+    ip =request.META.get('REMOTE_ADDR')
+    view = Views.objects.filter(product_id = products.id,ip=ip)
+    if not view.exists():
+        Views.objects.create(product_id = products.id,ip=ip)
+        products.num_view +=1
+        products.save()
+    if request.user.is_authenticated:
+        products.view.add(request.user)
     is_like=False
     is_favourite = False 
     update = Chart.objects.filter(product_id=id)
@@ -193,3 +212,7 @@ def contact(request):
         )
         form.send(fail_silently = False)
     return render(request,'contact.html')
+
+def product_view(request):
+    product =Product.objects.filter(view=request.user.id)
+    return render(request,'view.html',{'product':product})
