@@ -17,6 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name','create','update','available','amount','unit_price','discount','total_price',]
+    change_list_template = 'change.html'
     list_filter = ('available',)
     inlines = [ProductVariantInlines,ImageInlines]
     list_editable=('amount',)
