@@ -1,6 +1,7 @@
-{% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%} {% block body %}
+{% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%}
+{% block body %}
 <head>
-  {% load bootstrap5 %} {% load jformat %} {% bootstrap_css %} {% bootstrap_javascript %}
+  {% load bootstrap5 %} {% load jformat %} {% bootstrap_css %} {%bootstrap_javascript %}
   <link rel="stylesheet" href="{% static 'detail.css' %}" />
   <link
     rel="stylesheet"
@@ -56,25 +57,25 @@
 </div>
 {%endif%}{%endif%}
 <form action="{% url 'cart:compare' products.id %}">
-  <input type="text" name="product" value= "{{product.id}}">
-  <button type="submit">add for comparing </button>
+  <input type="text" name="product" value="{{product.id}}" />
+  <button type="submit">add for comparing</button>
 </form>
 <p>{{products.information|safe}}</p>
-<div class="row">
+<div class="">
   {% for img in image %}
   <img
     src="{{img.image.url}}"
     alt=""
-    style="height: 200px; width: 200px"
+    style="height: 100px; width: 100px"
   />{%endfor%}
 </div>
 {% if is_favourite %}
 <a href="{% url 'home:favourite' products.id %}">
-  <i class="fa fa-heart" style="color : red; font-size: 20px;"></i
+  <i class="fa fa-heart" style="color: red; font-size: 20px"></i
 ></a>
 {% else %}
 <a href="{% url 'home:favourite' products.id %}">
-  <i class="far fa-heart" style="color : red; font-size: 20px;"></i
+  <i class="far fa-heart" style="color: red; font-size: 20px"></i
 ></a>
 {% endif %}
 <small>like: {{products.total_like}}</small>
@@ -103,16 +104,16 @@
   class="btn btn-info{% if is_like %}disabled{% endif %}"
   >dislike</a
 ><br />
-{% endif %} {% endif %} 
+{% endif %} {% endif %}
 <h3 class="col-2 bg-info m-2">your choice price:</h3>
-{%if products.status == "None"%}
-{% if products.discount %}
-<h4 class="col-2 bg-info m-2"  style="text-decoration: line-through">{{products.unit_price}}</h4>
+{%if products.status == "None"%} {% if products.discount %}
+<h4 class="col-2 bg-info m-2" style="text-decoration: line-through">
+  {{products.unit_price}}
+</h4>
 <h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
 {% else %}
 <h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
-{% endif %}
-{%else%}
+{% endif %} {%else%}
 <div class="col-2 bg-info m-2">{{variants.total_price}}</div>
 {%endif%}
 <hr />
@@ -149,28 +150,29 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% if products.status == 'None' %}
 <script>
-var ctx3 = document.getElementById('myChart');
+  var ctx3 = document.getElementById('myChart');
 
-  new Chart(ctx3, {
-    type: 'line',
-    data: {
-      labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
-      datasets: [{
-        label: '# of Votes',
-        data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
-        borderWidth: 4,
-        backgroundColor: '#1F618D',
-        borderColor:'#1F618D',
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+    new Chart(ctx3, {
+      type: 'line',
+      data: {
+        labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
+        datasets: [{
+          label: '# of Votes',
+          data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
+          borderWidth: 4,
+          fill : true,
+           backgroundColor: '#9BD0F5',
+          borderColor:'#1F618D',
+        }]
       },
-  }
-});
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+    }
+  });
 </script>
 {% else %}
 <!-- {% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %} -->
@@ -186,7 +188,8 @@ var ctx3 = document.getElementById('myChart');
         label: '# of Votes',
         data: [{% for i in change %}{% if variants.id == i.variant_id %}{{i.unit_price}}{% endif %},{% endfor %}],
         borderWidth: 4,
-        backgroundColor: '#1F618D',
+        fill : true,
+        backgroundColor: '#9BD0F5',
         borderColor:'#1F618D'
       }]
     },
@@ -199,8 +202,7 @@ var ctx3 = document.getElementById('myChart');
     }
   });
 </script>
-{% endif %}
-{%endblock%}
+{% endif %} {%endblock%}
 
 <h2 class="fw-bolder fs-2 m-4 ms-5">Comment User</h2>
 {%for com in comment %}
