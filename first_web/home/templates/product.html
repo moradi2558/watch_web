@@ -1,16 +1,567 @@
 {% extends 'main.html' %} {% block title %}product{% endblock %}{% load static%}
 {% block body%}
 <link rel="stylesheet" href="{% static 'product.css' %}" />
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
+    integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+    crossorigin="anonymous"
+  />
 <body style="background-color: white">
-  <div class="d-flex flex-wrap mt-2">
+   <div class="container-fluid d-lg-none">
+    <div class="mt-4 pb-3 border-bottom d-sm-flex flex-sm-wrap flex-sm-row-reverse">
+      <form method="post" action="{% url 'home:product_search' %}" class="d-flex col-sm-5 justify-content-sm-end justify-content-center mb-3 mb-sm-0">
+        {% csrf_token %}
+        <div class="d-flex align-items-end justify-content-between"> 
+        {{form}}
+        <button type="submit" class="btn btn-outline-dark ms-1"><i class="fa fa-search"></i></button>
+      </div>
+      </form>
+      <div class="buttons d-flex col-sm-7 align-items-center justify-content-sm-start justify-content-center">
+   <!-- filter -->
+    <div class="filter mx-3">
+  <a style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+   Filter <svg xmlns="http://www.w3.org/2000/svg" style="width: 25px;height:25px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+  </svg>
+  </i>
+  </a>
+  <div class="offcanvas offcanvas-bottom" style="height: 90vh!important;" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasBottomLabel">Filter</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                Prices range
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree">
+              <div class="accordion-body">
+                <form action="" class="d-flex justify-content-center">
+                  <div>
+                    <div
+                    class="wrapper">
+                        <div class="values">
+                          <span id="range1"> {{min_price}} </span>
+                          <span> &dash; </span>
+                          <span id="range2"> {{max_price}} </span>
+                        </div>
+                        <div class="containere">
+                          <div class="slider-track"></div>
+                          <input
+                            name="price_1"
+                            type="range"
+                            min="{{min_price}}"
+                            max="{{max_price}}"
+                            value="{{min_price}}"
+                            id="slider-1"
+                            oninput="slideOne()"
+                            />
+                            <input
+                            name="price_2"
+                            type="range"
+                            min="{{min_price}}"
+                            max="{{max_price}}"
+                            value="{{max_price}}"
+                            id="slider-2"
+                            oninput="slideTwo()"
+                            />
+                          </div>
+                        </div>
+                      </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Brand
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
+              <div class="accordion-body p-0 m-0">{{ filter.form.brand }}</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Color
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo">
+              <div class="accordion-body p-0 m-0">{{ filter.form.color }}</div>
+            </div>
+          </div>
+        </div>
+          <div style="display: flex;flex-direction: column;margin-top: 2rem;">
+            <button type="submit" class="btn btn-outline-dark btn-lg">submit</button>
+          </div>
+        </form> 
+      </div>
+      </div>
+    </div>
+   <!-- Endfilter -->
+    <!-- toolbox -->
+    <div class="toolbox mx-3">
+      <a style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom3" aria-controls="offcanvasBottom3">
+        Sort <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+          <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+        </svg>
+        </a>
+        <div class="offcanvas offcanvas-bottom" style="height: 90vh!important;" tabindex="-1" id="offcanvasBottom3" aria-labelledby="offcanvasBottom3Label">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasBottom3Label">Toolbox</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <form action="">
+              <div class="toolbox-right">
+                <input type = "submit" name = "price" value="expensive">
+                <input type = "submit" name = "price" value="cheap">
+                <input type = "submit" name = "create" value="old">
+                <input type = "submit" name = "discount" value="most_discout">
+                <input type = "submit" name = "favourite" value="most_popular">
+                <input type = "submit" name = "sell" value="most_sell">
+                  <div style="display: none">
+                      {{ filter.form.brand }}
+                      {{ filter.form.color }}
+                      {% if 'search' in request.GET %}
+                      {{form}}
+                      {%endif%}
+                  </div>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    <!-- Endtoolbox -->
+    <!-- category -->
+    <div class="category mx-3">
+      <a style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom2" aria-controls="offcanvasBottom2">
+        Category <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-watch" viewBox="0 0 16 16">
+          <path d="M8.5 5a.5.5 0 0 0-1 0v2.5H6a.5.5 0 0 0 0 1h2a.5.5 0 0 0 .5-.5V5z"/>
+          <path d="M5.667 16C4.747 16 4 15.254 4 14.333v-1.86A5.985 5.985 0 0 1 2 8c0-1.777.772-3.374 2-4.472V1.667C4 .747 4.746 0 5.667 0h4.666C11.253 0 12 .746 12 1.667v1.86a5.99 5.99 0 0 1 1.918 3.48.502.502 0 0 1 .582.493v1a.5.5 0 0 1-.582.493A5.99 5.99 0 0 1 12 12.473v1.86c0 .92-.746 1.667-1.667 1.667H5.667zM13 8A5 5 0 1 0 3 8a5 5 0 0 0 10 0z"/>
+        </svg>
+        
+        </a>
+        <div class="offcanvas offcanvas-bottom" style="height: 90vh!important;" tabindex="-1" id="offcanvasBottom2" aria-labelledby="offcanvasBottom2Label">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasBottom2Label">Category</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body d-flex justify-content-center">
+              <div style="display: grid;grid-template-columns: 25vw 25vw;justify-items: center;">
+                {% for data in category %}
+                <div style="width: 100%;height:70vh" class="category-container">
+                  <div style="display: grid;justify-items: center;border-bottom: 1px solid rgba(0, 0, 0, 0.1);width: 100%;">
+                      <a href="{{data.get_absolute_url}}" style="font-size: 1.5rem;font-weight: 700;">{{data.name}}</a>
+                  </div>
+                  <div>
+                    {% for info in data.sub.all %}
+                    <div style="display: grid;justify-content: center;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" class="sub-category">
+                      <a href="{{info.get_absolute_url}}" style="padding: 3vh 8vw;font-size: 1rem;" class="sub-category">{{info.name}}</a>
+                    </div>
+                      {%endfor%}
+                  </div>
+                </div>
+                  {%endfor%}
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- Endcategory -->
+    </div>
+  </div>
+  <!-- products for xs-->
+  <div class="py-5 d-sm-none">
+    {% for product in products %}
+    <div class="card mb-3 border-0 border-bottom pb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-4">
+          <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+           <img src="{{product.image.url}}" class="img-fluid rounded-start" style="height: 30vh;" alt="watch">
+          </a>
+        </div>
+        <div class="col-8 d-flex">
+          <div class="card-body d-flex flex-column justify-content-between">
+          <a href="{{product.get_absolute_url}}" class="text-decoration-none">
+            <h5 class="card-title">{{product.name}}</h5>
+          </a>
+          {% if product.discount %}
+          <div class="d-flex justify-content-between">
+            <div>
+              <p class="card-text mt-2" style="text-decoration: line-through"><small class="text-muted">{{product.unit_price}}$</small></p>
+              <h5 class="card-text">{{product.total_price}}$</h5>
+            </div>
+            <div class="d-flex flex-column justify-content-between align-items-center">
+              <span class="badge rounded-pill bg-danger mt-2">% {{product.discount}}</span>
+              <div>{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-text">{{product.total_price}}$</h5>
+            <div class="me-2">{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+          </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Endproducts for xs-->
+  <!-- products for sm-->
+  <div class="py-5 d-none d-sm-block d-md-none">
+    <div style="display: grid;grid-template-columns: repeat(2,42vw);justify-content: space-around;">
+    {% for product in products %}
+    <div class="card mb-3">
+      <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+        <img src="{{product.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+       </a>
+      <div class="card-body d-flex flex-column justify-content-between">
+        <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center">
+          <h6 class="card-title" style="height: 50px;overflow: hidden;">{{product.name}}</h6>
+        </a>
+        {% if product.discount %}
+            <div class="d-flex justify-content-between align-items-end">
+              <div>
+                <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{product.unit_price}}$</small></p>
+                <h6 class="card-text mt-2">{{product.total_price}}$</h6>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <span class="badge rounded-pill bg-danger">% {{product.discount}}</span>
+               <div class="mt-2">{{product.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+              </div>
+            </div>
+            {% else %}
+            <div class="d-flex justify-content-between align-items-end">
+              <div>
+                <div style="height: 25px;"></div>
+                <h6 class="card-text">{{product.total_price}}$</h6>
+              </div>
+              <div class="me-2">{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+              {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  </div>  
+  <!-- Endproducts for sm-->
+  <!-- products for md-->
+<div class="py-5 d-none d-md-block">
+  <div style="display: grid;grid-template-columns: repeat(3,240px);justify-content: space-around;">
+  {% for product in products %}
+  <div class="card mb-3">
+    <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+      <img src="{{product.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+     </a>
+    <div class="card-body d-flex flex-column justify-content-between">
+      <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center">
+        <h6 class="card-title" style="height: 50px;overflow: hidden;">{{product.name}}</h6>
+      </a>
+      {% if product.discount %}
+          <div class="d-flex justify-content-between align-items-end">
+            <div>
+              <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{product.unit_price}}$</small></p>
+              <h6 class="card-text mt-2">{{product.total_price}}$</h6>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <span class="badge rounded-pill bg-danger">% {{product.discount}}</span>
+             <div class="mt-2">{{product.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-between align-items-end">
+            <div>
+              <div style="height: 25px;"></div>
+              <h6 class="card-text">{{product.total_price}}$</h6>
+            </div>
+            <div class="me-2">{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+          </div>
+            {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+  <!-- Endproducts for md-->
+</div>
+  <!--large-->
+<div class="container-fluid d-none d-lg-block">
+ <div class="d-flex flex-wrap my-5 justify-content-between">
+  <div class="filters col-3 ms-3 mt-5" style="width: 22vw;">
+    <div class="border px-3 py-3 rounded-4">
+    <h3>Filters <svg xmlns="http://www.w3.org/2000/svg" style="width: 30px;height:30px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+    </svg></h3>
+    <form method="post" action="{% url 'home:product_search' %}" class="d-flex mb-2 mt-4">
+      {% csrf_token %}
+      <div class="d-flex justify-content-center align-items-end" style="width: 20vw;"> 
+      {{form}}
+      <button type="submit" class="btn btn-outline-dark ms-1"><i class="fa fa-search"></i></button>
+    </div>
+    </form>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                Prices range
+              </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree">
+              <div class="accordion-body">
+                <form action="" class="d-flex justify-content-center">
+                  <div>
+                    <div
+                    class="wrapper">
+                        <div class="values">
+                          <span id="range3"> {{min_price}} </span>
+                          <span> &dash; </span>
+                          <span id="range4"> {{max_price}} </span>
+                        </div>
+                        <div class="containere">
+                          <div class="slider-track2"></div>
+                          <input
+                            name="price_1"
+                            type="range"
+                            min="{{min_price}}"
+                            max="{{max_price}}"
+                            value="{{min_price}}"
+                            id="slider-3"
+                            oninput="slideThree()"
+                            />
+                            <input
+                            name="price_2"
+                            type="range"
+                            min="{{min_price}}"
+                            max="{{max_price}}"
+                            value="{{max_price}}"
+                            id="slider-4"
+                            oninput="slideFour()"
+                            />
+                          </div>
+                        </div>
+                      </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Brand
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne">
+              <div class="accordion-body p-0 m-0">{{ filter.form.brand }}</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Color
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo">
+              <div class="accordion-body p-0 m-0">{{ filter.form.color }}</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                Category
+              </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour">
+              <div class="accordion-body">
+                <div class="d-flex justify-content-center">
+                  <div style="display: grid;grid-template-columns: 8vw 8vw;justify-items: center;">
+                    {% for data in category %}
+                    <div style="width: 100%;" class="category-container">
+                      <div style="display: grid;justify-items: center;border-bottom: 1px solid rgba(0, 0, 0, 0.1);width: 100%;">
+                          <a href="{{data.get_absolute_url}}" style="font-size: 1.5rem;font-weight: 700;">{{data.name}}</a>
+                      </div>
+                      <div>
+                        {% for info in data.sub.all %}
+                        <div style="display: grid;justify-content: center;border-bottom: 1px solid rgba(0, 0, 0, 0.1);" class="sub-category">
+                          <a href="{{info.get_absolute_url}}" style="padding: 3vh 2vw;font-size: 1rem;" class="sub-category">{{info.name}}</a>
+                        </div>
+                          {%endfor%}
+                      </div>
+                    </div>
+                      {%endfor%}
+                  </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div style="display: flex;flex-direction: column;margin-top: 2rem;">
+            <button type="submit" class="btn btn-outline-dark btn-lg">submit</button>
+          </div>
+  </div>
+  </div>
+  <div class="col-9">
+    <div class="toolbox px-3 pb-1 mb-3 border-bottom">
+      <form action="">
+        <div class="toolbox-right">
+          <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-sort-down" viewBox="0 0 16 16">
+            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+          </svg> Sort :</span>
+          <input type = "submit" name = "price" value="expensive">
+          <input type = "submit" name = "price" value="cheap">
+          <input type = "submit" name = "create" value="old">
+          <input type = "submit" name = "discount" value="most_discout">
+          <input type = "submit" name = "favourite" value="most_popular">
+          <input type = "submit" name = "sell" value="most_sell">
+            <div style="display: none">
+                {{ filter.form.brand }}
+                {{ filter.form.color }}
+                {% if 'search' in request.GET %}
+                {{form}}
+                {%endif%}
+            </div>
+        </div>
+    </form>
+    </div>
+  <div class="products col-12">
+      <div style="display: grid;grid-template-columns: repeat(4,17vw);justify-content: space-around;">
+      {% for product in products %}
+      <div class="card mb-3">
+        <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+          <img src="{{product.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+         </a>
+        <div class="card-body d-flex flex-column justify-content-between">
+          <a href="{{product.get_absolute_url}}" class="text-decoration-none text-center">
+            <h6 class="card-title" style="height: 40px;overflow: hidden;">{{product.name}}</h6>
+          </a>
+          {% if product.discount %}
+              <div class="d-flex justify-content-between align-items-end">
+                <div>
+                  <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{product.unit_price}}$</small></p>
+                  <h6 class="card-text mt-2">{{product.total_price}}$</h6>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                  <span class="badge rounded-pill bg-danger">% {{product.discount}}</span>
+                 <div class="mt-2">{{product.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+              </div>
+              {% else %}
+              <div class="d-flex justify-content-between align-items-end">
+                <div>
+                  <div style="height: 25px;"></div>
+                  <h6 class="card-text">{{product.total_price}}$</h6>
+                </div>
+                <div class="me-2">{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+              </div>
+                {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5 pt-5">
+    <ul class="pagination">
+      {% if products.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+          >Previous</a
+        >
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+          >{{products.previous_page_number}}</a
+        >
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="">Previous</a>
+      </li>
+      {% endif %}
+      <li class="page-item {% if page_num == page_num %} active {% endif %}">
+        <a class="page-link" href="?page={{products.number}}&{{data}}"
+          >{{products.number}}</a
+        >
+      </li>
+      {% if products.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}"
+          >{{products.next_page_number}}</a
+        >
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}">next</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="">next</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+ </div>
+</div>
+</div>
+  <!-- Endlarge -->
+  <!-- pagination -->
+  <nav aria-label="Page navigation example" class="d-flex justify-content-center d-lg-none">
+    <ul class="pagination">
+      {% if products.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+          >Previous</a
+        >
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
+          >{{products.previous_page_number}}</a
+        >
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="">Previous</a>
+      </li>
+      {% endif %}
+      <li class="page-item {% if page_num == page_num %} active {% endif %}">
+        <a class="page-link" href="?page={{products.number}}&{{data}}"
+          >{{products.number}}</a
+        >
+      </li>
+      {% if products.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}"
+          >{{products.next_page_number}}</a
+        >
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}">next</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><a class="page-link" href="">next</a></li>
+      {% endif %}
+    </ul>
+  </nav> 
+  <!-- Endpagination -->
+  <!-- <div class="d-flex flex-wrap mt-2">
+    <i class="fas fa-toolbox"></i>
     <div class="col-3 mt-5 d-flex flex-column">
       <div class="d-flex flex-column align-items-center">
-      <!-- search-box -->
+       search-box
       <form method="post" action="{% url 'home:product_search' %}">
         {% csrf_token %} {{form}}
         <button type="submit">search</button>
       </form>
-      <!-- category -->
+       category
       <div class="d-flex justify-content-between mt-3" style="width: 18rem;">
         {% for data in category %}
         <div>
@@ -53,12 +604,12 @@
                   {%endif%}
                   {% comment %} {{ filter.form.size }} {% endcomment %}
               </div>
-          </div><!-- End .toolbox-right -->
+          </div>End .toolbox-right
       </form>
-    </div><!-- End .toolbox -->
+    </div> End .toolbox
   <hr>
     <br>
-      <!-- double range slider -->
+       double range slider
       <form action="">
       <div
         class="wrapper d-flex flex-column justify-content-center align-items-center">
@@ -111,8 +662,8 @@
       <div>
         <button type="submit" class="btn btn-dark">submit</button>
       </div>
-    </form>
     </div>
+  </form>
     <div class="col-9 row d-flex flex-wrap mt-2 p-3">
       {% for product in products %}
       <div
@@ -169,7 +720,8 @@
         {% endif %}
       </ul>
     </nav> 
-  </div>
+  </div> -->
   <script src="{% static 'product.js' %}"></script>
+  <script src="{% static 'product2.js' %}"></script>
 </body>
 {% endblock %}
