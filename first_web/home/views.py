@@ -55,13 +55,10 @@ def all_product(request, slug=None, id=None):
             paginator = Paginator(page_obj,9)
             page_num = request.GET.get('page')
             data = request.GET.copy()
-            if 'page' in data:
-                del data['page']
             page_obj = paginator.get_page(page_num)
     return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
                                             'category': category,'form':form,'filter':filter,
-                                            'max_price':max_price,'min_price':min_price,
-                                            'data':urlencode(data),})
+                                            'max_price':max_price,'min_price':min_price,})
 
 
 def product_detail(request,id):

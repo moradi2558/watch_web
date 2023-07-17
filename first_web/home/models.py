@@ -7,6 +7,7 @@ from django.forms import ModelForm
 from django.db.models import Avg
 from django.db.models.signals import post_save
 from django_jalali.db import models as jmodels 
+from django.utils import timezone
 # Create your models here.
 
 
@@ -83,7 +84,16 @@ class Product(models.Model):
             total = (self.discount*self.unit_price)/100
             return int(self.unit_price - total)
         return self.total_price
+    
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        self.old_price = self.unit_price 
 
+    def save(self,*args, **kwargs):
+        if self.old_price != self.unit_price :
+            self.update = timezone.now()
+        super().save(*args, **kwargs)
 
 
 class Size(models.Model):
@@ -116,6 +126,15 @@ class Variant(models.Model):
             total = (self.discount*self.unit_price)/100
             return int(self.unit_price - total)
         return self.total_price
+    
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args, **kwargs)
+        self.old_price = self.unit_price 
+
+    def save(self,*args, **kwargs):
+        if self.old_price != self.unit_price :
+            self.update = timezone.now()
+        super().save(*args, **kwargs)
     
     
 class Comment(models.Model):
@@ -174,6 +193,11 @@ class Chart(models.Model):
     
     def __str__(self):
         return self.name 
+    
+    def save(self,*args, **kwargs):
+        old_data = Chart.objects.filter(product__exact = self.product,unit_price__exact = self.unit_price)
+        if not old_data.exists():
+            return super(Chart,self).save(*args, **kwargs)
        
 def product_post_saved(sender,instance,created,*args,**kwargs):
     data = instance 
