@@ -177,6 +177,7 @@ a{
 }
 .sub-category:hover{
 background-color:rgb(224, 224, 224)!important;
+overflow: hidden;
 }
 
 label[for = "id_search"]{
