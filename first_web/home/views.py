@@ -28,7 +28,7 @@ def all_product(request, slug=None, id=None):
     category = Category.objects.filter(sub_cat=False)
     filter = ProductFilter(request.GET,queryset=products)
     products = filter.qs 
-    paginator = Paginator(products,9)
+    paginator = Paginator(products,12)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     form = SearchForm()
@@ -40,7 +40,7 @@ def all_product(request, slug=None, id=None):
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
         page_obj = products.filter(Category=data)
-        paginator = Paginator(page_obj,9)
+        paginator = Paginator(page_obj,12)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
         data = request.GET.copy()
@@ -52,7 +52,7 @@ def all_product(request, slug=None, id=None):
          if form.is_valid():
             info = form.cleaned_data['search']
             page_obj = products.filter(Q(name__icontain=info))
-            paginator = Paginator(page_obj,9)
+            paginator = Paginator(page_obj,12)
             page_num = request.GET.get('page')
             data = request.GET.copy()
             page_obj = paginator.get_page(page_num)
