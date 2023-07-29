@@ -17,10 +17,23 @@
 <body style="background-color: white">
    <div class="container-fluid d-lg-none">
     <div class="mt-4 pb-3 border-bottom d-sm-flex flex-sm-wrap flex-sm-row-reverse">
-      <form method="post" action="{% url 'home:product_search' %}" class="d-flex col-sm-5 justify-content-sm-end justify-content-center mb-3 mb-sm-0">
+      <form method="post" action="product" class="d-flex col-sm-5 justify-content-sm-end justify-content-center mb-3 mb-sm-0">
         {% csrf_token %}
         <div class="d-flex align-items-end justify-content-between"> 
-        {{form}}
+          {% if 'search' in request.GET %}
+            {{ form }}
+          {% endif %}
+          <div style="display: none">
+            {{ filter.form.brand }}
+            {{ filter.form.color }}
+            {{ filter.form.category }}
+            <input type = "submit" name = "price" value="expensive">
+            <input type = "submit" name = "price" value="cheap">
+            <input type = "submit" name = "create" value="old">
+            <input type = "submit" name = "discount" value="most_discout">
+            <input type = "submit" name = "favourite" value="most_popular">
+            <input type = "submit" name = "sell" value="most_sell">
+          </div>
         <button type="submit" class="btn btn-outline-dark ms-1"><i class="fa fa-search"></i></button>
       </div>
       </form>
@@ -80,6 +93,17 @@
                           </div>
                         </div>
                       </div>
+                      <div style="display: none">
+                        <input type = "submit" name = "price" value="expensive">
+                        <input type = "submit" name = "price" value="cheap">
+                        <input type = "submit" name = "create" value="old">
+                        <input type = "submit" name = "discount" value="most_discout">
+                        <input type = "submit" name = "favourite" value="most_popular">
+                        <input type = "submit" name = "sell" value="most_sell">
+                        
+                            {{ form }}
+                        
+                      </div>
               </div>
             </div>
           </div>
@@ -136,9 +160,10 @@
                   <div style="display: none">
                       {{ filter.form.brand }}
                       {{ filter.form.color }}
-                      {% if 'search' in request.GET %}
+                      {{ filter.form.category }}
+                      
                       {{form}}
-                      {%endif%}
+                     
                   </div>
               </div>
           </form>
@@ -307,7 +332,7 @@
     <h3>Filters <svg xmlns="http://www.w3.org/2000/svg" style="width: 30px;height:30px" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
     </svg></h3>
-    <form method="post" action="{% url 'home:product_search' %}" class="d-flex mb-2 mt-4">
+    <form method="post" action="{% url 'home:product' %}" class="d-flex mb-2 mt-4">
       {% csrf_token %}
       <div class="d-flex justify-content-center align-items-end" style="width: 20vw;"> 
       {{form}}
@@ -557,8 +582,11 @@
     <div class="col-3 mt-5 d-flex flex-column">
       <div class="d-flex flex-column align-items-center">
        search-box
-      <form method="post" action="{% url 'home:product_search' %}">
-        {% csrf_token %} {{form}}
+      <form method="post" action="{% url 'home:product' %}">
+        {% csrf_token %} 
+        {% if 'search' in request.GET %}
+            {{ form }}
+          {% endif %}
         <button type="submit">search</button>
       </form>
        category

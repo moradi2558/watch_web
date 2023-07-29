@@ -1,7 +1,7 @@
 import  django_filters
 from django import forms 
 from .models import* 
-class  ProductFilter(django_filters.FilterSet):
+class ProductFilter(django_filters.FilterSet):
     Choice_1 = {
         ('expensive','expensive'),
         ('cheap','cheap'),

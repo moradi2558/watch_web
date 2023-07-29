@@ -10,52 +10,76 @@ from django.core.paginator import Paginator
 from.filters import*
 from urllib.parse import urlencode 
 from accounts.models import Profile
+from django.views.generic.list import ListView
 
 # Create your views here.
 
 
-def home(request):
-    category = Category.objects.filter(sub_cat=False)
-    return render(request, 'home.html', {'category': category})
+class Home(ListView):
+    model = Product
+    template_name = 'home.html'
+    context_object_name = 'products'
+
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
+        context['brands'] = Brand.objects.all()
+        context['category'] = Category.objects.filter(sub_cat=False)
+        return context
 
 
 def all_product(request, slug=None, id=None):
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('id')
     min = Product.objects.aggregate(unit_price = Min('unit_price'))
     min_price = int(min['unit_price'])
     max = Product.objects.aggregate(unit_price = Max('unit_price'))
     max_price = int(max['unit_price'])
+    filter = ProductFilter(request.GET, queryset=products)
     category = Category.objects.filter(sub_cat=False)
-    filter = ProductFilter(request.GET,queryset=products)
     products = filter.qs 
     paginator = Paginator(products,12)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
     form = SearchForm()
-    data = request.GET.copy()
-    if 'page' in data:
-        del data ['page']
     page_obj = paginator.get_page(page_num)
     category = Category.objects.filter(sub_cat=False)
+    if 'search' in request.GET:
+        slug = None 
+        id = None 
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            info = form.cleaned_data['search']
+            if data.isdigit():
+                products = products.filter(Q(discount__exact = data)|Q(unit_price__exact = data))
+            else:
+                products = products.filter(Q(name__icontains=info)).order_by('-id')
+            filter = ProductFilter(request.GET, queryset=products)
+            products = filter.qs
+            paginator = Paginator(products,12)
+            page_num = request.GET.get('page')
+            page_obj = paginator.get_page(page_num)
     if slug and id:
         data = get_object_or_404(Category, slug=slug, id=id)
-        page_obj = products.filter(Category=data)
-        paginator = Paginator(page_obj,12)
+        products = Product.objects.filter(category=data).order_by('-id')
+        filter = ProductFilter(request.GET, queryset=products, )
+        products = filter.qs
+        paginator = Paginator(products, 2)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
-        data = request.GET.copy()
         if 'page' in data:
             del data ['page']
-        page_obj = paginator.get_page(page_num)
-    if 'search' in request.GET:
-         form = SearchForm(request.GET)
-         if form.is_valid():
-            info = form.cleaned_data['search']
-            page_obj = products.filter(Q(name__icontain=info))
-            paginator = Paginator(page_obj,12)
-            page_num = request.GET.get('page')
-            data = request.GET.copy()
-            page_obj = paginator.get_page(page_num)
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data['search']
+            if data.isdigit():
+                products = products.filter(Q(discount__exact = data)|Q(unit_price__exact = data))
+            else:
+                products = products.filter(Q(name__icontains = data))
+                filter = ProductFilter(request.GET, queryset=products)
+                products = filter.qs
+                paginator = Paginator(products,12)
+                page_num = request.GET.get('page')
+                page_obj = paginator.get_page(page_num)
     return render(request, 'product.html', {'products': page_obj,'page_num':page_num,
                                             'category': category,'form':form,'filter':filter,
                                             'max_price':max_price,'min_price':min_price,})
