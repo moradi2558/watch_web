@@ -1,349 +1,517 @@
 {% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%}
 {% block body %}
+
 <head>
-  {% load bootstrap5 %} {% load jformat %} {% bootstrap_css %} {%bootstrap_javascript %}
+  {% load jformat %}
   <link rel="stylesheet" href="{% static 'detail.css' %}" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
     integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-    crossorigin="anonymous"
-  />
-  <!-- <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-   <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>  -->
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<h1>{{products.name}}</h1>
-<h4>rate:{{products.average}}</h4>
-<br />
-<img
-  style="width: 8rem; height: 8rem"
-  src="{{products.image.url}}"
-  alt=""
-/><br />
-{% if user.is_authenticated%} فرم سفارش دادن محصول
-<div class="card">
+<body>
+  <div class="mt-3 d-flex flex-column flex-md-row">
+    <!-- shortcut -->
+    <!-- md to down -->
+    <div class="d-flex d-md-none col-10 offset-2 mb-3">
+      <div class="me-3 d-flex align-items-end">
+        {% if is_favourite %}
+        <a href="{% url 'home:favourite' products.id %}">
+          <i class="fa fa-heart" style="color: red; font-size: 1.5rem"></i></a>
+        {% else %}
+        <a href="{% url 'home:favourite' products.id %}">
+          <i class="far fa-heart" style="color: black; font-size: 1.5rem"></i></a>
+        {% endif %}
+      </div>
+      <div class="fs-4">/</div>
+      <div class="mx-3 d-flex align-items-end">
+        <form action="{% url 'cart:compare' products.id %}">
+          <input class="d-none" type="text" name="product" value="{{product.id}}" />
+          <button type="submit" class="border-0 bg-white">
+            <svg style="cursor: pointer;" height="25" viewBox="0 0 16 16" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m1758 245c.55228 0 1 .447715 1 1v1h6c.55228 0 1 .447715 1 1v10c0 .552285-.44772 1-1 1h-6v1c0 .552285-.44772 1-1 1s-1-.447715-1-1v-1h-3v-2h3v-8h-3v-2h3v-1c0-.552285.44772-1 1-1zm-6 10v2h1v2h-2c-.55228 0-1-.447715-1-1v-3zm7 2h5v-8h-5zm-7-5v2h-2v-2zm1-5v2h-1v2h-2v-3c0-.552285.44772-1 1-1z"
+                fill="#293040" transform="translate(-1750 -245)" />
+            </svg>
+          </button>
+        </form>
+      </div>
+      <div class="fs-4">/</div>
+      <div class="ms-3 d-flex align-items-end">
+        <i class='fas fa-chart-line' style="font-size: 1.5rem;cursor: pointer;" data-bs-toggle="modal"
+          data-bs-target="#exampleModal"></i>
+      </div>
+    </div>
+    <!--End md to down -->
+    <!-- md to up -->
+    <div class="d-none d-md-flex col-1 flex-column align-items-center">
+      <div class="border px-3 rounded-4 py-2">
+      <div class="border-bottom my-3 d-flex justify-content-center px-2 pb-1" style="width: 24px;">
+        {% if is_favourite %}
+        <a href="{% url 'home:favourite' products.id %}">
+          <i class="fa fa-heart" style="color: red; font-size: 1.5rem"></i></a>
+        {% else %}
+        <a href="{% url 'home:favourite' products.id %}">
+          <i class="far fa-heart" style="color: black; font-size: 1.5rem"></i></a>
+        {% endif %}
+      </div>
+      <div class="border-bottom my-3 d-flex justify-content-center px-2 pb-1" style="width: 24px;">
+        <form action="{% url 'cart:compare' products.id %}">
+          <input class="d-none" type="text" name="product" value="{{product.id}}" />
+          <button type="submit" class="border-0 bg-white">
+            <svg style="cursor: pointer;" height="25" viewBox="0 0 16 16" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m1758 245c.55228 0 1 .447715 1 1v1h6c.55228 0 1 .447715 1 1v10c0 .552285-.44772 1-1 1h-6v1c0 .552285-.44772 1-1 1s-1-.447715-1-1v-1h-3v-2h3v-8h-3v-2h3v-1c0-.552285.44772-1 1-1zm-6 10v2h1v2h-2c-.55228 0-1-.447715-1-1v-3zm7 2h5v-8h-5zm-7-5v2h-2v-2zm1-5v2h-1v2h-2v-3c0-.552285.44772-1 1-1z"
+                fill="#293040" transform="translate(-1750 -245)" />
+            </svg>
+          </button>
+        </form>
+      </div>
+      <div class="border-bottom my-3 d-flex justify-content-center px-2 pb-1" style="width: 24px;">
+        <i class='fas fa-chart-line' style="font-size: 1.5rem;cursor: pointer;" data-bs-toggle="modal"
+          data-bs-target="#exampleModal"></i>
+      </div>
+    </div>
+    </div>
+    <!--End md to up -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Chart</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="col-12">
+              <canvas id="myChart" class="bg-secondary-subtle col-12"></canvas>
+            </div>
+            {% block scripts %}
+            {% if products.status == 'None' %}
+            <script>
+              var ctx3 = document.getElementById('myChart');
+              new Chart(ctx3, {
+                type: 'line',
+                data: {
+                  labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
+                datasets: [{
+                  label: '# of Votes',
+                  data: [{% for i in update %}{{ i.unit_price }}, {% endfor %}],
+                borderWidth: 4,
+                fill : true,
+                backgroundColor: '#9BD0F5',
+                borderColor: '#1F618D',
+        }]
+      },
+                options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                },
+              }
+  });
+            </script>
+            {% else %}
+            <script>
+              var ctx2 = document.getElementById('myChart');
+
+              new Chart(ctx2, {
+                type: 'line',
+                data: {
+                  labels: [{% for i in change %}{% if variants.id == i.variant_id %}'{{i.update|jformat:"%A %d %B %Y"}}'{% endif %}, {% endfor %}],
+              datasets: [{
+                label: '# of Votes',
+                data: [{% for i in change %}{% if variants.id == i.variant_id %}{ { i.unit_price } } {% endif %}, {% endfor %}],
+              borderWidth: 4,
+                fill : true,
+                  backgroundColor: '#9BD0F5',
+                    borderColor: '#1F618D'
+      }]
+    },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+  });
+            </script>
+            {% endif %} {%endblock%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endshortcut -->
+    <!-- gallery -->
+    <div class="col-10 col-md-6 rounded-2 border justify-content-between d-flex flex-column offset-1 offset-md-0">
+      <div class="col-12">
+        <div style="position: absolute;height: 60vh;"
+          class="col-10 col-md-6 d-flex justify-content-between align-items-center">
+          <div style="display: flex;align-items: center;height: 60vh;cursor: pointer;" class="ps-3 pe-4 prev">
+            <i class="fa fa-chevron-left fs-3"></i>
+          </div>
+          <div style="display: flex;align-items: center;height: 60vh;cursor: pointer;" class="ps-4 pe-3 next">
+            <i class="fa fa-chevron-right fs-3"></i>
+          </div>
+        </div>
+        <img src="{{products.image.url}}" alt="" class="col-12 main-img" style="height: 60vh;" />
+      </div>
+      <div class="d-flex" style="overflow-x: auto;" id="scrollbar1">
+        <img src="{{products.image.url}}" alt="" class="border my-2 mx-2 rounded-3 images"
+          style="width: 10vw;height:15vh;cursor: pointer;" />
+        {% for img in image %}
+        <img src="{{img.image.url}}" alt="" class="border my-2 mx-2 rounded-3 images"
+          style="width: 10vw;height:15vh;cursor: pointer;" />
+        {%endfor%}
+      </div>
+    </div>
+    <!-- Endgallery -->
+<!-- md to up -->
+    <div class="col-5 ps-2 pe-2 d-none d-md-block">
+      <div class="col-11 d-flex flex-column justify-content-between h-100">
+        <div>
+        <!-- product name -->
+      <div>
+        <h4 style="font-style: italic;text-transform: capitalize;">{{products.name}}</h4>
+      </div>
+        <!-- End product name -->
+        <!-- product average -->
+      <div>
+        <i class="fa fa-star {% if products.average < 1 %}text-secondary{% else %} text-warning {% endif %}"></i>
+        <i class="fa fa-star {% if products.average < 2 %}text-secondary{% else %} text-warning {% endif %}"></i>
+        <i class="fa fa-star {% if products.average < 3 %}text-secondary{% else %} text-warning {% endif %}"></i>
+        <i class="fa fa-star {% if products.average < 4 %}text-secondary{% else %} text-warning {% endif %}"></i>
+        <i class="fa fa-star {% if products.average < 5 %}text-secondary{% else %} text-warning {% endif %}"></i>
+        <span class="ms-4">
+          {{products.num_view}} <i class="fas fa-eye"></i>
+        </span>
+      </div>
+        <!-- End product average -->
+        <!-- des -->
+      <div class="my-2">
+      <p>{{products.information|safe}}</p>
+      </div>
+        <!-- End des -->
+      </div>
+        <div>
+          <div class="d-flex justify-content-between align-items-center">
+        <!-- color -->
+      {% if products.status == 'Color' %}
+      <div>
+      <h5 class="my-2">Color</h5>
+    <form action="" method="post">
+    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+        {% csrf_token %} {% for data in variant %}
+        <input type="radio" class="btn-check" autocomplete="off" value="{{data.id}}" 
+        {% if variants.id == data.id %} checked {% endif %} name='select' onchange="this.form.submit();">
+      <label class="label rounded-circle btn d-flex ms-2 justify-content-center align-items-center" style="border: 1px solid black;">{{ data.color_variant }}</label>
+        {% endfor %} 
+      </div>
+    </form>
+  </div>
+  {% endif %}
+        <!-- End color -->
+    <!-- like & unlike -->
+    <div class="border col-4 rounded-5 d-flex align-self-end" style="height: 3rem;">
+      {% if request.user.is_authenticated %}
+      <div class="border-end d-flex align-items-center justify-content-center py-2 rounded-start-5" style="flex-grow: 1;">
+      {% if is_like %}
+      <a href="{% url 'home:product_like'  products.id %}"
+        class="{% if is_unlike %}disabled{% endif %}"><i class="fas fa-thumbs-up text-black fs-5 piss"></i></a>
+      {% else %}
+      <a href="{% url 'home:product_like' products.id %}"
+        class="{% if is_unlike %}disabled{% endif %}"><i class="far fa-thumbs-up text-black fs-5"></i></a>
+      {% endif %}
+    </div>
+    <div class="d-flex align-items-center justify-content-center py-2 rounded-end-5" style="flex-grow: 1;"> 
+      {% if is_unlike %}
+      <a href="{% url 'home:product_unlike' products.id %}"
+       class="{% if is_like %}disabled{% endif %}"><i class="fas fa-thumbs-down text-black fs-5 dis" style="transform: scaleX(-1);"></i></a>
+      {% else %}
+      <a href="{% url 'home:product_unlike' products.id  %}"
+        class="{% if is_like %}disabled{% endif %}"><i class="far fa-thumbs-down text-black fs-5" style="transform: scaleX(-1);"></i></a>
+        {% endif %}
+      </div> 
+      {% endif %}
+    </div>
+    <!-- End like & unlike -->
+  </div>
+  <div class="d-flex align-items-end mt-3">
+  <!-- price -->
+    <div class="ms-3 mb-2 me-2">
+    {%if products.status == "None"%} {% if products.discount %}
+    <span style="text-decoration: line-through;font-family: sans-serif;" class="text-muted">
+     {{products.unit_price}}$
+    </span>
+  <h5 style="font-family: sans-serif;margin: 0;">{{products.total_price}}$</h5>
+  {% else %}
+  <h5 style="font-family: sans-serif;margin: 0;">{{products.total_price}}$</h5>
+  {% endif %} {%else%}
+  <h5 style="font-family: sans-serif;margin: 0;">{{variants.total_price}}$</h5>
+  {%endif%}
+  </div>
+  <!-- End price -->
+  <!-- add to cart -->
+  {% if user.is_authenticated%}
+  <div class="col-7 d-flex">
+    {% if products.status != 'None' %}
+    <form method="post" action="{% url 'cart:add_cart' products.id %}">
+      {%csrf_token%}
+      <input type="hidden" name="select" value="{{variants.id}}" />
+      <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{variants.amount}}" />
+      <button type="submit" class="addtocart py-2">Add To Cart</button>
+    </form>
+    {% else %}
+    <form method="post" action="{% url 'cart:add_cart' products.id %}">
+      {%csrf_token%}
+      <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{product.amount}}" />
+      <button type="submit" class="addtocart py-2">Add To Cart</button>
+    </form>
+    {%endif%}
+  </div>
+  {%endif%}
+  <!-- End add to cart -->
+</div>
+</div>
+</div>
+</div>
+<!-- End md to up -->
+<!-- md to down -->
+<div class="d-md-none col-10 offset-1">
+      <!-- product name -->
+    <div class="mt-2">
+      <h4 style="font-style: italic;text-transform: capitalize;">{{products.name}}</h4>
+    </div>
+      <!-- End product name -->
+      <!-- product average -->
+    <div class="border-bottom pb-1">
+      <i class="fa fa-star {% if products.average < 1 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      <i class="fa fa-star {% if products.average < 2 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      <i class="fa fa-star {% if products.average < 3 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      <i class="fa fa-star {% if products.average < 4 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      <i class="fa fa-star {% if products.average < 5 %}text-secondary{% else %} text-warning {% endif %}"></i>
+      <span class="ms-4">
+        {{products.num_view}} <i class="fas fa-eye"></i>
+      </span>
+    </div>
+      <!-- End product average -->
+      <!-- des -->
+    <div class="my-2">
+    <p>{{products.information|safe}}</p>
+    </div>
+      <!-- End des -->
+        <div class="d-flex justify-content-between align-items-center">
+      <!-- color -->
+    {% if products.status == 'Color' %}
+    <div>
+    <h5 class="my-2">Color</h5>
+  <form action="" method="post">
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+      {% csrf_token %} {% for data in variant %}
+      <input type="radio" class="btn-check" autocomplete="off" value="{{data.id}}" 
+      {% if variants.id == data.id %} checked {% endif %} name='select' onchange="this.form.submit();">
+    <label class="label rounded-circle btn d-flex ms-2 justify-content-center align-items-center" style="border: 1px solid black;">{{ data.color_variant }}</label>
+      {% endfor %} 
+    </div>
+  </form>
+</div>
+{% endif %}
+  <!-- End color -->
+  <!-- like & unlike -->
+  <div class="border col-4 rounded-5 d-flex align-self-end" style="height: 3rem;">
+    {% if request.user.is_authenticated %}
+    <div class="border-end d-flex align-items-center justify-content-center py-2 rounded-start-5" style="flex-grow: 1;">
+    {% if is_like %}
+    <a href="{% url 'home:product_like'  products.id %}"
+      class="{% if is_unlike %}disabled{% endif %}"><i class="fas fa-thumbs-up text-black fs-5 piss"></i></a>
+    {% else %}
+    <a href="{% url 'home:product_like' products.id %}"
+      class="{% if is_unlike %}disabled{% endif %}"><i class="far fa-thumbs-up text-black fs-5"></i></a>
+    {% endif %}
+  </div>
+  <div class="d-flex align-items-center justify-content-center py-2 rounded-end-5" style="flex-grow: 1;"> 
+    {% if is_unlike %}
+    <a href="{% url 'home:product_unlike' products.id %}"
+     class="{% if is_like %}disabled{% endif %}"><i class="fas fa-thumbs-down text-black fs-5 dis" style="transform: scaleX(-1);"></i></a>
+    {% else %}
+    <a href="{% url 'home:product_unlike' products.id  %}"
+      class="{% if is_like %}disabled{% endif %}"><i class="far fa-thumbs-down text-black fs-5" style="transform: scaleX(-1);"></i></a>
+      {% endif %}
+    </div> 
+    {% endif %}
+  </div>
+  <!-- End like & unlike -->
+</div>
+<div class="d-flex align-items-end mt-3">
+<!-- price -->
+  <div class="mb-2 me-2">
+  {%if products.status == "None"%} {% if products.discount %}
+  <span style="text-decoration: line-through;font-family: sans-serif;" class="text-muted">
+   {{products.unit_price}}$
+  </span>
+<h5 style="font-family: sans-serif;margin: 0;">{{products.total_price}}$</h5>
+{% else %}
+<h5 style="font-family: sans-serif;margin: 0;">{{products.total_price}}$</h5>
+{% endif %} {%else%}
+<h5 style="font-family: sans-serif;margin: 0;">{{variants.total_price}}$</h5>
+{%endif%}
+</div>
+<!-- End price -->
+<!-- add to cart -->
+{% if user.is_authenticated%}
+<div class="col-7 d-flex">
   {% if products.status != 'None' %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
     <input type="hidden" name="select" value="{{variants.id}}" />
-    <input
-      type="number"
-      name="quantity"
-      min="1"
-      value="1"
-      max="{{variants.amount}}"
-    />
-    <button type="submit">add</button>
+    <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{variants.amount}}" />
+    <button type="submit" class="addtocart py-2 px-3">Add To Cart</button>
   </form>
   {% else %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
-    <input
-      type="number"
-      name="quantity"
-      min="1"
-      value="1"
-      max="{{product.amount}}"
-    />
-    <button type="submit">add</button>
+    <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{product.amount}}" />
+    <button type="submit" class="addtocart py-2 px-3">Add To Cart</button>
   </form>
+  {%endif%}
 </div>
-{%endif%}{%endif%}
-<form action="{% url 'cart:compare' products.id %}">
-  <input type="text" name="product" value="{{product.id}}" />
-  <button type="submit">add for comparing</button>
-</form>
-<p>{{products.information|safe}}</p>
-<div class="">
-  {% for img in image %}
-  <img
-    src="{{img.image.url}}"
-    alt=""
-    style="height: 100px; width: 100px"
-  />{%endfor%}
-</div>
-{% if is_favourite %}
-<a href="{% url 'home:favourite' products.id %}">
-  <i class="fa fa-heart" style="color: red; font-size: 20px"></i
-></a>
-{% else %}
-<a href="{% url 'home:favourite' products.id %}">
-  <i class="far fa-heart" style="color: red; font-size: 20px"></i
-></a>
-{% endif %}
-<small>like: {{products.total_like}}</small>
-<small>unlike: {{products.total_unlike}}</small>
-{% if request.user.is_authenticated %} {% if is_like %}
-<a
-  href="{% url 'home:product_like'  products.id %}"
-  class="btn btn-info {% if is_unlike %}disabled{% endif %}"
-  >unlike</a
->
-{% else %}
-<a
-  href="{% url 'home:product_like' products.id %}"
-  class="btn btn-info{% if is_unlike %}disabled{% endif %}"
-  >like</a
-><br />
-{% endif %} {% if is_unlike %}
-<a
-  href="{% url 'home:product_unlike' products.id %}"
-  class="btn btn-info{% if is_like %}disabled{% endif %}"
-  >like</a
->
-{% else %}
-<a
-  href="{% url 'home:product_unlike' products.id  %}"
-  class="btn btn-info{% if is_like %}disabled{% endif %}"
-  >dislike</a
-><br />
-{% endif %} {% endif %}
-<h3 class="col-2 bg-info m-2">your choice price:</h3>
-{%if products.status == "None"%} {% if products.discount %}
-<h4 class="col-2 bg-info m-2" style="text-decoration: line-through">
-  {{products.unit_price}}
-</h4>
-<h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
-{% else %}
-<h3 class="col-2 bg-info m-2">{{products.total_price}}</h3>
-{% endif %} {%else%}
-<div class="col-2 bg-info m-2">{{variants.total_price}}</div>
 {%endif%}
-<hr />
-
-{% if products.status == 'Size' %}
-<form action="" method="post">
-  {% csrf_token %} {% for data in variant %}<input type="radio" value =
-  "{{data.id}}" {% if variants.id == data.id %} checked {% endif %} name =
-  'select' onchange = "this.form.submit();">
-  <a href=""><small>{{ data.Brand_color_variant }}</small> </a>
-  {% endfor %}
-</form>
-{% elif products.status == 'Color' %}
-<form action="" method="post">
-  {% csrf_token %} {% for data in variant %}<input type="radio" value =
-  "{{data.id}}" {% if variants.id == data.id %} checked {% endif %} name =
-  'select' onchange = "this.form.submit();">
-  <a href=""><small>{{ data.color_variant }}</small> </a>
-
-  {% endfor %} {% endif %}
-</form>
-
-<hr />
-<br />
-
-<hr />
-<br />
-<hr />
-
-{% block scripts %}
-<div>
-  <canvas id="myChart" class="bg-secondary-subtle"></canvas>
+<!-- End add to cart -->
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-{% if products.status == 'None' %}
-<script>
-  var ctx3 = document.getElementById('myChart');
-
-    new Chart(ctx3, {
-      type: 'line',
-      data: {
-        labels: [{% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %}],
-        datasets: [{
-          label: '# of Votes',
-          data: [{% for i in update %}{{i.unit_price}},{% endfor %}],
-          borderWidth: 4,
-          fill : true,
-           backgroundColor: '#9BD0F5',
-          borderColor:'#1F618D',
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        },
-    }
-  });
-</script>
-{% else %}
-<!-- {% for i in update %}'{{i.update|jformat:"%A %d %B %Y"}}',{% endfor %} -->
-<!-- {% for i in update %}{{i.unit_price}},{% endfor %} -->
-<script>
-  var ctx2 = document.getElementById('myChart');
-
-  new Chart(ctx2, {
-    type: 'line',
-    data: {
-      labels: [{% for i in change %}{% if variants.id == i.variant_id %}'{{i.update|jformat:"%A %d %B %Y"}}'{% endif%},{% endfor %}],
-      datasets: [{
-        label: '# of Votes',
-        data: [{% for i in change %}{% if variants.id == i.variant_id %}{{i.unit_price}}{% endif %},{% endfor %}],
-        borderWidth: 4,
-        fill : true,
-        backgroundColor: '#9BD0F5',
-        borderColor:'#1F618D'
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
-{% endif %} {%endblock%}
-
-<h2 class="fw-bolder fs-2 m-4 ms-5">Comment User</h2>
-{%for com in comment %}
-<div class="p-2 container d-flex flex-column align-items-start">
-  <div
-    class="d-flex p-3 rounded-3 col-8 justify-content-start flex-wrap"
-    style="background-color: black; width: 50vw"
-  >
-    <div class="col-2 align-self-center">
-      <img
-        src="{{profile.profile_image.url}}"
-        alt=""
-        style="width: 5rem; height: 5rem; border: 1px solid black"
-        class="rounded-circle img-fluid"
-      />
-    </div>
-    <div class="col-8 d-flex flex-column justify-content-between">
-      <p class="text-white fs-4 fw-bold m-0">{{com.user.username}}</p>
-      <p class="text-white mt-1 mb-2">{{com.comment}}</p>
-      <div class="comment-rating">
-        <i
-          class="fa fa-star {% if com.rate < 1 %}text-secondary{% else %} text-warning {% endif %}"
-        ></i>
-        <i
-          class="fa fa-star {% if com.rate < 2 %}text-secondary{% else %} text-warning {% endif %}"
-        ></i>
-        <i
-          class="fa fa-star {% if com.rate < 3 %}text-secondary{% else %} text-warning {% endif %}"
-        ></i>
-        <i
-          class="fa fa-star {% if com.rate < 4 %}text-secondary{% else %} text-warning {% endif %}"
-        ></i>
-        <i
-          class="fa fa-star {% if com.rate < 5 %}text-secondary{% else %} text-warning {% endif %}"
-        ></i>
-      </div>
-    </div>
-    {% if user.is_authenticated %}
-    <div class="col-2 d-flex align-items-center justify-content-around">
-      <i class="fa fa-reply fs-3 text-white btn-reply"></i>
-      <a
-        href="{% url 'home:comment_like' com.id %}"
-        style="text-decoration: none"
-        ><i class="fa fa-heart fs-3 white ms-3 heart"></i>
-      </a>
-      <span style="color: white" class="fw-2 fs-4 mx-1"
-        >{{com.total_like_comment}}</span
-      >
-    </div>
-    {% endif %}
-    <div class="mt-5 mb-3 col-12 d-flex replys">
-      <div class="col-10">
-        {%for data in com.comment_reply.all %}
-        <p
-          class="text-light bg-secondary p-3 ps-4 rounded-4 reps"
-          style="display: none"
-        >
-          {{data.comment}}
-        </p>
-        {% endfor %}
-      </div>
-      <i
-        class="fas fa-plus text-light mt-3 offset-1 show-more"
-        style="cursor: pointer"
-      ></i>
-    </div>
-    <div class="col-12 reply" style="display: none">
-      <form
-        method="post"
-        action="{%url 'home:product_reply' products.id com.id %}"
-      >
-        {%csrf_token%}
-        <textarea
-          style="
-            background-color: rgb(44, 48, 48);
-            color: white;
-            border: 0;
-            outline: 0;
-          "
-          spellcheck="false"
-          name="comment"
-          id="comment"
-          class="form_control col-12 pt-2 ps-2 rounded-3 mt-3"
-          rows="4"
-          placeholder="reply ..."
-          required
-        ></textarea>
-        <div class="mt-3">
-          <button type="submit" class="btn btn-outline-light">
-            send reply
-          </button>
+</div>
+<!-- End md to down -->
+  </div>
+  <div class="accordion accordion-flush col-10 offset-1 my-5" id="accordionFlushExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          <h2 class="fw-bolder fs-3">Similar Products</h2>
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          <div class="d-flex col-10 offset-1 border rounded-2" id="scrollbar1" style="overflow-y: hidden;">
+          {% for tag in similar %}
+          <div class="col-5 col-md-4 col-lg-2 py-2 ms-2">
+          <a href="{% url 'home:detail'  tag.id %}" class="d-flex h-100 pt-2 col-8 justify-content-center flex-column" style="text-decoration: none;">
+            <img src="{{tag.image.url}}" alt="" class="col-12 border-1 h-75 border rounded-2"/>
+            <p style="text-align: center;" class="col-12 h-25 text-black">{{tag.name}}</p>
+          </a>
         </div>
-      </form>
+          {% endfor %}
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingTwo">
+        <button class="accordion-button collapsed d-flex" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+          <h2 class="fw-bolder fs-3 me-5">Comment Users</h2>
+          <span class="badge rounded-pill bg-secondary fs-6 m-0">{{products.comment_num}}</span>
+        </button>
+      </h2>
+      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          {%for com in comment %}
+          <div class="p-2 container d-flex flex-column align-items-start">
+            <div class="d-flex p-3 rounded-3 col-12 col-md-8 justify-content-start flex-wrap"
+              style="background-color: black;">
+              <div class="col-2 align-self-center">
+                <img src="{{profile.profile_image.url}}" alt="" style="width: 5rem; height: 5rem; border: 1px solid black"
+                  class="rounded-circle img-fluid" />
+              </div>
+              <div class="col-7 ms-3 ms-md-0 d-flex flex-column justify-content-between">
+                <p class="text-white fs-4 fw-bold m-0">{{com.user.username}}</p>
+                <p class="text-white mt-1 mb-2">{{com.comment}}</p>
+                <div class="comment-rating">
+                  <i class="fa fa-star {% if com.rate < 1 %}text-secondary{% else %} text-warning {% endif %}"></i>
+                  <i class="fa fa-star {% if com.rate < 2 %}text-secondary{% else %} text-warning {% endif %}"></i>
+                  <i class="fa fa-star {% if com.rate < 3 %}text-secondary{% else %} text-warning {% endif %}"></i>
+                  <i class="fa fa-star {% if com.rate < 4 %}text-secondary{% else %} text-warning {% endif %}"></i>
+                  <i class="fa fa-star {% if com.rate < 5 %}text-secondary{% else %} text-warning {% endif %}"></i>
+                </div>
+              </div>
+              {% if user.is_authenticated %}
+              <div class="col-2 col-md-3 d-flex align-items-center justify-content-end">
+                <i class="fa fa-reply fs-3 text-white btn-reply"></i>
+                <a href="{% url 'home:comment_like' com.id %}" style="text-decoration: none"><i
+                    class="fa fa-heart fs-3 white ms-3 heart"></i>
+                </a>
+                <span style="color: white" class="fw-2 fs-4 mx-1">{{com.total_like_comment}}</span>
+              </div>
+              {% endif %}
+              <div class="mt-5 mb-3 col-12 d-flex replys">
+                <div class="col-10">
+                  {%for data in com.comment_reply.all %}
+                  <p class="text-light bg-secondary p-3 ps-4 rounded-4 reps" style="display: none">
+                    {{data.comment}}
+                  </p>
+                  {% endfor %}
+                </div>
+                <i class="fas fa-plus text-light mt-3 offset-1 show-more" style="cursor: pointer"></i>
+              </div>
+              <div class="col-12 reply" style="display: none">
+                <form method="post" action="{%url 'home:product_reply' products.id com.id %}">
+                  {%csrf_token%}
+                  <textarea style="
+                    background-color: rgb(44, 48, 48);
+                    color: white;
+                    border: 0;
+                    outline: 0;
+                  " spellcheck="false" name="comment" id="comment" class="form_control col-12 pt-2 ps-2 rounded-3 mt-3"
+                    rows="4" placeholder="reply ..." required></textarea>
+                  <div class="mt-3">
+                    <button type="submit" class="btn btn-outline-light">
+                      send reply
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+          <h2 class="fw-bolder fs-3">Add Comment</h2>
+        </button>
+      </h2>
+      <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+
+          {% if user.is_authenticated%}
+          <div class="mb-5">
+            <form method="post" action="{% url 'home:product_comment' products.id %}">
+              {%csrf_token%}
+              <div class="container d-flex flex-column align-items-center">
+                <div class="star-wrapper rate mb-2">
+                  <input type="radio" name="rate" value="5" id="5" /><label for="5"><i class="fas fa-star s5"></i></label>
+                  <input type="radio" name="rate" value="4" id="4" /><label for="4"><i class="fas fa-star s4"></i></label>
+                  <input type="radio" name="rate" value="3" id="3" /><label for="3"><i class="fas fa-star s3"></i></label>
+                  <input type="radio" name="rate" value="2" id="2" /><label for="2"><i class="fas fa-star s2"></i></label>
+                  <input type="radio" name="rate" value="1" id="1" /><label for="1"><i class="fas fa-star s1"></i></label>
+                </div>
+                <div class="mt-2">
+                  <textarea name="comment" class="comment p-3 border-1" spellcheck="false" placeholder="Add comment..."
+                    cols="40" rows="5"></textarea>
+                </div>
+                <button class="btne third" type="submit">send comment</button>
+              </div>
+            </form>
+          </div>
+          {%endif%}
+        </div>
+      </div>
     </div>
   </div>
-</div>
-{%endfor%}
-<h2 class="fw-bolder fs-2 m-4 ms-5">Add Comment</h2>
-{% if user.is_authenticated%}
-<div class="mb-5">
-  <form method="post" action="{% url 'home:product_comment' products.id %}">
-    {%csrf_token%}
-    <div class="container d-flex flex-column align-items-center">
-      <div class="star-wrapper rate mb-2">
-        <input type="radio" name="rate" value="5" id="5" /><label for="5"
-          ><i class="fas fa-star s5"></i
-        ></label>
-        <input type="radio" name="rate" value="4" id="4" /><label for="4"
-          ><i class="fas fa-star s4"></i
-        ></label>
-        <input type="radio" name="rate" value="3" id="3" /><label for="3"
-          ><i class="fas fa-star s3"></i
-        ></label>
-        <input type="radio" name="rate" value="2" id="2" /><label for="2"
-          ><i class="fas fa-star s2"></i
-        ></label>
-        <input type="radio" name="rate" value="1" id="1" /><label for="1"
-          ><i class="fas fa-star s1"></i
-        ></label>
-      </div>
-      <div class="mt-2">
-        <textarea
-          name="comment"
-          class="comment p-3 border-1"
-          spellcheck="false"
-          placeholder="Add comment..."
-          cols="40"
-          rows="5"
-        ></textarea>
-      </div>
-      <button class="btne third" type="submit">send comment</button>
-    </div>
-  </form>
-</div>
-{%endif%}
-<h1>similar products</h1>
-{% for tag in similar %}
-<a href="{% url 'home:detail'  tag.id %}">
-  <img src="{{tag.image.url}}" alt="" style="width: 50px; height: 50px" />
-</a>
-{% endfor %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'script.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'script.js' %}"></script>
+</body>
 {% endblock %}
