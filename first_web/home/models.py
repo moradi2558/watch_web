@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import User,Profile
 from django.urls import reverse
 from  ckeditor_uploader.fields import RichTextUploadingField
 from taggit.managers import TaggableManager 
@@ -60,6 +60,8 @@ class Product(models.Model):
     change = models.BooleanField(default = True)
     
     
+    
+    
     def average(self):
         data = Comment.objects.filter(is_reply = False,product = self).aggregate(avg = Avg('rate'))
         star = 0
@@ -70,6 +72,8 @@ class Product(models.Model):
         return self.like.count()
     def total_unlike(self):
         return self.unlike.count()
+    def total_favourite(self):
+        return self.favourite.count()
     def __str__(self):
         return self.name
     
@@ -150,7 +154,7 @@ class Comment(models.Model):
     
     def total_like_comment(self):
         return self.comment_like.count()
-        
+    
     def __str__(self):
         return self.product.name
     

@@ -34,12 +34,15 @@ def all_product(request, slug=None, id=None):
     max = Product.objects.aggregate(unit_price = Max('unit_price'))
     max_price = int(max['unit_price'])
     filter = ProductFilter(request.GET, queryset=products)
-    category = Category.objects.filter(sub_cat=False)
     products = filter.qs 
     paginator = Paginator(products,12)
     page_num = request.GET.get('page')
-    page_obj = paginator.get_page(page_num)
     form = SearchForm()
+    page_obj = paginator.get_page(page_num)
+    category = Category.objects.filter(sub_cat=False)
+    data = request.GET.copy()
+    if 'page' in data:
+        del data ['page']
     page_obj = paginator.get_page(page_num)
     category = Category.objects.filter(sub_cat=False)
     if 'search' in request.GET:
@@ -58,15 +61,17 @@ def all_product(request, slug=None, id=None):
             page_num = request.GET.get('page')
             page_obj = paginator.get_page(page_num)
     if slug and id:
-        data = get_object_or_404(Category, slug=slug, id=id)
-        products = Product.objects.filter(category=data).order_by('-id')
+        data = get_object_or_404(Category,slug=slug,id=id)
+        page_obj = products.filter(Category=data)
         filter = ProductFilter(request.GET, queryset=products, )
         products = filter.qs
-        paginator = Paginator(products, 2)
+        paginator = Paginator(products,12)
         page_num = request.GET.get('page')
         page_obj = paginator.get_page(page_num)
+        data = request.GET.copy()
         if 'page' in data:
             del data ['page']
+        page_obj = paginator.get_page(page_num)
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -89,6 +94,7 @@ def product_detail(request,id):
     products = get_object_or_404(Product,id=id)
     comment_form = CommentForm()
     comment = Comment.objects.filter(product_id = id,is_reply = False)
+    com_num = Comment.objects.filter(product_id = id,is_reply = False).count()
     similar = products.tags.similar_objects()[:9]
     cart_form = CartForm()
     image =Images.objects.filter(product_id=id)
@@ -120,35 +126,22 @@ def product_detail(request,id):
         else:
             variant = Variant.objects.filter(product_variant_id=id)
             variants = Variant.objects.get(id=variant[0].id)
-        if request.user.is_authenticated:
-            profile = Profile.objects.get(user_id = request.user.id)
-            context = {'products': products, 'variant': variant,
+            context = {
+                   'products': products, 'variant': variant,
                    'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
                    'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,'profile':profile,}
-        else:
-             context = {'products': products, 'variant': variant,
-                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
-                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,}
+                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,'com_num':com_num,
+                   }
         return render(request,'detail.html',context)
     else:
-        if request.user.is_authenticated:
-            profile = Profile.objects.get(user_id = request.user.id)
-            context ={
-                'products': products,'similar': similar,'is_like':is_like,
-                                             'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
-                                             'comment':comment,'comment_form':comment_form,'image':image
-                                             ,'is_favourite':is_favourite,'update':update,'profile':profile,
-            }
-        else:
-             context ={
-                'products': products,'similar': similar,'is_like':is_like,
-                                             'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
-                                             'comment':comment,'comment_form':comment_form,'image':image
-                                             ,'is_favourite':is_favourite,'update':update,
+        context ={
+            'products': products,'similar': similar,'is_like':is_like,
+            'reply_form':reply_form,'cart_form':cart_form,'is_unlike':is_unlike,
+            'comment':comment,'comment_form':comment_form,'image':image,
+            'is_favourite':is_favourite,'update':update,'com_num':com_num
             }
         return render(request,'detail.html',context)
+
 def product_like(request,id):
     url = request.META.get('HTTP_REFERER')
     product=get_object_or_404(Product,id=id)
@@ -181,6 +174,7 @@ def product_unlike(request,id):
 
 
 def product_comment(request,id):
+    product = Product.objects.get(id=id)
     url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
@@ -211,30 +205,15 @@ def comment_like(request,id):
         messages.success(request,"success","success")
     return redirect(url)
         
-        
-def product_search(request):
-    products = Product.objects.all()
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data['search']
-            if data.isdigit():
-                products = products.filter(Q(discount__exact = data)|Q(unit_price__exact = data))
-            else:
-                products = products.filter(Q(name__icontains = data))
-            return render (request,'product.html',{'products':products,'form':form})
-        
 def favourie_product(request,id):
     product = Product.objects.get(id=id)
     url = request.META.get('HTTP_REFERER') 
     is_favourite=False 
     if product.favourite.filter(id=request.user.id).exists():
         product.favourite.remove(request.user)
-        product.total_favourite -=1
         is_favourite = False 
     else:
         product.favourite.add(request.user)
-        product.total_favourite +=1
     return redirect (url)
 
 def contact(request):

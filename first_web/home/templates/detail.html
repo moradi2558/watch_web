@@ -19,6 +19,7 @@
   <!-- <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>  -->
 </head>
+<h1>{{com_num}}</h1>
 <h1>{{products.name}}</h1>
 <h4>rate:{{products.average}}</h4>
 <br />
@@ -213,7 +214,7 @@
   >
     <div class="col-2 align-self-center">
       <img
-        src="{{profile.profile_image.url}}"
+        src="{{com.user.profile.profile_image.url}}"
         alt=""
         style="width: 5rem; height: 5rem; border: 1px solid black"
         class="rounded-circle img-fluid"
@@ -260,8 +261,17 @@
           class="text-light bg-secondary p-3 ps-4 rounded-4 reps"
           style="display: none"
         >
-          {{data.comment}}
+        <br><br>
+          {{data.user.username}}: <br>{{data.comment}}
         </p>
+        <div class="col-2 align-self-center">
+          <img
+            src="{{data.user.profile.profile_image.url}}"
+            alt=""
+            style="width: 4rem; height: 4rem; border: 1px solid black"
+            class="rounded-circle img-fluid"
+          />
+        </div>
         {% endfor %}
       </div>
       <i
