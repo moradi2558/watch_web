@@ -126,12 +126,12 @@ def product_detail(request,id):
         else:
             variant = Variant.objects.filter(product_variant_id=id)
             variants = Variant.objects.get(id=variant[0].id)
-            context = {
-                   'products': products, 'variant': variant,
-                   'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
-                   'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
-                   'cart_form':cart_form,'is_favourite':is_favourite,'change':change,'com_num':com_num,
-                   }
+        context = {
+               'products': products, 'variant': variant,
+               'variants': variants, 'similar': similar,'is_like':is_like,'is_unlike':is_unlike,
+               'comment':comment,'comment_form':comment_form,'reply_form':reply_form,'image':image,
+               'cart_form':cart_form,'is_favourite':is_favourite,'change':change,'com_num':com_num,
+               }
         return render(request,'detail.html',context)
     else:
         context ={
