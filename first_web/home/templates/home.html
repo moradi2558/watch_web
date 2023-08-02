@@ -1,58 +1,43 @@
-{% extends 'main.html' %} {% load static %}  {% block title %}home{% endblock %} {% block body %}
-<body>
-    <div style="height: 80vh;" class="d-flex justify-content-center align-items-end">
-  <div id="carouselExampleCaptions" class="carousel slide" style="width: 80vw;height: 70vh;">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    </div>
-    <div class="carousel-inner">
-      {% for cat in category %}
-      <div class="carousel-item">
-        <a href="{{cat.get_absolute_url}}">
-        <img src="{{ cat.image.url }}" class="rounded-2" style="width: 80vw;height: 70vh;border: 1px solid black;" alt="category">
-        <div class="carousel-caption">
-          <h5>{{cat.name}}</h5>
-        </div>
-      </a>
+{% extends 'main.html' %} {% load static %} {% block title %}home{% endblock %} {% block body %}
+
+<body style="background: #16222A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #3A6073, #16222A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #3A6073, #16222A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+">
+  <div style="height: 80vh;" class="d-flex justify-content-center align-items-end">
+    <div id="carouselExampleCaptions" class="carousel slide" style="width: 80vw;height: 70vh;">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
       </div>
-    {% endfor %}
+      <div class="carousel-inner">
+        {% for cat in category %}
+        <div class="carousel-item">
+          <a href="{{cat.get_absolute_url}}">
+            <img src="{{ cat.image.url }}" class="rounded-2" style="width: 80vw;height: 70vh;border: 1px solid black;"
+              alt="category">
+            <div class="carousel-caption">
+              <h5>{{cat.name}}</h5>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>  
-</div>
-  {% comment %} <div
-    style="
-      font-family: sans-serif;
-      color: black;
-      font-size: 2rem;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    "
-  >
-    <h1 style="color: black">hello bro</h1>
-    <h2 style="font-size: 5rem; color: black">welcome home</h2>
-    {% for cat in category %}
-    <h1>{{cat.name}}</h1>
-    <a href="{{cat.get_absolute_url}}">
-      <h1 style="font-size: 1.5rem">{{cat.name}}</h1>
-      <img
-        style="width: 8rem; height: 8rem"
-        src="{{ cat.image.url }}"
-        alt="not loaded"
-      />
-    </a>
-    {% endfor %}
-  </div> {% endcomment %}
-<script src="{% static 'home.js' %}"></script>
+  </div>
+  <script src="{% static 'home.js' %}"></script>
 
 </body>
 {% endblock %}

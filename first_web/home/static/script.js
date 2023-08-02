@@ -7,12 +7,12 @@ likes.forEach(function (like) {
   like.addEventListener("click", function (e) {
     if (isliked) {
       isliked = false;
-      e.target.classList.remove("red");
+      e.target.classList.remove("green");
       e.target.classList.add("white");
     } else {
       isliked = true;
       e.target.classList.remove("white");
-      e.target.classList.add("red");
+      e.target.classList.add("green");
     }
   });
 });
@@ -43,9 +43,10 @@ replys.forEach(function (reply) {
     reply.lastElementChild.style.display = "block";
     reply.firstElementChild.firstElementChild.style.display = "block";
     let isClickMore = false;
+    let reps = document.querySelectorAll(".reps");
+    reps[0].style.display = "block"
     showMore.forEach(function (show) {
       show.addEventListener("click", function (e) {
-        let reps = e.target.parentElement.firstElementChild.childNodes;
         if (isClickMore) {
           isClickMore = false;
           show.classList.remove("fa-minus");
@@ -55,7 +56,7 @@ replys.forEach(function (reply) {
               rep.style.display = "none";
             }
           });
-           reps[1].style.display = "block"
+           reps[0].style.display = "block"
         } else {
           isClickMore = true;
           show.classList.remove("fa-plus");

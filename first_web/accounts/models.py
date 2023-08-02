@@ -15,3 +15,5 @@ def save_profile_user(sender,**kwargs):
     if kwargs['created']:
         profile_user = Profile(user = kwargs['instance'])
         profile_user.save()
+        
+post_save.connect(save_profile_user,sender=User)

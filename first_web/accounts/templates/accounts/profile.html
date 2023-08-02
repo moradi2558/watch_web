@@ -1,7 +1,10 @@
 {% extends 'main.html' %}
 {% block title %}profile{% endblock %}
 {% block body %}
-<h1>profile</h1>
+<div class="container-fluid">
+  
+</div>
+{% comment %} <h1>profile</h1>
 <img src="{{profile.profile_image.url}}" style="width: 80px; height: 65px; border-radius: 100%;">
 <p>user name: {{profile.user.username}}</p>
 <p>first name: {{profile.user.first_name}}</p>
@@ -9,10 +12,8 @@
 <p>phone: {{profile.phone}}</p>
 <p>address: {{profile.address}}</p>
 <a href="{% url 'accounts:update' %}">update </a>
-<hr>
 <a href="{% url 'accounts:change' %}">change password </a>
-<hr>
 <a href="{% url 'accounts:history' %}"> history </a>
-<hr>
 <a href="{% url 'accounts:favourite' %}"> favourite </a>
+{% endcomment %}
 {% endblock %}
