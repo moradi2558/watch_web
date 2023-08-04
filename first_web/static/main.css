@@ -1,8 +1,8 @@
-body{
-    background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
-    font-family: sans-serif;
-}
+
+
+/* background-repeat: no-repeat !important;
+background-attachment: fixed !important;
+font-family: sans-serif; */
 
 /* background: #16222A;
 background: -webkit-linear-gradient(to right, #3A6073, #16222A);
@@ -12,9 +12,9 @@ background: linear-gradient(to right, #3A6073, #16222A); */
     background: -webkit-linear-gradient(to right, #243B55, #141E30);
     background: linear-gradient(to right, #243B55, #141E30); */
 
-/* background: #232526; 
-background: -webkit-linear-gradient(to right, #414345, #232526);
-background: linear-gradient(to right, #414345, #232526); */
+    
+    /* background: #00d2ff;background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
+    background: linear-gradient(to right, #3a7bd5, #00d2ff); */
 
 /* background: rgb(2, 0, 36);
 background: linear-gradient(131deg, rgba(2, 0, 36, 1) 21%, rgba(6, 5, 85, 1) 41%, rgba(9, 9, 121, 1) 55%, rgba(7, 65, 158, 1) 74%, rgba(0, 212, 255, 1) 100%); */
