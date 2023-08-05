@@ -214,7 +214,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         {% csrf_token %} {% for data in variant %}
         <input type="radio" class="btn-check" autocomplete="off" value="{{data.id}}" 
         {% if variants.id == data.id %} checked {% endif %} name='select' onchange="this.form.submit();">
-      <label class="label rounded-circle btn d-flex ms-2 justify-content-center align-items-center" style="border: 1px solid black;">{{ data.color_variant }}</label>
+      <label class="label rounded-circle btn d-flex ms-2 justify-content-center align-items-center" style="border: 2px solid white;">{{ data.color_variant }}</label>
         {% endfor %} 
       </div>
     </form>
@@ -424,13 +424,14 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         <div class="accordion-body">
           {%for com in comment %}
           <div class="p-2 container d-flex flex-column align-items-start">
-            <div class="d-flex p-3 rounded-3 col-12 col-md-8 justify-content-start flex-wrap"
+            <div class="d-flex p-3 rounded-3 col-12 col-md-8 justify-content-between flex-wrap"
               style="background-color: black;">
-              <div class="col-2">
+              <div class="d-flex col-8">
+              <div class="col-2 col-md-3">
                 <img src="{{com.user.profile.profile_image.url}}" alt="" style="width: 5rem; height: 5rem; border: 1px solid black"
                   class="rounded-circle img-fluid" />
               </div>
-              <div class="col-7 ms-3 ms-md-0 d-flex flex-column justify-content-between">
+              <div class="col-9 ms-3 ms-md-0 d-flex flex-column justify-content-between">
                 <p class="text-white fs-4 fw-bold m-0">{{com.user.username}}</p>
                 <p class="text-white mt-1 mb-2" style="overflow-x:hidden ;">{{com.comment}}</p>
                 <div class="comment-rating">
@@ -441,11 +442,12 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
                   <i class="fa fa-star {% if com.rate < 5 %}text-secondary{% else %} text-warning {% endif %}"></i>
                 </div>
               </div>
+            </div>
               {% if user.is_authenticated %}
               <div class="col-2 col-md-3 d-flex align-items-center justify-content-end">
-                <i class="fa fa-reply fs-3 text-white btn-reply"></i>
+                <i class="fa fa-reply fs-4 text-white btn-reply"></i>
                 <a href="{% url 'home:comment_like' com.id %}" style="text-decoration: none"><i
-                    class="fas fa-thumbs-up fs-3 white ms-3 heart"></i>
+                    class="fas fa-thumbs-up fs-4 white ms-3 heart"></i>
                 </a>
                 <span style="color: white" class="fw-2 fs-4 mx-1">{{com.total_like_comment}}</span>
               </div>
