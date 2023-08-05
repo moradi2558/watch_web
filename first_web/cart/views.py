@@ -60,6 +60,7 @@ def remove_cart(request,id):
 def add_single(request,id):
     url = request.META.get('HTTP_REFERER') 
     cart = Cart.objects.get(id = id)
+    product = Product.objects.get(id=id)
     if cart.product.status == 'None':
         if product.amount > cart.quantity :
             cart.quantity += 1 
