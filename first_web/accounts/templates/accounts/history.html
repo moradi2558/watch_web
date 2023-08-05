@@ -1,14 +1,72 @@
 {% extends 'main.html' %}
 {% block title %}phone_login{% endblock %}
 {% block body %}
-{% for i in data %}
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+    <div class="py-5">
+        {% for i in data %}
+        <div class="card mb-5 border-0 border-bottom col-10 offset-1" style="position: relative;">
+            <div class="g-0 d-flex flex-column flex-sm-row">
+       <div class="d-flex col-12 col-sm-8 col-md-6 border-bottom pb-2 pb-sm-0">         
+        <div>
+          <a href="{{i.product.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+              <img src="{{i.product.image.url}}" class="img-fluid rounded-start" style="height: 10rem;width: 10rem;" alt="watch">
+            </a>
+        </div>
+        <div class="col-sm-8 d-flex">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <a href="{{i.product.get_absolute_url}}" class="text-decoration-none">
+                    <h5 class="card-title text-black">{{i.product.name}}</h5>
+          </a>
+          {% if i.product.discount %}
+          <div class="d-flex justify-content-between">
+              <div>
+                  <p class="card-text mt-2" style="text-decoration: line-through"><small class="text-muted">{{i.product.unit_price}}$</small></p>
+                  <h5 class="card-text">{{i.product.total_price}}$</h5>
+                </div>
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                    <span class="badge rounded-pill bg-danger mt-2">% {{i.product.discount}}</span>
+                    <div>{{i.product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-text">{{ii.product.total_price}}$</h5>
+              <div class="me-2">{{ii.product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    <div class="col-sm-6 border-start card-body">
+        <h5 class="card-title">Address :</h5>
+      <p class="text-end">{{i.order.address}}</p>   
+    </div>
+      </div>
+      <div style="position: absolute;top: -10px;right: -10px;">
+          {% if i.order.paid == True %}
+          <i class="fas fa-check-circle bg-white text-success fs-4" style="border-radius: 1rem;"></i>
+          {% else %}
+          <i class="fas fa-times-circle bg-white text-danger fs-4" style="border-radius: 1rem;"></i>
+          {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+</div>
+</body>
+
+
+
+
+
+
+
+
+
+{% comment %} {% for i in data %}
 <h2>{{i.product.name}}</h2>
 <img src="{{i.product.image.url}}" >
 <h3> {{i.order.address}} </h3>
-{% if i.order.paid == True %}
-<p> paid </p>
-{% else %}
-<p> not paid </p>
-{% endif %}
-{% endfor %}
+{% endfor %} {% endcomment %}
 {% endblock %}

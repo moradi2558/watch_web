@@ -16,8 +16,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     <!-- md to down -->
        <div class="position-relative d-md-none" style="height: 40vw">
         <div style="clip-path: polygon(0% 0%, 100% 0%, 100% 15vw, 0% 40vw);
-    background: #00d2ff;background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
-    background: linear-gradient(to right, #3a7bd5, #00d2ff);position: absolute;width: 100%;height: 30vw;z-index: -1;"></div>
+        background: #1c1e1f; 
+        background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+        background: linear-gradient(to right, #38393b, #1c1e1f);position: absolute;width: 100%;height: 30vw;z-index: -1;"></div>
     <div class="px-2 pt-1 d-flex justify-content-between">
         <div>
             <a href="{% url 'accounts:history' %}" style="text-decoration: none;"><i class='fas fa-shopping-bag text-white d-sm-none me-2'></i></a>
@@ -41,8 +42,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
 </div>
     <!-- End md to down -->
 <!-- md to up -->
-<div class="d-none d-md-block mb-5" style="background: #00d2ff;background: -webkit-linear-gradient(to right, #3a7bd5, #00d2ff);
-background: linear-gradient(to right, #3a7bd5, #00d2ff);height: 10rem;">
+<div class="d-none d-md-block mb-5" style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);height: 10rem;">
 <div class="d-flex justify-content-between">
     <div class="ps-2 ps-sm-5">
  <div class="text-white" style="width: fit-content;display: inline-block;">
@@ -53,7 +55,7 @@ background: linear-gradient(to right, #3a7bd5, #00d2ff);height: 10rem;">
     <a href="{% url 'accounts:change' %}" class="btn btn-outline-light btn-lg">change password </a>
 </div>
 </div>
- <div class="d-flex flex-column align-items-end me-3">
+ <div class="d-flex flex-column align-items-end me-3 mt-3">
         <a href="{% url 'accounts:update' %}" style="text-decoration: none;" class="text-white py-2"><span>Edit Profile</span> <i class='far fa-edit fs-4'></i></a>
         <a href="{% url 'accounts:favourite' %}" style="text-decoration: none;" class="text-white py-2"><span>Favourite</span> <i class='far fa-heart fs-4'></i></a>
         <a href="{% url 'accounts:history' %}" style="text-decoration: none;" class="text-white py-2"><span>Orders</span> <i class='fas fa-shopping-bag fs-4'></i></a>

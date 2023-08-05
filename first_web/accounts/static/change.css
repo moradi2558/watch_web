@@ -1,0 +1,22 @@
+input{
+    border: 0;
+    border-bottom: 1px solid rgba(95, 95, 95, 0.3);
+    outline: 0;
+}
+p{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+}
+label{
+    color:  #2ab7d6;
+font-size: small;
+margin-bottom: 3px;
+}
+.fa-eye,.fa-eye-slash{
+    position: absolute;
+    right: 1px;
+    bottom:6px;
+    cursor: pointer;
+}

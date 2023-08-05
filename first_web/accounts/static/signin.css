@@ -1,8 +1,9 @@
 body {
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    background: rgb(2, 0, 36);
-    background: linear-gradient(131deg, rgba(2, 0, 36, 1) 21%, rgba(6, 5, 85, 1) 41%, rgba(9, 9, 121, 1) 55%, rgba(7, 65, 158, 1) 74%, rgba(0, 212, 255, 1) 100%);
+    background: #1c1e1f; 
+    background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+    background: linear-gradient(to right, #38393b, #1c1e1f);
     font-family: sans-serif;
 }
 
@@ -10,7 +11,7 @@ input[type=text],
 input[type=password],
 input[type=email] {
     border: none;
-    border-bottom: 1px solid rgb(40, 153, 198);
+    border-bottom: 1px solid rgba(0,0,0,.5);
     margin: 1rem 0;
     width: 18.125rem;
     padding: 20px 0px 15px 10px;
@@ -31,11 +32,7 @@ input[type=email] {
 
 input[type=submit] {
     width: 18.125rem;
-    border: none;
     padding: 15px 0;
-    background: rgb(2, 73, 117);
-    background: radial-gradient(circle, rgba(2, 73, 117, 1) 11%, rgba(0, 93, 150, 1) 23%, rgba(16, 120, 186, 1) 32%, rgba(17, 127, 197, 1) 39%, rgba(21, 101, 150, 1) 39%, rgba(7, 70, 157, 1) 51%, rgba(21, 147, 228, 1) 64%, rgba(98, 180, 232, 1) 80%);
-    color: white;
     font-size: large;
     margin-top: 2rem;
     margin-bottom: 1rem;
@@ -59,26 +56,19 @@ a:nth-of-type(1) {
 a:nth-of-type(2) {
     color: rgb(0, 89, 255);
 } 
-
-input[type=submit]:hover {
-    background: rgb(98, 180, 232);
-    background: radial-gradient(circle, rgba(98, 180, 232, 1) 11%, rgba(17, 127, 197, 1) 23%, rgba(16, 120, 186, 1) 32%, rgba(17, 127, 197, 1) 39%, rgba(21, 101, 150, 1) 39%, rgba(0, 93, 150, 1) 51%, rgba(21, 147, 228, 1) 64%, rgba(2, 73, 117, 1) 80%);
-    cursor: pointer;
-}
-
 input[type=text]:focus {
     outline: 0;
-    border-bottom: 2px solid rgba(24, 24, 185, 1);
+    border-bottom: 2px solid rgba(0,0,0,.8);
 }
 
 input[type=email]:focus {
     outline: 0;
-    border-bottom: 2px solid rgba(24, 24, 185, 1);
+    border-bottom: 2px solid rgba(0,0,0,.8);
 }
 
 input[type=password]:focus {
     outline: 0;
-    border-bottom: 2px solid rgba(24, 24, 185, 1);
+    border-bottom: 2px solid rgba(0,0,0,.8);
 }
 label{
 display: none;
