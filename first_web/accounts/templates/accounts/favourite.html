@@ -1,10 +1,167 @@
 {% extends 'main.html' %}
+{% load static%}
 {% block title %}phone_login{% endblock %}
 {% block body %}
-{% for i in product %}
-<a href="{% url 'home:detail' i.id %}">
+<head>
+<link rel="stylesheet" href="{% static 'favourite.css' %}" />
+</head>
+<body>   
+    <!-- products for xs-->
+    <div class="py-5 d-sm-none">
+        {% for i in product %}
+        <div class="card mb-3 border-0 border-bottom pb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-4">
+          <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+              <img src="{{i.image.url}}" class="img-fluid rounded-start" style="height: 30vh;" alt="watch">
+            </a>
+        </div>
+        <div class="col-8 d-flex">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <a href="{{i.get_absolute_url}}" class="text-decoration-none">
+                    <h5 class="card-title">{{i.name}}</h5>
+          </a>
+          {% if i.discount %}
+          <div class="d-flex justify-content-between">
+              <div>
+                  <p class="card-text mt-2" style="text-decoration: line-through"><small class="text-muted">{{i.unit_price}}$</small></p>
+                  <h5 class="card-text">{{i.total_price}}$</h5>
+                </div>
+                <div class="d-flex flex-column justify-content-between align-items-center">
+                    <span class="badge rounded-pill bg-danger mt-2">% {{i.discount}}</span>
+                    <div>{{i.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+          </div>
+          {% else %}
+          <div class="d-flex justify-content-between align-items-center">
+              <h5 class="card-text">{{i.total_price}}$</h5>
+              <div class="me-2">{{i.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Endproducts for xs-->
+  <!-- products for sm-->
+<div class="py-5 d-none d-sm-block d-md-none">
+    <div style="display: grid;grid-template-columns: repeat(2,42vw);justify-content: space-around;">
+        {% for i in product %}
+        <div class="card mb-3">
+            <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+                <img src="{{i.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+            </a>
+            <div class="card-body d-flex flex-column justify-content-between">
+                <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center">
+          <h6 class="card-title" style="height: 50px;overflow: hidden;">{{i.name}}</h6>
+        </a>
+        {% if i.discount %}
+        <div class="d-flex justify-content-between align-items-end">
+              <div>
+                  <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{i.unit_price}}$</small></p>
+                  <h6 class="card-text mt-2">{{i.total_price}}$</h6>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge rounded-pill bg-danger">% {{i.discount}}</span>
+                    <div class="mt-2">{{i.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+            </div>
+            {% else %}
+            <div class="d-flex justify-content-between align-items-end">
+              <div>
+                <div style="height: 25px;"></div>
+                <h6 class="card-text">{{i.total_price}}$</h6>
+              </div>
+              <div class="me-2">{{i.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+              {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>  
+<!-- Endproducts for sm-->
+<!-- products for md-->
+<div class="py-5 d-none d-md-block d-lg-none">
+    <div style="display: grid;grid-template-columns: repeat(3,240px);justify-content: space-around;">
+        {% for i in product %}
+        <div class="card mb-3">
+            <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+                <img src="{{i.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+            </a>
+      <div class="card-body d-flex flex-column justify-content-between">
+          <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center">
+              <h6 class="card-title" style="height: 50px;overflow: hidden;">{{i.name}}</h6>
+        </a>
+        {% if i.discount %}
+            <div class="d-flex justify-content-between align-items-end">
+              <div>
+                  <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{i.unit_price}}$</small></p>
+                  <h6 class="card-text mt-2">{{i.total_price}}$</h6>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge rounded-pill bg-danger">% {{i.discount}}</span>
+                    <div class="mt-2">{{i.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+            </div>
+            {% else %}
+            <div class="d-flex justify-content-between align-items-end">
+                <div>
+                <div style="height: 25px;"></div>
+                <h6 class="card-text">{{i.total_price}}$</h6>
+              </div>
+              <div class="me-2">{{i.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+    <!-- Endproducts for md-->
+    <!-- large -->
+    <div class="py-5 d-none d-lg-block">
+        <div style="display: grid;grid-template-columns: repeat(4,21vw);justify-content: space-around;">
+            {% for i in product %}
+            <div class="card mb-3">
+          <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center pt-3">
+            <img src="{{i.image.url}}" class="img-fluid rounded-start" style="height: 20vh;width: 10vw;" alt="watch">
+        </a>
+          <div class="card-body d-flex flex-column justify-content-between">
+            <a href="{{i.get_absolute_url}}" class="text-decoration-none text-center">
+                <h6 class="card-title" style="height: 40px;overflow: hidden;">{{i.name}}</h6>
+            </a>
+            {% if i.discount %}
+            <div class="d-flex justify-content-between align-items-end">
+                <div>
+                    <p class="card-text" style="text-decoration: line-through;margin: 0;height: 25px;"><small class="text-muted">{{i.unit_price}}$</small></p>
+                    <h6 class="card-text mt-2">{{i.total_price}}$</h6>
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                    <span class="badge rounded-pill bg-danger">% {{i.discount}}</span>
+                    <div class="mt-2">{{i.average}}<i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+            </div>
+            {% else %}
+            <div class="d-flex justify-content-between align-items-end">
+                  <div>
+                    <div style="height: 25px;"></div>
+                    <h6 class="card-text">{{i.total_price}}$</h6>
+                </div>
+                  <div class="me-2">{{i.average}} <i class="fa fa-star" style="color: gold;"></i></div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div>
+    <!-- Endlarge -->
+</body>
+{% comment %} <a href="{% url 'home:detail' i.id %}">
 <img src="{{i.image.url}}" style="height: 50px; width: 50px;">
 <h2>{{i.name}}</h2>
-</a>
-{% endfor %}
+</a> {% endcomment %}
 {% endblock %}

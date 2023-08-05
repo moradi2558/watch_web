@@ -4,18 +4,15 @@
 
 {% block body %}
 <link rel= "stylesheet" href = "{% static 'login.css' %}">
-
 <body>
-<div  style="display: flex;
-            justify-content: center;
-            align-items: center;height: 90vh;" >
+<div class="d-flex justify-content-center mt-5 pt-2">
     <div class="form">
         <p><span> Login</span> Your Account</p>
         <form action="" method="post">
             {% csrf_token %}
                <input type="text" placeholder="Enter Your Username or Email" name="user">
                 <input type="password" placeholder="Enter Your Password" name="password">
-                <input type="submit" value="Login">
+                <input type="submit" value="Login" class="btn btn-outline-dark">
         </form>
         <a class="login-link" href="{% url 'accounts:user_register' %}">Create Account</a>
         <a class="login-link" href="{% url 'accounts:reset' %}">Forgot password</a>

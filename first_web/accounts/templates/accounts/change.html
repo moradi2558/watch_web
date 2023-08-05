@@ -1,9 +1,24 @@
 {% extends 'main.html' %}
+{% load static%}
 {% block title %}change password{% endblock %}
 {% block body %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <button type="submit">submit</button>
-</form>
+<head>
+<link rel="stylesheet" href="{% static 'change.css' %}" />
+</head>
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+    <form action="" method="post" class="col-8 offset-2 mt-5 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+        {% csrf_token %}
+    <div class="py-5 px-5 bg-white border" style="border-radius: 20px;">
+        {{ form.as_p}}
+        <button type="submit" class="btn btn-outline-dark col-12 mt-4 mb-3">submit</button>
+        <!-- <div style="position: relative;width: fit-content;height: fit-content;">
+         <input type="password">
+         <i class="fa fa-eye" style="position: absolute;right: 1px;top: 3px;"></i>
+        </div> -->
+    </div>
+    </form>
+    <script src="{% static 'change.js' %}"></script>
+</body>
 {% endblock %}
