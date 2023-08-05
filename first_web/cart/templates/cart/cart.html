@@ -28,26 +28,46 @@
               alt=""
             />
           </td>
-          <td>{% if c.products.status == 'None' %}
-            <p>ندارد </p>
-            {%else%}
-            {{c.variants.size_variant.name}}
-            {%endif%}
-          </td>
-          <td>{{c.variants.color_variant.name}}</td>
           <td>
-            <a href = "{% url 'cart:add_single' c.id %}"><i class="fa-duotone fa-plus fa-sm" style="--fa-primary-color: #005cfa; --fa-secondary-color: #005cfa;"></i></a>
+            {% if c.product.status == 'None' %}
+            <p>ندارد</p>
+            {%else%} {{c.variants.size_variant.name}} {%endif%}
+          </td>
+          <td>
+            {% if c.product.status == 'None' %}
+            <p>ندارد</p>
+            {%else%} <{{c.variants.color_variant.name}}
+          </td>
+          {%endif%}
+          <td>
+            <a href="{% url 'cart:add_single' c.id %}"
+              ><i
+                class="fa-duotone fa-plus fa-sm"
+                style="
+                  --fa-primary-color: #005cfa;
+                  --fa-secondary-color: #005cfa;
+                "
+              ></i
+            ></a>
             {{c.quantity}}
-            <a href = "{% url 'cart:remove_single' c.id %}"><i class="fad fa-minus fa-sm" style="--fa-primary-color: #005eff; --fa-secondary-color: #005eff;"></i></a></td>
-          <td>
-            {% if c.products.status != 'None' %}
-            {{c.variants.total_price}}{%else%}
-            {{c.products.total_price}}{%endif%}
+            <a href="{% url 'cart:remove_single' c.id %}"
+              ><i
+                class="fad fa-minus fa-sm"
+                style="
+                  --fa-primary-color: #005eff;
+                  --fa-secondary-color: #005eff;
+                "
+              ></i
+            ></a>
           </td>
           <td>
-            {% if c.products.status != 'None' %} 
-            {% widthratio c.variants.total_price 1 c.quantity %} {%else%}
-            {% widthratio c.products.total_price 1 c.quantity %}{%endif%}
+            {% if c.product.status != 'None' %}
+            {{c.variants.total_price}}{%else%}
+            {{c.product.total_price}}{%endif%}
+          </td>
+          <td>
+            {% if c.product.status != 'None' %} {% widthratio c.variants.total_price 1 c.quantity %} {%else%}
+             {% widthratio c.product.total_price 1 c.quantity %}{%endif%}
           </td>
           <td><a href="{% url 'cart:remove_cart' c.id %}">remove</a></td>
         </tr>
