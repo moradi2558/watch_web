@@ -8,7 +8,7 @@ from django.contrib import messages
 
 def cart_detail(request):
     cart = Cart.objects.filter(user_id=request.user.id)
-    form = OrderForm 
+    form = OrderForm
     total = 0
     user = request.user
     for p in cart:

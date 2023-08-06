@@ -112,8 +112,7 @@ def user_update(request):
         user_form = UserUpdateForm(instance = request.user)
         profile_form = ProfileUpdateForm(instance = request.user.profile)
         context = {'user_form':user_form,'profile_form':profile_form}
-    
-    return render(request,'accounts/update.html',context)
+        return render(request,'accounts/update.html',context)
 def phone(request):
     if request.method == 'POST':
         form = PhoneForm(request.POST)
