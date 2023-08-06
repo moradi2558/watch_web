@@ -1,0 +1,19 @@
+input[type="file"],#id_phone_1,.phone-field-ext{
+    display: none;
+}
+label{
+    color:  #2ab7d6;
+font-size: small;
+margin-bottom: 3px;
+}
+p{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+}
+input{
+    border: 0;
+    border-bottom: 1px solid rgba(95, 95, 95, 0.3);
+    outline: 0;
+}
