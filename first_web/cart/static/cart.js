@@ -24,10 +24,12 @@ function showModal() {
     modalParent.style.display = 'block'
     sectionElem.style.filter = 'blur(10px)'
     window.addEventListener("resize",function(){
-        if (window.innerWidth > 766) {
+        if (window.innerWidth > 767) {
             sectionElem.style.filter = 'blur(0px)'
         }else{
-            sectionElem.style.filter = 'blur(10px)'
+            if (modalParent.style.display == 'block') {   
+                sectionElem.style.filter = 'blur(10px)'
+            }
         }
     })
 }
