@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from django.contrib.auth.models import*
+from image_uploader_widget.widgets import ImageUploaderWidget
 
 
 class UserRegisterForm(forms.Form):
@@ -44,8 +45,17 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['email','first_name','last_name']
 
 class ProfileUpdateForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+   
+        self.fields['profile_image'].widget.attrs['id'] = 'profile_image'
+        # self.fields['profile_image'].widget = 'forms.FileInput'    
+    profile_image = forms.ImageField(widget=forms.FileInput)        
     class Meta:
         model = Profile
         fields = ['phone','address','profile_image']
+        
+        
 class PhoneForm(forms.Form):
     phone = forms.IntegerField()

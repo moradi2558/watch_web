@@ -35,8 +35,8 @@
           </td>
           <td>
             {% if c.product.status == 'None' %}
-            <p>ندارد</p>
-            {%else%} <{{c.variants.color_variant.name}}
+            <p>{%for i in c.product.color.all%}{{i}}{%endfor%}</p>
+            {%else%}{{c.variants.color_variant.name}}
           </td>
           {%endif%}
           <td>

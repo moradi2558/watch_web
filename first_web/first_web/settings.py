@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'django_jalali',
     'django_filters',
+    'image_uploader_widget',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
