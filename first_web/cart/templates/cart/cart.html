@@ -1,5 +1,154 @@
-{% extends 'main.html' %} {% block title %}cart{% endblock %} {% block body %}
-<h1>cart</h1>
+{% extends 'main.html' %} 
+{% load static%} 
+{% block title %}cart{% endblock %} 
+{% block body %}
+<head>
+  <link rel="stylesheet" href="{% static 'cart.css' %}" />
+</head>
+
+<body style="background: #1c1e1f; background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+  <div class="d-flex justify-content-center justify-content-md-start section">
+    <div class="col-11 col-md-6 col-lg-5 ms-md-3 mb-4">
+      <!-- Continue -->
+      <div class="d-md-none col-7 col-sm-5 border-bottom border-2 p-3 position-sticky bg-white mt-2 rounded-3" style="top: 2%;">
+        <div class="d-flex justify-content-between fw-bold align-items-end mb-1">
+          <p class="fs-6 m-0">Total Price:</p>
+          <p class="fs-6 m-0">{{total}}$</p>
+        </div>
+        <button class="btn btn-success col-12 continue">Continue</button>
+      </div>
+      <!-- Continue -->
+      {% for c in cart %}
+      <div class="border col-12 mt-4 bg-white py-3 pe-4 d-flex" style="border-radius: .8rem;position: relative;">
+        <div class="col-3">
+          <img src="{{c.product.image.url}}" class="col-12" style="height: 8rem;" alt="" />
+        </div>
+        <div class="col-9 d-flex flex-column justify-content-between">
+          <div class="col-10">
+            <div>
+              <h5 class="fw-bold">
+                {{c.product.name}}
+              </h5>
+            </div>
+            <div>
+              <small class="text-muted">Color : </small>
+            </div>
+          </div>
+          <div class="border-top d-flex pt-2 align-items-center justify-content-between">
+            <div class="d-flex align-items-center justify-content-between col-8">
+              <p class="fw-normal m-0 d-none d-sm-block">Qty:</p>
+              <div class="border border-2 border-dark d-flex" style="border-radius: .8rem;width: 5rem;height: 2rem;">
+                <a href="{% url 'cart:remove_single' c.id %}" class="d-flex justify-content-center align-items-center"
+                  style="text-decoration: none;flex-grow: 1;">
+                  <i class="fa fa-minus"
+                    style="font-size: larger;--fa-primary-color: #005eff;--fa-secondary-color: #005eff;"></i>
+                </a>
+                <div style="flex-grow: 2;display: flex;justify-content: center;"
+                  class="border-start border-dark border-end d-flex align-items-center">
+                  <div class="fw-bold"> {{c.quantity}} </div>
+                </div>
+                <a href="{% url 'cart:add_single' c.id %}" class="d-flex justify-content-center align-items-center"
+                  style="text-decoration: none;flex-grow: 1;">
+                  <i class="fa fa-plus"
+                    style="font-size: larger;--fa-primary-color: #005cfa;--fa-secondary-color: #005cfa;"></i>
+                </a>
+              </div>
+              <div class="opacity-75">
+                {% if c.product.status != 'None' %}
+                {{c.variants.total_price}}$
+                {%else%}
+                {{c.product.total_price}}$
+                {%endif%}
+              </div>
+            </div>
+            <div class="fw-bold">
+              {% if c.product.status != 'None' %}
+              {% widthratio c.variants.total_price 1 c.quantity %}$
+              {%else%}
+              {% widthratio c.product.total_price 1 c.quantity %}$
+              {%endif%}
+            </div>
+          </div>
+        </div>
+        <div style="position: absolute;right: 9px;top: 8px;">
+        <a href="{% url 'cart:remove_cart' c.id %}"><i class="fa fa-remove fs-5 text-danger"></i></a>
+      </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="d-none d-md-flex justify-content-center mt-4 col-md-5 ms-4 col-lg-6">
+      <div class="bg-white pt-4 pb-3 px-5 position-sticky" style="height: fit-content;border-radius: .8rem;width: 25rem;top: 10%;">
+        <div class="d-flex justify-content-between fw-bold align-items-end border-bottom mb-3">
+          <p class="fs-4">Total:</p>
+          <p class="fs-5">{{total}}$</p>
+        </div>
+        <form method="post" action="{% url 'order:order_create' %}">
+          {% csrf_token %}
+          <div style="display: flex;flex-direction: column;">
+            <label for="">name</label>
+            <input type="text" name="f_name" value="{{user.first_name}}" required /></label>
+            <label for="">last name</label>
+            <input type="text" name="l_name" value="{{user.last_name}}" required /></label>
+            <label for="">address</label>
+            <input type="text" name="address" value="{{user.profile.address}}" required /></label>
+            <label for="">email</label>
+            <input type="text" name="email" value="{{user.email}}" required /></label>
+          </div>
+          <button type="submit" class="btn btn-primary col-12">Checkout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- modal in sm -->
+  <div class="d-md-none justify-content-center modal-parent">
+    <div class="bg-white pt-4 pb-3 px-5 medal" style="height: fit-content;border-radius: .8rem;">
+      <div class="d-flex justify-content-between fw-bold align-items-end border-bottom mt-4">
+        <p class="fs-6 m-0">Total Price:</p>
+        <p class="fs-6 m-0">{{total}}$</p>
+      </div>
+      <form method="post" action="{% url 'order:order_create' %}">
+        {% csrf_token %}
+        <div style="display: flex;flex-direction: column;">
+          <label for="">name</label>
+          <input style="font-size: small;" type="text" name="f_name" value="{{user.first_name}}" required />
+          <label for="">last name</label>
+          <input style="font-size: small;" type="text" name="l_name" value="{{user.last_name}}" required />
+          <label for="">address</label>
+          <input style="font-size: small;" type="text" name="address" value="{{user.profile.address}}" required />
+          <label for="">email</label>
+          <input style="font-size: small;" type="text" name="email" value="{{user.email}}" required />
+        </div>
+        <button type="submit" class="btn btn-primary col-12">Checkout</button>
+      </form>
+      <span class="X text-danger">&times;</span>
+    </div>
+  </div>
+  <!-- End modal in sm -->
+  <script src="{% static 'cart.js' %}"></script>
+</body>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} <h1>cart</h1>
 <div class="container">
   <div class="row">
     <table class="table">
@@ -22,11 +171,7 @@
           <th scope="row">{{forloop.counter}}</th>
           <td>{{c.product.name}}</td>
           <td>
-            <img
-              src="{{c.product.image.url}}"
-              style="height: 30px; width: 30px"
-              alt=""
-            />
+            <img src="{{c.product.image.url}}" style="height: 30px; width: 30px" alt="" />
           </td>
           <td>
             {% if c.product.status == 'None' %}
@@ -36,29 +181,18 @@
           <td>
             {% if c.product.status == 'None' %}
             <p>ندارد</p>
-            {%else%} <{{c.variants.color_variant.name}}
-          </td>
-          {%endif%}
+            {%else%} <{{c.variants.color_variant.name}} </td>
+              {%endif%}
           <td>
-            <a href="{% url 'cart:add_single' c.id %}"
-              ><i
-                class="fa-duotone fa-plus fa-sm"
-                style="
+            <a href="{% url 'cart:add_single' c.id %}"><i class="fa-duotone fa-plus fa-sm" style="
                   --fa-primary-color: #005cfa;
                   --fa-secondary-color: #005cfa;
-                "
-              ></i
-            ></a>
+                "></i></a>
             {{c.quantity}}
-            <a href="{% url 'cart:remove_single' c.id %}"
-              ><i
-                class="fad fa-minus fa-sm"
-                style="
+            <a href="{% url 'cart:remove_single' c.id %}"><i class="fad fa-minus fa-sm" style="
                   --fa-primary-color: #005eff;
                   --fa-secondary-color: #005eff;
-                "
-              ></i
-            ></a>
+                "></i></a>
           </td>
           <td>
             {% if c.product.status != 'None' %}
@@ -67,7 +201,7 @@
           </td>
           <td>
             {% if c.product.status != 'None' %} {% widthratio c.variants.total_price 1 c.quantity %} {%else%}
-             {% widthratio c.product.total_price 1 c.quantity %}{%endif%}
+            {% widthratio c.product.total_price 1 c.quantity %}{%endif%}
           </td>
           <td><a href="{% url 'cart:remove_cart' c.id %}">remove</a></td>
         </tr>
@@ -80,29 +214,16 @@
     <form method="post" action="{% url 'order:order_create' %}">
       {% csrf_token %}
       <div class="card" style="padding: 10px; background-color: grown">
-        <label for=""
-          >name:
-          <input type="text" name="f_name" value="{{user.first_name}}" required
-        /></label>
-        <label for=""
-          >last name:
-          <input type="text" name="l_name" value="{{user.last_name}}" required
-        /></label>
-        <label for=""
-          >address:
-          <input
-            type="text"
-            name="address"
-            value="{{user.profile.address}}"
-            required
-        /></label>
-        <label for=""
-          >email:
-          <input type="text" name="email" value="{{user.email}}" required
-        /></label>
+        <label for="">name:
+          <input type="text" name="f_name" value="{{user.first_name}}" required /></label>
+        <label for="">last name:
+          <input type="text" name="l_name" value="{{user.last_name}}" required /></label>
+        <label for="">address:
+          <input type="text" name="address" value="{{user.profile.address}}" required /></label>
+        <label for="">email:
+          <input type="text" name="email" value="{{user.email}}" required /></label>
       </div>
       <button type="submit" class="btn btn-outline-danger">order</button>
     </form>
   </div>
-</div>
-{% endblock %}
+</div> {% endcomment %}
