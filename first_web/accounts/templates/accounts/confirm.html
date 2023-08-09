@@ -1,6 +1,24 @@
-{% extends 'main.html' %} {% block title %}confirm{% endblock %} {% block body%}
-<form method="post" action="">
-   {% csrf_token %} {{form.as_p}}
-  <button type="submit">change password</button>
-</form>
+{% extends 'main.html' %} 
+{% load static%}
+{% block title %}confirm{% endblock %} {% block body%}
+<head>
+  <link rel="stylesheet" href="{% static 'change.css' %}" />
+  <style>
+    .footer-clean{
+            display: none;
+        }
+  </style>
+</head>
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+  <form method="post" action="" class="col-8 offset-2 mt-5 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+    {% csrf_token %} 
+    <div class="py-5 px-5 bg-white border" style="border-radius: 20px;">
+      {{form.as_p}}
+      <button type="submit" class="btn btn-outline-dark col-12 mt-4 mb-3">change password</button>
+    </div>
+    </form>
+    <script src="{% static 'change.js' %}"></script>
+</body>
 {% endblock %}

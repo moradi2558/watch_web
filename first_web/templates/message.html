@@ -1,8 +1,18 @@
-{%if messages%}
-    {%for msg in messages%}
-        <h3 style=" font-size:2rem ;display: block !important;color:white ;font-family:serif ;font-style: italic;"
-            {%if msg.tags %} class="alert alert-{{msg.tags}}"{%endif%}>
-            {{msg}}
-        </h3>
-    {% endfor %}
+<link rel="stylesheet" href="../static/message.css">
+<body>
+    {% if messages %}
+    {% for msg in messages %}
+    <div style="position: absolute;top: 20px;right: -15rem;" class="toasto">
+            <div class="{%if msg.tags %} bg-{{msg.tags}} {%endif%} text-white border d-flex flex-column" style="width: 15rem;height: 6rem;border-radius: .54rem;">
+                <div class="d-flex justify-content-end me-2 mt-2">
+                    <i class="fa fa-remove" style="cursor: pointer;"></i>
+                </div>
+                <div class="d-flex align-items-center flex-grow-1 ms-2">
+                    <p class="fw-bold" style="font-size: large;">{{msg}}</p>
+                </div>
+            </div>
+        </div>
+            {% endfor %}
 {% endif %}
+<script src="../static/message.js"></script>
+</body>

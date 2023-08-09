@@ -1,12 +1,95 @@
-{% extends 'main.html' %}{% block title %}order{% endblock %} {% block body %}
-<h1>order</h1>
-<div class="container">
-  <h2>total price : {{order.get_price}}</h2>
-  <form method = "post" action="{% url 'order:coupon' order.id %}">
-    {% csrf_token %}
-    {{ form_order}}
-    <button type="submit" class="btn btn-info">coupon</button>
-  </form>
-</div>
-<a href="{% url 'order:request'  order.id order.get_price %}">the payment</a>
+{% extends 'main.html' %} {% load static %} {% block title %}order{% endblock %} {% block body %}
+<head>
+  <link rel="stylesheet" href="{% static 'order.css' %}" />
+    <style>
+        .footer-clean{
+            display: none;
+        }
+        body {
+            overflow-x: hidden;
+        }
+
+        .toasto {
+            animation: start 5s alternate;
+        }
+
+        @keyframes start {
+            0% {
+                top: 20px;
+                right: -15rem;
+            }
+
+            10% {
+                top: 20px;
+                right: 20px;
+            }
+
+            20% {
+                top: 20px;
+                right: 20px;
+            }
+
+            30% {
+                top: 20px;
+                right: 20px;
+            }
+
+            40% {
+                top: 20px;
+                right: 20px;
+            }
+
+            50% {
+                top: 20px;
+                right: 20px;
+            }
+
+            60% {
+                top: 20px;
+                right: 20px;
+            }
+
+            70% {
+                top: 20px;
+                right: 20px;
+            }
+
+            80% {
+                top: 20px;
+                right: 20px;
+            }
+
+            90% {
+                top: 20px;
+                right: 20px;
+            }
+
+            100% {
+                top: 20px;
+                right: -15rem;
+            }
+        }
+    </style>
+</head>
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+        <h1 class="text-white pt-4 ps-3">Order</h1>
+        <div class="d-flex justify-content-center mt-5">
+            <div class="bg-white pt-3 px-4 py-4 col-10 col-sm-7 col-md-5 col-lg-4" style="border-radius: .5rem;">
+                <form method="post" action="{% url 'order:coupon' order.id %}">
+                    {% csrf_token %}
+                    <label for="id_code">Code</label>
+                    <div class="mb-3 d-flex justify-content-center">
+                        {{ form_order}}
+                        <button type="submit" class="btn btn-outline-dark ms-2">coupon</button>
+                    </div>
+                </form>
+            <div class="d-flex justify-content-start fs-5 mb-4"><p class="me-4"> total price :</p> <p>{{order.get_price}}$</p></div>
+            <a href="{% url 'order:request'  order.id order.get_price %}" class="btn btn-outline-dark col-12">the payment</a>
+        </div>
+    </div>
+    <script src="{% static 'order.js' %}"></script>
+
+</body>
 {% endblock %}

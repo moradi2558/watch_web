@@ -4,8 +4,14 @@
 {% block body %}
 <head>
 <link rel="stylesheet" href="{% static 'favourite.css' %}" />
+<style>
+    .footer-clean{
+        display: none;
+    }
+</style>
 </head>
 <body>   
+    <h1 class="text-white pt-4 ps-3">Favourite</h1>
     <div class="py-5">
         {% for i in product %}
         <div class="card mb-3 border-0 border-bottom pb-3 col-10 offset-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">

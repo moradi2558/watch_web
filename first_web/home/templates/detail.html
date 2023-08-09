@@ -1,6 +1,62 @@
 {% extends 'main.html' %} {% load static %} {% block title %}detail{% endblock%}
 {% block body %}
 <head>
+  <style>
+    body{
+      overflow-x: hidden;
+    }
+    .toasto {
+    animation: start 5s alternate;
+}
+
+@keyframes start {
+    0% {
+        top: 20px;
+        right: -15rem;
+    }
+
+    10% {
+        top: 20px;
+        right: 20px;
+    }
+    20% {
+        top: 20px;
+        right: 20px;
+    }
+    30% {
+        top: 20px;
+        right: 20px;
+    }
+    40% {
+        top: 20px;
+        right: 20px;
+    }
+    50% {
+        top: 20px;
+        right: 20px;
+    }
+    60% {
+        top: 20px;
+        right: 20px;
+    }
+    70% {
+        top: 20px;
+        right: 20px;
+    }
+    80% {
+        top: 20px;
+        right: 20px;
+    }
+    90% {
+        top: 20px;
+        right: 20px;
+    }
+    100% {
+        top: 20px;
+        right: -15rem;
+    }
+}
+  </style>
   {% load jformat %}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
   crossorigin="anonymous">
@@ -532,4 +588,5 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
   </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'script.js' %}"></script>
+</body>
 {% endblock %}
