@@ -101,7 +101,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
             <label for="">email</label>
             <input type="text" name="email" value="{{user.email}}" required /></label>
           </div>
-          <button type="submit" class="btn btn-primary col-12">Checkout</button>
+          <button type="submit" class="btn btn-primary col-12 {% if total == 0 %} disabled {%endif%}">Checkout</button>
         </form>
       </div>
     </div>
@@ -125,7 +125,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
           <label for="">email</label>
           <input style="font-size: small;" type="text" name="email" value="{{user.email}}" required />
         </div>
-        <button type="submit" class="btn btn-primary col-12">Checkout</button>
+        <button type="submit" class="btn btn-primary col-12 {% if total == 0 %} disabled {%endif%}">Checkout</button>
       </form>
       <span class="X text-danger">&times;</span>
     </div>
