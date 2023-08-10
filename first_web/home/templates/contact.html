@@ -1,10 +1,40 @@
 {% extends 'main.html' %} {% block title %}contact us{% endblock %} {% block body%}
-<form method = 'post' action ="{% url 'home:contact' %}">
-    {% csrf_token %}
-    <h1>contact us</h1>
-    <input type ="text" name = "subject" placeholder = "subject">
-    <input type ="email" name = "email" placeholder = "email">
-    <textarea name="message" placeholder = "message"></textarea>
-    <button type ="submit" >send email</button>
-</form>
+<head>
+    <style>
+        input , textarea{
+    border: 0;
+    border-bottom: 1px solid rgba(95, 95, 95, 0.3);
+    outline: 0;
+    margin-bottom: 1rem;
+}
+p{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: fit-content;
+}
+label{
+    color:  #2ab7d6;
+font-size: small;
+margin-bottom: 3px;
+}
+    </style>
+</head>
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+        <h1 class="text-white pt-4 ps-3">contact us</h1>
+    <form method='post' action="{% url 'home:contact' %}" class="d-flex justify-content-center mt-5">
+        {% csrf_token %}
+        <div class="bg-white d-flex flex-column p-5 rounded-3 col-8 col-md-5 col-sm-6 col-lg-4">
+            <label for="subject">Subject</label>
+            <input type="text" name="subject" id="subject">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" rows="5"></textarea>
+            <button type="submit" class="btn btn-outline-dark">send email</button>
+        </div>
+    </form>
+</body>
 {% endblock %}

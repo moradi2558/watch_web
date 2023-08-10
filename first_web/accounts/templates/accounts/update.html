@@ -11,16 +11,34 @@
     <link rel='stylesheet'
    href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 </head>
-<body>
-    <h1>update profile</h1>
-    <form action="" method="post" enctype="multipart/form-data">
-        <img src="{{request.user.profile.profile_image.url}}" style="width: 50px;height: 50px;" alt="">
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+    <h1 class="text-white pt-4 ps-3">Edit Profile</h1>
+    <form action="" class="d-flex justify-content-center mb-5" method="post" enctype="multipart/form-data">
+      <div class="border pt-3 pb-4 d-flex flex-column align-items-center bg-white col-10 col-md-6 col-lg-5" style="border-radius: .6rem;">
+      <div class="d-flex justify-content-center mb-4">
+      <div style="position: relative;width: fit-content;height: fit-content;">
+        <img src="{{request.user.profile.profile_image.url}}" style="width: 10rem;height: 10rem;border-radius: 50%;" class="border border-dark p-1" alt="">
+        <label for="profile_image" class="rounded-circle position-absolute" style="bottom: 0;right: 0;cursor: pointer;background: #1c1e1f; 
+        background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+        background: linear-gradient(to right, #38393b, #1c1e1f);"><i class="fas fa-camera p-3 text-white" style="font-size: normal;"></i></label>
+        {{ profile_form.profile_image }}
+      </div>
+    </div>
         {% csrf_token %}
         {{ user_form.as_p }}
-        {{ profile_form.phone }}<br><br>
-        {{ profile_form.address }}<br><br>
-        {{ profile_form.profile_image }}<br><br>
-        <button type="submit">submit</button>
+        <p>
+          {{ profile_form.phone }}
+        </p>
+        <p>
+          {{ profile_form.address }}
+        </p>
+        <div class="col-12 d-flex justify-content-center">
+          <button type="submit" class="btn btn-outline-dark col-8 col-md-8 col-lg-7">submit</button>
+        </div>
+      </div>
     </form>
+    <script src="{% static 'update.js' %}"></script>
 </body>
 {% endblock %}

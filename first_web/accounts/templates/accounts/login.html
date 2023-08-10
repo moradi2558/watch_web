@@ -1,8 +1,63 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block title %}login{% endblock %}
-
 {% block body %}
+<style>
+    body{
+      overflow-x: hidden;
+    }
+    .toasto {
+    animation: start 5s alternate;
+}
+
+@keyframes start {
+    0% {
+        top: 20px;
+        right: -15rem;
+    }
+
+    10% {
+        top: 20px;
+        right: 20px;
+    }
+    20% {
+        top: 20px;
+        right: 20px;
+    }
+    30% {
+        top: 20px;
+        right: 20px;
+    }
+    40% {
+        top: 20px;
+        right: 20px;
+    }
+    50% {
+        top: 20px;
+        right: 20px;
+    }
+    60% {
+        top: 20px;
+        right: 20px;
+    }
+    70% {
+        top: 20px;
+        right: 20px;
+    }
+    80% {
+        top: 20px;
+        right: 20px;
+    }
+    90% {
+        top: 20px;
+        right: 20px;
+    }
+    100% {
+        top: 20px;
+        right: -15rem;
+    }
+}
+</style>
 <link rel= "stylesheet" href = "{% static 'login.css' %}">
 <body>
 <div class="d-flex justify-content-center mt-5 pt-2">

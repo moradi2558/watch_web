@@ -9,8 +9,64 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel='stylesheet'
    href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-   <!-- <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+<style>
+    .footer-clean{
+        display: none;
+    }
+    body{
+          overflow-x: hidden;
+        }
+        .toasto {
+        animation: start 5s alternate;
+    }    
+    @keyframes start {
+        0% {
+            top: 20px;
+            right: -15rem;
+        }
+    
+        10% {
+            top: 20px;
+            right: 20px;
+        }
+        20% {
+            top: 20px;
+            right: 20px;
+        }
+        30% {
+            top: 20px;
+            right: 20px;
+        }
+        40% {
+            top: 20px;
+            right: 20px;
+        }
+        50% {
+            top: 20px;
+            right: 20px;
+        }
+        60% {
+            top: 20px;
+            right: 20px;
+        }
+        70% {
+            top: 20px;
+            right: 20px;
+        }
+        80% {
+            top: 20px;
+            right: 20px;
+        }
+        90% {
+            top: 20px;
+            right: 20px;
+        }
+        100% {
+            top: 20px;
+            right: -15rem;
+        }
+    }
+</style>
   </head>
   <body>
     <!-- md to down -->
@@ -52,7 +108,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);height: 10rem;">
     <p style="font-size: small;">{{profile.user.email}}</p>
  </div>
  <div class="d-none d-md-block">
-    <a href="{% url 'accounts:change' %}" class="btn btn-outline-light btn-lg">change password </a>
+    <a href="{% url 'accounts:change' %}" class="btn btn-outline-light btn-lg">Change Password </a>
 </div>
 </div>
  <div class="d-flex flex-column align-items-end me-3 mt-3">
@@ -103,7 +159,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);height: 10rem;">
         </div>
     </div>
     <div class="d-flex flex-column align-items-center my-3 d-md-none">
-        <a href="{% url 'accounts:change' %}" class="btn btn-outline-dark col-10">change password </a>
+        <a href="{% url 'accounts:change' %}" class="btn btn-outline-dark col-10">Change Password </a>
     </div>
 </div>
 <!-- Endinfo -->

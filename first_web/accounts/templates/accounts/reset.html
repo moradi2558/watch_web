@@ -1,6 +1,41 @@
 {% extends 'main.html' %} {% block title %}reset{% endblock %} {% block body %}
-<form method="post" action="">
-  {%csrf_token%} {{form}}
-  <button type="submit">send email</button>
-</form>
+<head>
+  <style>
+    .footer-clean{
+        display: none;
+    }
+    input{
+    border: 1px solid white;
+    outline: 0;
+    background-color: transparent;
+    color: white;
+    padding: 11px 0;
+    padding-left: 7px;
+    border-radius: .4rem;
+    width: 15rem;
+    }
+    input::placeholder{
+      color: rgb(255, 255, 255);
+      opacity: 80%;
+    }
+    label{
+      display: none;
+    }
+</style>
+</head>
+<body style="background: #1c1e1f; 
+background: -webkit-linear-gradient(to right, #38393b, #1c1e1f);
+background: linear-gradient(to right, #38393b, #1c1e1f);">
+  <form method="post" action="" class="d-flex justify-content-center mt-5">
+    {%csrf_token%}
+    <div class="d-flex align-items-center flex-wrap justify-content-center mt-5" style="height: 10rem;">
+    {{form}}
+    <button type="submit" class="btn btn-outline-light ms-2 btn-lg">send email</button>
+  </div>
+  </form>
+  <script>
+    let input = document.querySelector("#id_email")
+    input.setAttribute("placeholder","Enter Your Email")
+  </script>
+</body>
 {% endblock %}
