@@ -22,7 +22,9 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
       {% for c in cart %}
       <div class="border col-12 mt-4 bg-white py-3 pe-4 d-flex" style="border-radius: .8rem;position: relative;">
         <div class="col-3">
+          <a href="{% url 'home:detail' c.product.id %}" class="text-decoration-none">
           <img src="{{c.product.image.url}}" class="col-12" style="height: 8rem;" alt="" />
+          </a>
         </div>
         <div class="col-9 d-flex flex-column justify-content-between">
           <div class="col-10">
@@ -32,7 +34,11 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
               </h5>
             </div>
             <div>
-              <small class="text-muted">Color : </small>
+              <small class="text-muted">Color : 
+                {% if c.product.status == 'None' %}
+                {%for i in c.product.color.all%}{{i}}{%endfor%}
+                {%else%}{{c.variants.color_variant.name}}
+              {%endif%}</small>
             </div>
           </div>
           <div class="border-top d-flex pt-2 align-items-center justify-content-between">
