@@ -239,11 +239,13 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         </div>
       </div>
     </div>
-    {%empty%}
-    <h1>
-      hellooo 
-    </h1>
     {% endfor %}
+{% for product in products %}
+  {%empty%}
+<h4 class="text-white text-center mt-2 mb-5 pb-5">
+  There is no product available <i class="fa-solid fa-bell fa-shake"></i>
+</h4>
+{% endfor %}
   </div>
   <!-- Endproducts for xs-->
   <!-- products for sm-->
@@ -281,12 +283,14 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
               {% endif %}
       </div>
     </div>
-    {%empty%}
-    <h1>
-      hellooo 
-    </h1>
     {% endfor %}
   </div>
+  {% for product in products %}
+  {%empty%}
+<h3 class="text-white text-center mt-2 mb-5 pb-5">
+  There is no product available <i class="fa-solid fa-bell fa-shake"></i>
+</h3>
+{% endfor %}
   </div>  
   <!-- Endproducts for sm-->
   <!-- products for md-->
@@ -323,12 +327,14 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
             {% endif %}
     </div>
   </div>
-  {%empty%}
-    <h1>
-      hellooo 
-    </h1>
   {% endfor %}
 </div>
+ {% for product in products %}
+      {%empty%}
+    <h3 class="text-white text-center mt-2 mb-5 pb-5">
+      There is no product available <i class="fa-solid fa-bell fa-shake"></i>
+    </h3>
+    {% endfor %}
 </div>
   <!-- Endproducts for md-->
 </div>
@@ -447,7 +453,8 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         </form>
   </div>
   </div>
-  <div class="col-9">
+  <div class="col-9 d-flex flex-column justify-content-between">
+    <div>
     <div class="toolbox px-3 pb-1 mb-3 border-bottom">
       <form action="">
         <div class="toolbox-right text-white">
@@ -501,21 +508,24 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
                 <div class="me-2">{{product.average}} <i class="fa fa-star" style="color: gold;"></i></div>
               </div>
                 {% endif %}
-        </div>
-      </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      {% for product in products %}
       {%empty%}
-    <h1>
-      hellooo 
-    </h1>
-      {% endfor %}
-    </div>
+    <h2 class="text-white text-center mt-5 pt-5">
+      There is no product available <i class="fa-solid fa-bell fa-shake"></i>
+    </h2>
+    {% endfor %}
+  </div>
   </div>
   <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5 pt-5">
     <ul class="pagination">
       {% if products.has_previous %}
       <li class="page-item">
         <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
-          >Previous</a
+          ><i class="fas fa-angle-left"></i></a
         >
       </li>
       <li class="page-item">
@@ -525,7 +535,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
       </li>
       {% else %}
       <li class="page-item disabled">
-        <a class="page-link" href="">Previous</a>
+        <a class="page-link" href=""><i class="fas fa-angle-left"></i></a>
       </li>
       {% endif %}
       <li class="page-item {% if page_num == page_num %} active {% endif %}">
@@ -540,10 +550,10 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         >
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}">next</a>
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}"><i class="fas fa-angle-right"></i></a>
       </li>
       {% else %}
-      <li class="page-item disabled"><a class="page-link" href="">next</a></li>
+      <li class="page-item disabled"><a class="page-link" href=""><i class="fas fa-angle-right"></i></a></li>
       {% endif %}
     </ul>
   </nav>
@@ -557,7 +567,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
       {% if products.has_previous %}
       <li class="page-item">
         <a class="page-link" href="?page={{products.previous_page_number}}&{{data}}"
-          >Previous</a
+          ><i class="fas fa-angle-left"></i></a
         >
       </li>
       <li class="page-item">
@@ -567,7 +577,7 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
       </li>
       {% else %}
       <li class="page-item disabled">
-        <a class="page-link" href="">Previous</a>
+        <a class="page-link" href=""><i class="fas fa-angle-left"></i></a>
       </li>
       {% endif %}
       <li class="page-item {% if page_num == page_num %} active {% endif %}">
@@ -582,10 +592,10 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         >
       </li>
       <li class="page-item">
-        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}">next</a>
+        <a class="page-link" href="?page={{products.next_page_number}}&{{data}}"><i class="fas fa-angle-right"></i></a>
       </li>
       {% else %}
-      <li class="page-item disabled"><a class="page-link" href="">next</a></li>
+      <li class="page-item disabled"><a class="page-link" href=""><i class="fas fa-angle-right"></i></a></li>
       {% endif %}
     </ul>
   </nav> 

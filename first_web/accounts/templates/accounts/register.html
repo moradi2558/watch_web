@@ -84,7 +84,7 @@
         method="post"
       >
         {%csrf_token%} {{form}}
-        <input type="submit" value="Sign In" class="btn btn-outline-dark" />
+        <input type="submit" value="Sign In" class="btn btn-outline-dark" id="signin"/>
       </form>
       <p>
         have an account ?
@@ -92,5 +92,6 @@
       </p>
     </div>
   </div>
+<script src="{% static 'signin.js' %}"></script>
 </body>
 {% endblock %}

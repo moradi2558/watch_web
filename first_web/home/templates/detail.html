@@ -279,26 +279,24 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
         <!-- End color -->
     <!-- like & unlike -->
     <div class="border col-4 d-flex align-self-end" style="height: 3rem;border-radius: .5rem;">
-      {% if request.user.is_authenticated %}
       <div class="border-end d-flex align-items-center justify-content-center py-2" style="flex-grow: 1;border-top-left-radius: .5rem;border-bottom-left-radius: .5rem;">
       {% if is_like %}
       <a href="{% url 'home:product_like'  products.id %}"
-        class="{% if is_unlike %}disabled{% endif %}"><i class="fas fa-thumbs-up text-white fs-5 piss"></i></a>
+        class="btn {% if request.user.is_authenticated %} {% if is_unlike %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="fas fa-thumbs-up text-white fs-5 piss"></i></a>
       {% else %}
       <a href="{% url 'home:product_like' products.id %}"
-        class="{% if is_unlike %}disabled{% endif %}"><i class="far fa-thumbs-up text-white fs-5"></i></a>
+        class="btn {% if request.user.is_authenticated %} {% if is_unlike %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="far fa-thumbs-up text-white fs-5"></i></a>
       {% endif %}
     </div>
     <div class="d-flex align-items-center justify-content-center py-2" style="flex-grow: 1;border-top-right-radius: .5rem;border-bottom-right-radius: .5rem;"> 
       {% if is_unlike %}
       <a href="{% url 'home:product_unlike' products.id %}"
-       class="{% if is_like %}disabled{% endif %}"><i class="fas fa-thumbs-down text-white fs-5 dis" style="transform: scaleX(-1);"></i></a>
+       class="btn {% if request.user.is_authenticated %}{% if is_like %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="fas fa-thumbs-down text-white fs-5 dis" style="transform: scaleX(-1);"></i></a>
       {% else %}
       <a href="{% url 'home:product_unlike' products.id  %}"
-        class="{% if is_like %}disabled{% endif %}"><i class="far fa-thumbs-down text-white fs-5" style="transform: scaleX(-1);"></i></a>
+        class="btn {% if request.user.is_authenticated %}{% if is_like %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="far fa-thumbs-down text-white fs-5" style="transform: scaleX(-1);"></i></a>
         {% endif %}
       </div> 
-      {% endif %}
     </div>
     <!-- End like & unlike -->
   </div>
@@ -318,24 +316,23 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
   </div>
   <!-- End price -->
   <!-- add to cart -->
-  {% if user.is_authenticated%}
+  
   <div class="col-7 d-flex">
     {% if products.status != 'None' %}
     <form method="post" action="{% url 'cart:add_cart' products.id %}">
       {%csrf_token%}
       <input type="hidden" name="select" value="{{variants.id}}" />
       <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{variants.amount}}" />
-      <button type="submit" class="addtocart py-2">Add To Cart</button>
+      <button type="submit" class="addtocart py-2 btn {% if user.is_authenticated%}{%else%}disabled {%endif%}">Add To Cart</button>
     </form>
     {% else %}
     <form method="post" action="{% url 'cart:add_cart' products.id %}">
       {%csrf_token%}
       <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{product.amount}}" />
-      <button type="submit" class="addtocart py-2">Add To Cart</button>
+      <button type="submit" class="addtocart py-2 btn {% if user.is_authenticated%}{%else%}disabled {%endif%}">Add To Cart</button>
     </form>
     {%endif%}
   </div>
-  {%endif%}
   <!-- End add to cart -->
   </div>
   </div>
@@ -385,26 +382,24 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
   <!-- End color -->
   <!-- like & unlike -->
   <div class="border col-4 d-flex align-self-end" style="height: 3rem;border-radius: .5rem;">
-    {% if request.user.is_authenticated %}
     <div class="border-end d-flex align-items-center justify-content-center py-2" style="flex-grow: 1;border-top-left-radius: .5rem;border-bottom-left-radius: .5rem;">
     {% if is_like %}
     <a href="{% url 'home:product_like'  products.id %}"
-      class="{% if is_unlike %}disabled{% endif %}"><i class="fas fa-thumbs-up text-white fs-5 piss"></i></a>
+      class="btn {% if request.user.is_authenticated %} {% if is_unlike %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="fas fa-thumbs-up text-white fs-5 piss"></i></a>
     {% else %}
     <a href="{% url 'home:product_like' products.id %}"
-      class="{% if is_unlike %}disabled{% endif %}"><i class="far fa-thumbs-up text-white fs-5"></i></a>
+      class="btn {% if request.user.is_authenticated %}{% if is_unlike %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="far fa-thumbs-up text-white fs-5"></i></a>
     {% endif %}
   </div>
   <div class="d-flex align-items-center justify-content-center py-2" style="flex-grow: 1;border-top-right-radius: .5rem;border-bottom-right-radius: .5rem;"> 
     {% if is_unlike %}
     <a href="{% url 'home:product_unlike' products.id %}"
-     class="{% if is_like %}disabled{% endif %}"><i class="fas fa-thumbs-down text-white fs-5 dis" style="transform: scaleX(-1);"></i></a>
+     class="btn {% if request.user.is_authenticated %}{% if is_like %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="fas fa-thumbs-down text-white fs-5 dis" style="transform: scaleX(-1);"></i></a>
     {% else %}
     <a href="{% url 'home:product_unlike' products.id  %}"
-      class="{% if is_like %}disabled{% endif %}"><i class="far fa-thumbs-down text-white fs-5" style="transform: scaleX(-1);"></i></a>
+      class="btn {% if request.user.is_authenticated %} {% if is_like %}disabled{% endif %} {% else %}disabled{% endif %}"><i class="far fa-thumbs-down text-white fs-5" style="transform: scaleX(-1);"></i></a>
       {% endif %}
-    </div> 
-    {% endif %}
+    </div>
   </div>
   <!-- End like & unlike -->
   </div>
@@ -424,24 +419,22 @@ background: linear-gradient(to right, #38393b, #1c1e1f);">
   </div>
   <!-- End price -->
   <!-- add to cart -->
-  {% if user.is_authenticated%}
   <div class="col-7 d-flex">
   {% if products.status != 'None' %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
     <input type="hidden" name="select" value="{{variants.id}}" />
     <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{variants.amount}}" />
-    <button type="submit" class="addtocart py-2 px-3">Add To Cart</button>
+    <button type="submit" class="addtocart py-2 px-3 btn {% if user.is_authenticated%}{%else%}disabled {%endif%}">Add To Cart</button>
   </form>
   {% else %}
   <form method="post" action="{% url 'cart:add_cart' products.id %}">
     {%csrf_token%}
     <input type="number" style="display: none;" name="quantity" min="1" value="1" max="{{product.amount}}" />
-    <button type="submit" class="addtocart py-2 px-3">Add To Cart</button>
+    <button type="submit" class="addtocart py-2 px-3 btn {% if user.is_authenticated%}{%else%}disabled {%endif%}">Add To Cart</button>
   </form>
   {%endif%}
   </div>
-  {%endif%}
   <!-- End add to cart -->
   </div>
   </div>
